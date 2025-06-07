@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import AnalysisResults from './AnalysisResults';
 
 const FileUpload = () => {
   const [file, setFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [analysis, setAnalysis] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -41,27 +45,61 @@ const FileUpload = () => {
       return;
     }
 
+    setIsLoading(true);
+    setError(null);
+    setAnalysis(null);
+
     const formData = new FormData();
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:5000/api/upload', {
+      // First upload the file
+      const uploadResponse = await fetch('http://localhost:5000/api/upload', {
         method: 'POST',
         body: formData,
       });
 
-      if (!response.ok) {
+      if (!uploadResponse.ok) {
         throw new Error('Upload failed');
       }
 
-      const data = await response.json();
-      console.log('Upload successful:', data);
-      alert('File uploaded successfully!');
+      const uploadData = await uploadResponse.json();
+      
+      // Then analyze the uploaded file
+      const analysisResponse = await fetch('http://localhost:5000/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fileId: uploadData.fileId,
+          subject: uploadData.subject,
+          year: uploadData.year
+        }),
+      });
+
+      if (!analysisResponse.ok) {
+        throw new Error('Analysis failed');
+      }
+
+      const analysisData = await analysisResponse.json();
+      setAnalysis(analysisData.analysis);
       setFile(null);
     } catch (error) {
-      console.error('Error uploading file:', error);
-      alert('Error uploading file. Please try again.');
+      console.error('Error:', error);
+      setError(error.message || 'An error occurred during upload or analysis');
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const handleRemoveFile = (e) => {
+    e.preventDefault();
+    e.stopPropagation(); // Prevent triggering the label click
+    setFile(null);
+    // Reset the file input
+    const fileInput = document.getElementById('file');
+    if (fileInput) fileInput.value = '';
   };
 
   return (
@@ -73,6 +111,8 @@ const FileUpload = () => {
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
+          onClick={() => document.getElementById('file').click()}
+          style={{ cursor: 'pointer' }}
         > 
           <div className="header"> 
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -82,7 +122,7 @@ const FileUpload = () => {
             </svg> 
             <p>{isDragging ? 'Drop your file here!' : 'Browse File to upload!'}</p>
           </div> 
-          <label htmlFor="file" className="footer"> 
+          <div className="footer" onClick={(e) => e.stopPropagation()}> 
             <svg fill="#000000" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
               <g id="SVGRepo_iconCarrier">
                 <path d="M15.331 6H8.5v20h15V14.154h-8.169z"></path>
@@ -90,14 +130,20 @@ const FileUpload = () => {
               </g>
             </svg> 
             <p>{file ? file.name : 'No file selected'}</p> 
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g id="SVGRepo_iconCarrier"> 
-                <path d="M5.16565 10.1534C5.07629 8.99181 5.99473 8 7.15975 8H16.8402C18.0053 8 18.9237 8.9918 18.8344 10.1534L18.142 19.1534C18.0619 20.1954 17.193 21 16.1479 21H7.85206C6.80699 21 5.93811 20.1954 5.85795 19.1534L5.16565 10.1534Z" stroke="#000000" strokeWidth="2"></path> 
-                <path d="M19.5 5H4.5" stroke="#000000" strokeWidth="2" strokeLinecap="round"></path> 
-                <path d="M10 3C10 2.44772 10.4477 2 11 2H13C13.5523 2 14 2.44772 14 3V5H10V3Z" stroke="#000000" strokeWidth="2"></path> 
-              </g>
-            </svg>
-          </label> 
+            <div 
+              className={`remove-icon ${file ? 'active' : ''}`} 
+              onClick={handleRemoveFile}
+              title={file ? 'Remove file' : ''}
+            >
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_iconCarrier"> 
+                  <path d="M5.16565 10.1534C5.07629 8.99181 5.99473 8 7.15975 8H16.8402C18.0053 8 18.9237 8.9918 18.8344 10.1534L18.142 19.1534C18.0619 20.1954 17.193 21 16.1479 21H7.85206C6.80699 21 5.93811 20.1954 5.85795 19.1534L5.16565 10.1534Z" stroke="currentColor" strokeWidth="2"></path> 
+                  <path d="M19.5 5H4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"></path> 
+                  <path d="M10 3C10 2.44772 10.4477 2 11 2H13C13.5523 2 14 2.44772 14 3V5H10V3Z" stroke="currentColor" strokeWidth="2"></path> 
+                </g>
+              </svg>
+            </div>
+          </div> 
           <input 
             id="file" 
             type="file"
@@ -106,12 +152,17 @@ const FileUpload = () => {
             style={{ display: 'none' }}
           />
           {file && (
-            <button type="submit" className="upload-btn">
+            <button type="submit" className="upload-btn" onClick={(e) => e.stopPropagation()}>
               Upload and Analyze
             </button>
           )}
         </div>
       </form>
+      <AnalysisResults 
+        analysis={analysis}
+        isLoading={isLoading}
+        error={error}
+      />
     </div>
   );
 };
