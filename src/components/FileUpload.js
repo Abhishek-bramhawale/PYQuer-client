@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AnalysisResults from './AnalysisResults';
 
 const FileUpload = () => {
@@ -7,6 +7,23 @@ const FileUpload = () => {
   const [analysis, setAnalysis] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isServerRunning, setIsServerRunning] = useState(false);
+
+  // Check if server is running
+  useEffect(() => {
+    const checkServer = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/health');
+        setIsServerRunning(response.ok);
+      } catch (error) {
+        setIsServerRunning(false);
+      }
+    };
+
+    checkServer();
+    const interval = setInterval(checkServer, 5000); // Check every 5 seconds
+    return () => clearInterval(interval);
+  }, []);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -45,6 +62,11 @@ const FileUpload = () => {
       return;
     }
 
+    if (!isServerRunning) {
+      setError('Server is not running. Please make sure the backend server is started.');
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
     setAnalysis(null);
@@ -53,19 +75,26 @@ const FileUpload = () => {
     formData.append('file', file);
 
     try {
-      // First upload the file
+      // First check if server is still running
+      const healthCheck = await fetch('http://localhost:5000/api/health');
+      if (!healthCheck.ok) {
+        throw new Error('Server is not responding. Please make sure the backend server is running.');
+      }
+
+      // Upload file
       const uploadResponse = await fetch('http://localhost:5000/api/upload', {
         method: 'POST',
         body: formData,
       });
 
       if (!uploadResponse.ok) {
-        throw new Error('Upload failed');
+        const errorData = await uploadResponse.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Upload failed');
       }
 
       const uploadData = await uploadResponse.json();
       
-      // Then analyze the uploaded file
+      // Analyze file
       const analysisResponse = await fetch('http://localhost:5000/api/analyze', {
         method: 'POST',
         headers: {
@@ -79,7 +108,8 @@ const FileUpload = () => {
       });
 
       if (!analysisResponse.ok) {
-        throw new Error('Analysis failed');
+        const errorData = await analysisResponse.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Analysis failed');
       }
 
       const analysisData = await analysisResponse.json();
@@ -97,7 +127,6 @@ const FileUpload = () => {
     e.preventDefault();
     e.stopPropagation(); // Prevent triggering the label click
     setFile(null);
-    // Reset the file input
     const fileInput = document.getElementById('file');
     if (fileInput) fileInput.value = '';
   };
@@ -105,6 +134,11 @@ const FileUpload = () => {
   return (
     <div className="upload-section">
       <h2>Upload Question Papers</h2>
+      {!isServerRunning && (
+        <div className="server-status error">
+          <p>⚠️ Backend server is not running. Please start the server to use this feature.</p>
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <div 
           className={`container ${isDragging ? 'dragging' : ''}`}
