@@ -7,7 +7,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="navbar">
+      <nav className="navbar" style={{padding :'20px'}}>
         <div className="navbar-brand">
           <h1>PYQuer</h1>
         </div>
