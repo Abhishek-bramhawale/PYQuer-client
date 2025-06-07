@@ -68,6 +68,17 @@ body {
   align-items: center;
 }
 
+.upload-button{
+   background-color: #540ac9;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
 .navbar-brand h1 {
   margin: 0;
   font-size: 1.8rem;

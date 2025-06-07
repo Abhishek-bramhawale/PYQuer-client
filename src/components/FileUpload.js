@@ -211,6 +211,7 @@ const FileUpload = () => {
           />
         </div>
         <button 
+        
           type="submit" 
           className="upload-button"
           disabled={files.length === 0 || !isServerRunning}
