@@ -546,3 +546,121 @@ body {
   margin: 0;
   font-size: 0.9rem;
 }
+
+.upload-section .container {
+  padding: 20px;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.upload-section .container.dragging {
+  border-color: #007bff;
+}
+
+.upload-section .container .header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.upload-section .container .header svg {
+  width: 50px;
+  height: 50px;
+  color: #007bff;
+}
+
+.upload-section .container .header p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.file-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.placeholder-file {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #777;
+}
+
+.placeholder-file svg {
+  width: 24px;
+  height: 24px;
+  color: #aaa;
+}
+
+.uploaded-file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 5px;
+  background-color: #f7fafc;
+  color: #333;
+  font-size: 0.95rem;
+  position: relative;
+}
+
+.uploaded-file-item svg {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  color: #555;
+}
+
+.uploaded-file-item p {
+  flex-grow: 1;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.uploaded-file-item .remove-icon {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  color: #dc3545;
+}
+
+.uploaded-file-item .remove-icon:hover {
+  background-color: #f8d7da;
+}
+
+.upload-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.upload-btn:hover {
+  background-color: #0056b3;
+}
