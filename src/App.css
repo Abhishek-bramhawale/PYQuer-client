@@ -528,3 +528,21 @@ body {
 .analysis-content li {
   margin: 0.5rem 0;
 }
+
+.server-status {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.server-status.error {
+  background-color: #fff5f5;
+  border: 1px solid #feb2b2;
+  color: #c53030;
+}
+
+.server-status p {
+  margin: 0;
+  font-size: 0.9rem;
+}
