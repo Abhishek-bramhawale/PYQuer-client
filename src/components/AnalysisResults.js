@@ -65,25 +65,45 @@ const parseMarkdownTable = (text, section) => {
   }
 };
 
-const parseQuestionWiseAnalysis = (text) => {
-  if (!text) return '';
-  const sectionRegex = /4\. Remaining Questions:\s*\n([\s\S]*?)(?=\n5\.|$)/;
-  const match = text.match(sectionRegex);
-  return match ? match[1].trim() : '';
-};
+const parseSections = (text) => {
+  const sections = {};
+  const sectionTitles = [
+    '1. Repeated Questions Analysis',
+    '2. Questions Asking for Differences',
+    '3. Questions Requiring Diagrams',
+    '4. Remaining Questions',
+    '5. Study Recommendations',
+    '6. Predictions',
+  ];
 
-const parseStudyRecommendations = (text) => {
-  if (!text) return '';
-  const sectionRegex = /5\\. Study Recommendations:\\s*([\\s\\S]*?)(?=(?:\\n6\\. Predictions:|$))/;
-  const match = text.match(sectionRegex);
-  return match ? match[1].trim() : '';
-};
+  let currentSection = '';
+  let currentContent = [];
 
-const parsePredictions = (text) => {
-  if (!text) return '';
-  const sectionRegex = /6\\. Predictions:\\s*([\\s\\S]*?)(?=(?:\\n\\d\\.|$))/;
-  const match = text.match(sectionRegex);
-  return match ? match[1].trim() : '';
+  const lines = text.split(/\r?\n/);
+
+  for (const line of lines) {
+    let isSectionTitle = false;
+    for (const title of sectionTitles) {
+      if (line.startsWith(title)) {
+        if (currentSection) {
+          sections[currentSection] = currentContent.join('\n').trim();
+        }
+        currentSection = title;
+        currentContent = [];
+        isSectionTitle = true;
+        break;
+      }
+    }
+
+    if (!isSectionTitle && currentSection) {
+      currentContent.push(line);
+    }
+  }
+
+  if (currentSection) {
+    sections[currentSection] = currentContent.join('\n').trim();
+  }
+  return sections;
 };
 
 const AnalysisResults = ({ analysis, isLoading, error }) => {
@@ -92,12 +112,14 @@ const AnalysisResults = ({ analysis, isLoading, error }) => {
   }
 
   const rawAnalysisText = analysis.analysis;
+  const parsedSections = parseSections(rawAnalysisText);
+
   const repeatedQuestions = parseMarkdownTable(rawAnalysisText, '1. Repeated Questions Analysis');
   const differenceQuestions = parseMarkdownTable(rawAnalysisText, '2. Questions Asking for Differences');
   const diagramQuestions = parseMarkdownTable(rawAnalysisText, '3. Questions Requiring Diagrams');
-  const questionWiseAnalysis = parseQuestionWiseAnalysis(rawAnalysisText);
-  const studyRecommendations = parseStudyRecommendations(rawAnalysisText);
-  const predictions = parsePredictions(rawAnalysisText);
+  const questionWiseAnalysis = parsedSections['4. Remaining Questions'] || '';
+  const studyRecommendations = parsedSections['5. Study Recommendations'] || '';
+  const predictions = parsedSections['6. Predictions'] || '';
 
   const renderTableSection = (title, data, columns) => {
     if (!data || data.isEmpty) {
