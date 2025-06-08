@@ -209,15 +209,16 @@ const FileUpload = () => {
             onChange={handleFileChange}
             style={{ display: 'none' }}
           />
-        </div>
-        <button 
+          <button 
         
-          type="submit" 
-          className="upload-button"
-          disabled={files.length === 0 || !isServerRunning}
-        >
-          {isLoading ? 'Analyzing...' : 'Upload & Analyze'}
-        </button>
+        type="submit" 
+        className="upload-button"
+        disabled={files.length === 0 || !isServerRunning}
+      >
+        {isLoading ? 'Analyzing...' : 'Upload & Analyze'}
+      </button>
+        </div>
+        
       </form>
 
       <AnalysisResults 
