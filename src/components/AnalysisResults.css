@@ -29,9 +29,9 @@
   text-align: left !important;
 }
 
-.section-title {
+.section-title h2 {
   background-color: #e3f2fd;
-  color: #1976d2;
+  color: #000000;
   padding: 0.75rem 1rem;
   border-radius: 4px;
   font-size: 1.25rem;
