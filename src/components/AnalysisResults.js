@@ -45,15 +45,15 @@ const parseMarkdownTable = (text, section) => {
         if (cells.length >= 3) {
           return {
             question: cells[0] || '',
-            count: cells[1] || '',
-            papers: cells[2] || ''
+            repeatedcount: cells[1] || '',
+            papersappeared: cells[2] || ''
           };
         }
       } else {
         if (cells.length >= 2) {
           return {
             question: cells[0] || '',
-            papers: cells[1] || ''
+            papersappeared: cells[1] || ''
           };
         }
       }
@@ -74,7 +74,14 @@ const parseQuestionWiseAnalysis = (text) => {
 
 const parseStudyRecommendations = (text) => {
   if (!text) return '';
-  const sectionRegex = /5\. Study Recommendations:\s*\n([\s\S]*?)(?=\n\d\.|$)/;
+  const sectionRegex = /5\\. Study Recommendations:\\s*([\\s\\S]*?)(?=(?:\\n6\\. Predictions:|$))/;
+  const match = text.match(sectionRegex);
+  return match ? match[1].trim() : '';
+};
+
+const parsePredictions = (text) => {
+  if (!text) return '';
+  const sectionRegex = /6\\. Predictions:\\s*([\\s\\S]*?)(?=(?:\\n\\d\\.|$))/;
   const match = text.match(sectionRegex);
   return match ? match[1].trim() : '';
 };
@@ -90,6 +97,7 @@ const AnalysisResults = ({ analysis, isLoading, error }) => {
   const diagramQuestions = parseMarkdownTable(rawAnalysisText, '3. Questions Requiring Diagrams');
   const questionWiseAnalysis = parseQuestionWiseAnalysis(rawAnalysisText);
   const studyRecommendations = parseStudyRecommendations(rawAnalysisText);
+  const predictions = parsePredictions(rawAnalysisText);
 
   const renderTableSection = (title, data, columns) => {
     if (!data || data.isEmpty) {
@@ -105,7 +113,7 @@ const AnalysisResults = ({ analysis, isLoading, error }) => {
       <div className="analysis-section">
         <h2 className="section-title">{title}</h2>
         <div className="table-container">
-          <table className="analysis-table">
+          <table className={`analysis-table ${columns.length === 2 ? 'two-columns' : ''}`}>
             <thead>
               <tr>
                 {columns.map((col, index) => (
@@ -116,8 +124,8 @@ const AnalysisResults = ({ analysis, isLoading, error }) => {
             <tbody>
               {data.map((row, index) => (
                 <tr key={index}>
-                  {columns.map((col, colIndex) => (
-                    <td key={colIndex}>{row[col.toLowerCase().replace(/\s+/g, '')]}</td>
+                  {columns.map((col) => (
+                    <td key={col}>{row[col.toLowerCase().replace(/\s+/g, '').replace(' ', '')] || ''}</td>
                   ))}
                 </tr>
               ))}
@@ -148,6 +156,13 @@ const AnalysisResults = ({ analysis, isLoading, error }) => {
         <h2 className="section-title">5. Study Recommendations</h2>
         <div className="content-box">
           <pre className="question-text">{studyRecommendations}</pre>
+        </div>
+      </div>
+
+      <div className="analysis-section">
+        <h2 className="section-title">6. Predictions</h2>
+        <div className="content-box">
+          <pre className="question-text">{predictions}</pre>
         </div>
       </div>
     </div>
