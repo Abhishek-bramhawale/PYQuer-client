@@ -1,21 +1,5 @@
 import React from 'react';
-import {
-  Container,
-  Typography,
-  Paper,
-  Box,
-  CircularProgress,
-  Alert,
-  Button,
-  Divider,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow
-} from '@mui/material';
-// ArrowBackIcon, useParams, useNavigate, axios are not needed here as this component receives data via props.
+import './AnalysisResults.css';
 
 const parseMarkdownTable = (text, section) => {
   if (!text || typeof text !== 'string') {
@@ -83,50 +67,21 @@ const parseMarkdownTable = (text, section) => {
 
 const parseQuestionWiseAnalysis = (text) => {
   if (!text) return '';
-  const sectionRegex = /4\. Remaining Questions:\n([\s\S]*?)(?=\n5\.|$) /;
+  const sectionRegex = /4\. Remaining Questions:\s*\n([\s\S]*?)(?=\n5\.|$)/;
   const match = text.match(sectionRegex);
-  if (!match) return '';
-  return match[1].trim();
+  return match ? match[1].trim() : '';
 };
 
 const parseStudyRecommendations = (text) => {
   if (!text) return '';
-  const sectionRegex = /5\. Study Recommendations:\s*\n([\s\S]*)$/;
+  const sectionRegex = /5\. Study Recommendations:\s*\n([\s\S]*?)(?=\n\d\.|$)/;
   const match = text.match(sectionRegex);
-  if (!match) return '';
-  return match[1].trim();
+  return match ? match[1].trim() : '';
 };
 
 const AnalysisResults = ({ analysis, isLoading, error }) => {
-  if (!analysis || typeof analysis !== 'object') {
-    console.warn('Invalid analysis prop:', analysis);
+  if (!analysis || !analysis.analysis) {
     return null;
-  }
-
-  if (!analysis.analysis || typeof analysis.analysis !== 'string') {
-    console.warn('Invalid analysis text:', analysis.analysis);
-    return (
-      <Alert severity="error" sx={{ mt: 3 }}>
-        Invalid analysis data received
-      </Alert>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
-        <CircularProgress />
-        <Typography variant="h6" sx={{ ml: 2 }}>Analyzing your papers...</Typography>
-      </Box>
-    );
-  }
-
-  if (error) {
-    return (
-      <Alert severity="error" sx={{ mt: 3 }}>
-        {error}
-      </Alert>
-    );
   }
 
   const rawAnalysisText = analysis.analysis;
@@ -139,134 +94,63 @@ const AnalysisResults = ({ analysis, isLoading, error }) => {
   const renderTableSection = (title, data, columns) => {
     if (!data || data.isEmpty) {
       return (
-        <Box mt={4}>
-          <Typography 
-            variant="h5" 
-            gutterBottom
-            sx={{
-              backgroundColor: '#e3f2fd',
-              color: '#1976d2',
-              padding: '8px 16px',
-              borderRadius: '4px',
-              fontWeight: 'bold'
-            }}
-          >
-            {title}
-          </Typography>
-          <Paper sx={{ p: 2, mt: 2 }}>
-            <Typography>{data?.message || 'No data available'}</Typography>
-          </Paper>
-        </Box>
+        <div className="analysis-section">
+          <h2 className="section-title">{title}</h2>
+          <div className="empty-message">{data?.message || 'No data available'}</div>
+        </div>
       );
     }
 
     return (
-      <Box mt={4}>
-        <Typography 
-          variant="h5" 
-          gutterBottom
-          sx={{
-            backgroundColor: '#e3f2fd',
-            color: '#1976d2',
-            padding: '8px 16px',
-            borderRadius: '4px',
-            fontWeight: 'bold'
-          }}
-        >
-          {title}
-        </Typography>
-        <TableContainer component={Paper} sx={{ mt: 2 }}>
-          <Table>
-            <TableHead>
-              <TableRow>
+      <div className="analysis-section">
+        <h2 className="section-title">{title}</h2>
+        <div className="table-container">
+          <table className="analysis-table">
+            <thead>
+              <tr>
                 {columns.map((col, index) => (
-                  <TableCell key={index}>{col}</TableCell>
+                  <th key={index}>{col}</th>
                 ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
+              </tr>
+            </thead>
+            <tbody>
               {data.map((row, index) => (
-                <TableRow key={index}>
+                <tr key={index}>
                   {columns.map((col, colIndex) => (
-                    <TableCell key={colIndex}>{row[col.toLowerCase().replace(/\s+/g, '')]}</TableCell>
+                    <td key={colIndex}>{row[col.toLowerCase().replace(/\s+/g, '')]}</td>
                   ))}
-                </TableRow>
+                </tr>
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
+            </tbody>
+          </table>
+        </div>
+      </div>
     );
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Analysis Results
-        </Typography>
-        {/* Subject and Year info are not available directly from the analysis.analysis (raw text) unless you pass them as part of the `analysis` prop from FileUpload */}
-        {/* For now, commenting out these lines as `analysis` only contains `analysis` (raw text) and `timestamp` */}
-        {/* <Typography variant="h6" color="textSecondary" gutterBottom>
-          {analysis.subject} - {analysis.year}
-        </Typography> */}
+    <div className="analysis-container">
+      <h1 className="main-title">Analysis Results</h1>
+      <hr className="divider" />
 
-        <Divider sx={{ my: 3 }} />
+      {renderTableSection('1. Repeated Questions Analysis', repeatedQuestions, ['Question', 'Repeated Count', 'Papers Appeared'])}
+      {renderTableSection('2. Questions Asking for Differences', differenceQuestions, ['Question', 'Papers Appeared'])}
+      {renderTableSection('3. Questions Requiring Diagrams', diagramQuestions, ['Question', 'Papers Appeared'])}
 
-        {renderTableSection('1. Repeated Questions Analysis', repeatedQuestions, ['Question', 'Repeated Count', 'Papers Appeared'])}
-        {renderTableSection('2. Questions Asking for Differences', differenceQuestions, ['Question', 'Papers Appeared'])}
-        {renderTableSection('3. Questions Requiring Diagrams', diagramQuestions, ['Question', 'Papers Appeared'])}
+      <div className="analysis-section">
+        <h2 className="section-title">4. Remaining Questions</h2>
+        <div className="content-box">
+          <pre className="question-text">{questionWiseAnalysis}</pre>
+        </div>
+      </div>
 
-        {/* Remaining Questions Section */}
-        <Box mt={4}>
-          <Typography 
-            variant="h5" 
-            gutterBottom
-            sx={{
-              backgroundColor: '#e3f2fd',
-              color: '#1976d2',
-              padding: '8px 16px',
-              borderRadius: '4px',
-              fontWeight: 'bold'
-            }}
-          >
-            4. Remaining Questions
-          </Typography>
-          <Paper sx={{ p: 2, mt: 2, whiteSpace: 'pre-wrap' }}>
-            {questionWiseAnalysis}
-          </Paper>
-        </Box>
-
-        {/* Study Recommendations Section */}
-        <Box mt={4}>
-          <Typography 
-            variant="h5" 
-            gutterBottom
-            sx={{
-              backgroundColor: '#e3f2fd',
-              color: '#1976d2',
-              padding: '8px 16px',
-              borderRadius: '4px',
-              fontWeight: 'bold'
-            }}
-          >
-            5. Study Recommendations
-          </Typography>
-          <Paper sx={{ p: 2, mt: 2, whiteSpace: 'pre-wrap' }}>
-            {studyRecommendations}
-          </Paper>
-        </Box>
-
-        {/* Analysis timestamp is available in `analysis.timestamp` (if passed correctly) */}
-        {analysis.timestamp && (
-          <Box mt={2}>
-            <Typography variant="body2" color="textSecondary">
-              Analysis completed at: {new Date(analysis.timestamp).toLocaleString()}
-            </Typography>
-          </Box>
-        )}
-      </Paper>
-    </Container>
+      <div className="analysis-section">
+        <h2 className="section-title">5. Study Recommendations</h2>
+        <div className="content-box">
+          <pre className="question-text">{studyRecommendations}</pre>
+        </div>
+      </div>
+    </div>
   );
 };
 
