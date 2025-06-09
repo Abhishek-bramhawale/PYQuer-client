@@ -1,5 +1,4 @@
 import React from 'react';
-import './AnalysisResults.css';
 
 const parseMarkdownTable = (text, section) => {
   if (!text || typeof text !== 'string') {
