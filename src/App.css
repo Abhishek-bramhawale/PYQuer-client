@@ -60,17 +60,28 @@ code {
 
 /* Navbar  */
 .navbar {
-  display: flex;
-  align-items: center;
+  /* 
+  
+  
+  
+
+  */
   padding: 10px 20px;
-  background-color: rgba(51, 50, 50, 0.615);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: fixed;
+  top: 0;
+  width: 100%;
+  /* height: 60px; */
   top: 0;
   left: 0;
   right: 0;
+  justify-content: space-between; 
+  display: flex;
+  align-items: center;
+  background-color: rgba(51, 50, 50, 0.615);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px); 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* subtle border */
   z-index: 1000;
-  justify-content: space-between;
 }
 
 .navbar-brand {
@@ -101,7 +112,8 @@ code {
   background-color: #540ac9;
   color: white;
   border: none;
-  padding: 8px 20px;
+  /* padding: 8px 20px; */
+  margin-right: 50px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
