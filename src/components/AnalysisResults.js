@@ -1,4 +1,5 @@
 import React from 'react';
+import jsPDF from 'jspdf';
 
 const parseMarkdownTable = (text, section) => {
   if (!text || typeof text !== 'string') {
@@ -185,6 +186,29 @@ const AnalysisResults = ({ analysis, isLoading, error }) => {
         <div className="content-box">
           <pre className="question-text">{predictions}</pre>
         </div>
+      </div>
+
+      <div className="download-section">
+        <button 
+        
+          className="download-pdf-btn"
+          style={{
+            backgroundColor: '#4CAF50',
+            color: 'white',
+            padding: '12px 24px',
+            border: 'none',
+            borderRadius: '6px',
+            fontSize: '16px',
+            cursor: 'pointer',
+            marginTop: '20px',
+            marginBottom: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+        >
+          📄 Download PDF
+        </button>
       </div>
     </div>
   );
