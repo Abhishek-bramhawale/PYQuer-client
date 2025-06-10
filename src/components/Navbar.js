@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../App.css';
 import Login from './Login';
-import SignUp from './SignUp';
 
 const Navbar = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -26,18 +24,11 @@ const Navbar = () => {
   };
 
   const openLogin = () => {
-    setIsSignUpOpen(false);
     setIsLoginOpen(true);
   };
 
-  const openSignUp = () => {
+  const closeModal = () => {
     setIsLoginOpen(false);
-    setIsSignUpOpen(true);
-  };
-
-  const closeModals = () => {
-    setIsLoginOpen(false);
-    setIsSignUpOpen(false);
   };
 
   return (
@@ -72,44 +63,24 @@ const Navbar = () => {
               </button>
             </div>
           ) : (
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <button 
-                className="login-btn" 
-                onClick={openLogin}
-                style={{ 
-                  backgroundColor: '#540ac9',
-                  fontSize: '0.8rem',
-                  padding: '6px 12px'
-                }}
-              >
-                Login
-              </button>
-              <button 
-                className="login-btn" 
-                onClick={openSignUp}
-                style={{ 
-                  backgroundColor: '#28a745',
-                  fontSize: '0.8rem',
-                  padding: '6px 12px'
-                }}
-              >
-                Sign Up
-              </button>
-            </div>
+            <button 
+              className="login-btn" 
+              onClick={openLogin}
+              style={{ 
+                backgroundColor: '#540ac9',
+                fontSize: '0.9rem',
+                padding: '8px 16px'
+              }}
+            >
+              Login / Sign Up
+            </button>
           )}
         </div>
       </nav>
       
       <Login 
         isOpen={isLoginOpen} 
-        onClose={closeModals}
-        onSwitchToSignUp={openSignUp}
-      />
-      
-      <SignUp 
-        isOpen={isSignUpOpen} 
-        onClose={closeModals}
-        onSwitchToLogin={openLogin}
+        onClose={closeModal}
       />
     </>
   );

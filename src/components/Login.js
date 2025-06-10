@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-const Login = ({ isOpen, onClose, onSwitchToSignUp }) => {
+const Login = ({ isOpen, onClose }) => {
+  const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -24,22 +25,32 @@ const Login = ({ isOpen, onClose, onSwitchToSignUp }) => {
       return;
     }
 
+    if (isSignUp && formData.password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
     setIsLoading(true);
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const endpoint = isSignUp ? '/api/auth/register' : '/api/auth/login';
+      const body = isSignUp 
+        ? { name: formData.email.split('@')[0], email: formData.email, password: formData.password }
+        : formData;
+
+      const response = await fetch(`http://localhost:5000${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(body),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
+        throw new Error(data.error || `${isSignUp ? 'Registration' : 'Login'} failed`);
       }
 
       // Store token in localStorage
@@ -51,16 +62,22 @@ const Login = ({ isOpen, onClose, onSwitchToSignUp }) => {
         role: data.role
       }));
 
-      // Close modal and refresh page or update state
+      // Close modal and refresh page
       onClose();
-      window.location.reload(); // Simple approach - you might want to use context instead
+      window.location.reload();
       
     } catch (error) {
-      console.error('Login error:', error);
-      setError(error.message || 'Login failed. Please try again.');
+      console.error(`${isSignUp ? 'Registration' : 'Login'} error:`, error);
+      setError(error.message || `${isSignUp ? 'Registration' : 'Login'} failed. Please try again.`);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const toggleMode = () => {
+    setIsSignUp(!isSignUp);
+    setError('');
+    setFormData({ email: '', password: '' });
   };
 
   if (!isOpen) return null;
@@ -69,7 +86,7 @@ const Login = ({ isOpen, onClose, onSwitchToSignUp }) => {
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
-          <h2>Login</h2>
+          <h2>{isSignUp ? 'Sign Up' : 'Login'}</h2>
           <button className="close-btn" onClick={onClose}>&times;</button>
         </div>
         
@@ -89,7 +106,6 @@ const Login = ({ isOpen, onClose, onSwitchToSignUp }) => {
 
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            {/* <label htmlFor="email">Email</label> */}
             <input
               type="email"
               id="email"
@@ -102,7 +118,6 @@ const Login = ({ isOpen, onClose, onSwitchToSignUp }) => {
             />
           </div>
           <div className="form-group">
-            {/* <label htmlFor="password">Password</label> */}
             <input
               type="password"
               id="password"
@@ -110,7 +125,7 @@ const Login = ({ isOpen, onClose, onSwitchToSignUp }) => {
               value={formData.password}
               onChange={handleChange}
               required
-              placeholder="Enter your password"
+              placeholder={isSignUp ? "Enter your password (min 6 characters)" : "Enter your password"}
               disabled={isLoading}
             />
           </div>
@@ -119,7 +134,10 @@ const Login = ({ isOpen, onClose, onSwitchToSignUp }) => {
             className="login-submit-btn"
             disabled={isLoading}
           >
-            {isLoading ? 'Logging in...' : 'Login'}
+            {isLoading 
+              ? (isSignUp ? 'Creating Account...' : 'Logging in...') 
+              : (isSignUp ? 'Sign Up' : 'Login')
+            }
           </button>
         </form>
 
@@ -130,9 +148,9 @@ const Login = ({ isOpen, onClose, onSwitchToSignUp }) => {
           borderTop: '1px solid #eee'
         }}>
           <p style={{ margin: '0', color: '#666', fontSize: '0.9rem' }}>
-            Don't have an account?{' '}
+            {isSignUp ? "Already have an account?" : "Don't have an account?"}{' '}
             <button
-              onClick={onSwitchToSignUp}
+              onClick={toggleMode}
               style={{
                 background: 'none',
                 border: 'none',
@@ -143,7 +161,7 @@ const Login = ({ isOpen, onClose, onSwitchToSignUp }) => {
               }}
               disabled={isLoading}
             >
-              Sign up here
+              {isSignUp ? 'Login here' : 'Sign up here'}
             </button>
           </p>
         </div>
