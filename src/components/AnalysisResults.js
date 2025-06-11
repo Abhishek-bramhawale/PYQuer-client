@@ -138,22 +138,24 @@ const AnalysisResults = ({ analysis, isLoading, error }) => {
     
     const addWrappedText = (text, x, y, maxWidth) => {
       const lines = doc.splitTextToSize(text, maxWidth);
-      if (y + (lines.length * lineHeight) > pageHeight) {
-        doc.addPage();
-        y = 20;
+      for (let i = 0; i < lines.length; i++) {
+        if (y + lineHeight > pageHeight - margin) {
+          doc.addPage();
+          y = margin;
+        }
+        doc.text(lines[i], x, y);
+        y += lineHeight;
       }
-      doc.text(lines, x, y);
-      return y + (lines.length * lineHeight) + 5;
+      return y + 5;
     };
-    
+
     const addSection = (title, content) => {
       doc.setFontSize(14);
       doc.setFont('helvetica', 'bold');
-      yPosition = addWrappedText(title, margin, yPosition, 170);
-      
+      yPosition = addWrappedText(title, margin, yPosition, 160);
       doc.setFontSize(10);
       doc.setFont('helvetica', 'normal');
-      yPosition = addWrappedText(content, margin, yPosition, 170);
+      yPosition = addWrappedText(content, margin, yPosition, 160);
       yPosition += 10;
     };
     
@@ -253,20 +255,7 @@ const AnalysisResults = ({ analysis, isLoading, error }) => {
         <button 
           onClick={downloadPDF}
           className="download-pdf-btn"
-          style={{
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            padding: '12px 24px',
-            border: 'none',
-            borderRadius: '6px',
-            fontSize: '16px',
-            cursor: 'pointer',
-            marginTop: '20px',
-            marginBottom: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }}
+          
         >
           📄 Download PDF
         </button>
