@@ -7,7 +7,6 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Check if user is logged in on component mount
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
     

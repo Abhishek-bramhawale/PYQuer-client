@@ -121,6 +121,67 @@ const AnalysisResults = ({ analysis, isLoading, error }) => {
   const studyRecommendations = parsedSections['5. Study Recommendations'] || '';
   const predictions = parsedSections['6. Predictions'] || '';
 
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+    
+
+    doc.setFont('helvetica');
+    doc.setFontSize(16);
+    
+    doc.text('Analysis Results', 20, 20);
+    doc.setFontSize(12);
+    
+    let yPosition = 40;
+    const lineHeight = 7;
+    const pageHeight = 280;
+    const margin = 20;
+    
+    const addWrappedText = (text, x, y, maxWidth) => {
+      const lines = doc.splitTextToSize(text, maxWidth);
+      if (y + (lines.length * lineHeight) > pageHeight) {
+        doc.addPage();
+        y = 20;
+      }
+      doc.text(lines, x, y);
+      return y + (lines.length * lineHeight) + 5;
+    };
+    
+    const addSection = (title, content) => {
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      yPosition = addWrappedText(title, margin, yPosition, 170);
+      
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      yPosition = addWrappedText(content, margin, yPosition, 170);
+      yPosition += 10;
+    };
+    
+    addSection('1. Repeated Questions Analysis', 
+      repeatedQuestions.isEmpty ? repeatedQuestions.message : 
+      repeatedQuestions.map(q => `• ${q.question} (${q.repeatedcount} times, Papers: ${q.papersappeared})`).join('\n')
+    );
+    
+    addSection('2. Questions Asking for Differences',
+      differenceQuestions.isEmpty ? differenceQuestions.message :
+      differenceQuestions.map(q => `• ${q.question} (Papers: ${q.papersappeared})`).join('\n')
+    );
+    
+    addSection('3. Questions Requiring Diagrams',
+      diagramQuestions.isEmpty ? diagramQuestions.message :
+      diagramQuestions.map(q => `• ${q.question} (Papers: ${q.papersappeared})`).join('\n')
+    );
+    
+    addSection('4. Remaining Questions', questionWiseAnalysis);
+    addSection('5. Study Recommendations', studyRecommendations);
+    addSection('6. Predictions', predictions);
+    
+    const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+    const filename = `analysis_results_${timestamp}.pdf`;
+    
+    doc.save(filename);
+  };
+
   const renderTableSection = (title, data, columns) => {
     if (!data || data.isEmpty) {
       return (
@@ -190,7 +251,7 @@ const AnalysisResults = ({ analysis, isLoading, error }) => {
 
       <div className="download-section">
         <button 
-        
+          onClick={downloadPDF}
           className="download-pdf-btn"
           style={{
             backgroundColor: '#4CAF50',
