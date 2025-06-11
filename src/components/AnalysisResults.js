@@ -121,6 +121,7 @@ const AnalysisResults = ({ analysis, isLoading, error }) => {
   const studyRecommendations = parsedSections['5. Study Recommendations'] || '';
   const predictions = parsedSections['6. Predictions'] || '';
 
+  //pdf
   const downloadPDF = () => {
     const doc = new jsPDF();
     
@@ -152,9 +153,11 @@ const AnalysisResults = ({ analysis, isLoading, error }) => {
     const addSection = (title, content) => {
       doc.setFontSize(14);
       doc.setFont('helvetica', 'bold');
+      doc.setTextColor('red');
       yPosition = addWrappedText(title, margin, yPosition, 160);
       doc.setFontSize(10);
       doc.setFont('helvetica', 'normal');
+      doc.setTextColor('black');
       yPosition = addWrappedText(content, margin, yPosition, 160);
       yPosition += 10;
     };
@@ -177,6 +180,18 @@ const AnalysisResults = ({ analysis, isLoading, error }) => {
     addSection('4. Remaining Questions', questionWiseAnalysis);
     addSection('5. Study Recommendations', studyRecommendations);
     addSection('6. Predictions', predictions);
+
+    doc.setFontSize(15);
+doc.setFont('Times New Roman', 'italic');
+doc.setTextColor('blue');
+yPosition = yPosition + 10; 
+
+if (yPosition > pageHeight - margin) {
+  doc.addPage();
+  yPosition = margin;
+}
+
+doc.text('All the best for your exams!!', margin, yPosition);
     
     const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
     const filename = `analysis_results_${timestamp}.pdf`;
