@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import jsPDF from 'jspdf';
 
 const parseMarkdownTable = (text, section) => {
@@ -106,7 +106,37 @@ const parseSections = (text) => {
   return sections;
 };
 
+const AI_MODELS = [
+  {
+    name: 'Gemini',
+    key: 'gemini',
+    envKey: 'REACT_APP_GEMINI_API_KEY',
+    endpoint: '/api/ai/gemini',
+    color: '#4285F4',
+  },
+  
+  {
+    name: 'Cohere',
+    key: 'cohere',
+    envKey: 'REACT_APP_COHERE_API_KEY',
+    endpoint: '/api/ai/cohere',
+    color: '#FBBF24',
+  },
+  {
+    name: 'Mistral',
+    key: 'mistral',
+    envKey: 'REACT_APP_MISTRAL_API_KEY',
+    endpoint: '/api/ai/mistral',
+    color: '#7C3AED',
+  },
+];
+
 const AnalysisResults = ({ analysis, isLoading, error }) => {
+  const [selectedModel, setSelectedModel] = useState(AI_MODELS[0].key);
+  const [aiResponses, setAIResponses] = useState({});
+  const [aiLoading, setAILoading] = useState(false);
+  const [aiError, setAIError] = useState(null);
+
   if (!analysis || !analysis.analysis) {
     return null;
   }
@@ -236,10 +266,73 @@ doc.text('All the best for your exams!!', margin, yPosition);
     );
   };
 
+  const fetchAIResponse = async (modelKey) => {
+    setAILoading(true);
+    setAIError(null);
+    try {
+      const model = AI_MODELS.find(m => m.key === modelKey);
+      if (!model) throw new Error('Invalid AI model');
+      const res = await fetch(model.endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ analysis: analysis.analysis }),
+      });
+      if (!res.ok) throw new Error('Failed to fetch AI response');
+      const data = await res.json();
+      setAIResponses(prev => ({ ...prev, [modelKey]: data.response || 'No response' }));
+    } catch (err) {
+      setAIError(err.message || 'Error fetching AI response');
+    } finally {
+      setAILoading(false);
+    }
+  };
+
+  const handleModelChange = (modelKey) => {
+    setSelectedModel(modelKey);
+    if (!aiResponses[modelKey]) {
+      fetchAIResponse(modelKey);
+    }
+  };
+
   return (
     <div className="analysis-container">
-      <h1 className="main-title">Analysis Results</h1>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <h1 className="main-title">Analysis Results</h1>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          {AI_MODELS.map(model => (
+            <button
+              key={model.key}
+              onClick={() => handleModelChange(model.key)}
+              style={{
+                backgroundColor: selectedModel === model.key ? model.color : '#e0e0e0',
+                color: selectedModel === model.key ? 'white' : '#333',
+                border: 'none',
+                borderRadius: '4px',
+                padding: '6px 14px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontSize: '15px',
+                transition: 'background 0.2s',
+              }}
+            >
+              {model.name}
+            </button>
+          ))}
+        </div>
+      </div>
       <hr className="divider" />
+
+      <div style={{ margin: '18px 0', padding: '12px', background: '#f8fafc', borderRadius: '8px', minHeight: '60px' }}>
+        {aiLoading ? (
+          <span>Loading {AI_MODELS.find(m => m.key === selectedModel)?.name} response...</span>
+        ) : aiError ? (
+          <span style={{ color: 'red' }}>{aiError}</span>
+        ) : (
+          <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', margin: 0 }}>
+            {aiResponses[selectedModel] || 'Click a model above to view its response.'}
+          </pre>
+        )}
+      </div>
 
       {renderTableSection('1. Repeated Questions Analysis', repeatedQuestions, ['Question', 'Repeated Count', 'Papers Appeared'])}
       {renderTableSection('2. Questions Asking for Differences', differenceQuestions, ['Question', 'Papers Appeared'])}
