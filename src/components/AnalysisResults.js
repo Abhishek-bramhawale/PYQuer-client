@@ -296,43 +296,10 @@ doc.text('All the best for your exams!!', margin, yPosition);
 
   return (
     <div className="analysis-container">
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <h1 className="main-title">Analysis Results</h1>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          {AI_MODELS.map(model => (
-            <button
-              key={model.key}
-              onClick={() => handleModelChange(model.key)}
-              style={{
-                backgroundColor: selectedModel === model.key ? model.color : '#e0e0e0',
-                color: selectedModel === model.key ? 'white' : '#333',
-                border: 'none',
-                borderRadius: '4px',
-                padding: '6px 14px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                fontSize: '15px',
-                transition: 'background 0.2s',
-              }}
-            >
-              {model.name}
-            </button>
-          ))}
-        </div>
-      </div>
-      <hr className="divider" />
+      
+      
 
-      <div style={{ margin: '18px 0', padding: '12px', background: '#f8fafc', borderRadius: '8px', minHeight: '60px' }}>
-        {aiLoading ? (
-          <span>Loading {AI_MODELS.find(m => m.key === selectedModel)?.name} response...</span>
-        ) : aiError ? (
-          <span style={{ color: 'red' }}>{aiError}</span>
-        ) : (
-          <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', margin: 0 }}>
-            {aiResponses[selectedModel] || 'Click a model above to view its response.'}
-          </pre>
-        )}
-      </div>
+      
 
       {renderTableSection('1. Repeated Questions Analysis', repeatedQuestions, ['Question', 'Repeated Count', 'Papers Appeared'])}
       {renderTableSection('2. Questions Asking for Differences', differenceQuestions, ['Question', 'Papers Appeared'])}
