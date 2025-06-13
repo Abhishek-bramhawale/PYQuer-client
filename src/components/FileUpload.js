@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AnalysisResults from './AnalysisResults';
+import { API_ENDPOINTS } from '../config/api';
 
 const FileUpload = () => {
   const [files, setFiles] = useState([]);
@@ -8,11 +9,12 @@ const FileUpload = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isServerRunning, setIsServerRunning] = useState(false);
+  const [selectedModel, setSelectedModel] = useState('gemini');
 
   useEffect(() => {
     const checkServer = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/health');
+        const response = await fetch(API_ENDPOINTS.HEALTH);
         setIsServerRunning(response.ok);
       } catch (error) {
         setIsServerRunning(false);
@@ -81,12 +83,12 @@ const FileUpload = () => {
     });
 
     try {
-      const healthCheck = await fetch('http://localhost:5000/api/health');
+      const healthCheck = await fetch(API_ENDPOINTS.HEALTH);
       if (!healthCheck.ok) {
         throw new Error('Server is not responding. Please make sure the backend server is running.');
       }
 
-      const uploadResponse = await fetch('http://localhost:5000/api/upload', {
+      const uploadResponse = await fetch(API_ENDPOINTS.UPLOAD, {
         method: 'POST',
         body: formData,
       });
@@ -104,7 +106,10 @@ const FileUpload = () => {
         year: uploadedFile.year || new Date().getFullYear(),
       }));
 
-      const analysisResponse = await fetch('http://localhost:5000/api/analyze', {
+      
+      const analysisEndpoint = API_ENDPOINTS[selectedModel.toUpperCase()];
+      
+      const analysisResponse = await fetch(analysisEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +124,7 @@ const FileUpload = () => {
 
       const analysisData = await analysisResponse.json();
       
-      console.log('\n=== Raw Analysis Data from Server ===\n');
+      console.log(`\n=== Raw Analysis Data from ${selectedModel.toUpperCase()} ===\n`);
       console.log(analysisData.analysis);
       console.log('\n=====================================\n');
       
@@ -148,6 +153,18 @@ const FileUpload = () => {
         </div>
       )}
       <form onSubmit={handleSubmit}>
+        <div className="model-selection">
+          <label>Select AI Model:</label>
+          <select 
+            value={selectedModel} 
+            onChange={(e) => setSelectedModel(e.target.value)}
+            disabled={isLoading}
+          >
+            <option value="gemini">Gemini</option>
+            <option value="mistral">Mistral</option>
+            <option value="cohere">Cohere</option>
+          </select>
+        </div>
         <div 
           className={`container ${isDragging ? 'dragging' : ''}`}
           onDragOver={handleDragOver}
@@ -224,6 +241,7 @@ const FileUpload = () => {
         analysis={analysis}
         isLoading={isLoading}
         error={error}
+        model={selectedModel}
       />
     </div>
   );
