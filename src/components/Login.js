@@ -53,7 +53,6 @@ const Login = ({ isOpen, onClose }) => {
         throw new Error(data.error || `${isSignUp ? 'Registration' : 'Login'} failed`);
       }
 
-      // Store token in localStorage
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify({
         _id: data._id,
@@ -62,7 +61,6 @@ const Login = ({ isOpen, onClose }) => {
         role: data.role
       }));
 
-      // Close modal and refresh page
       onClose();
       window.location.reload();
       
