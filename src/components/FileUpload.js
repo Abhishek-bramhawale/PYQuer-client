@@ -234,6 +234,26 @@ const FileUpload = () => {
           >
             {isLoading ? 'Analyzing...' : 'Upload & Analyze'}
           </button>
+          {isLoading && (
+            <div style={{
+              opacity: isLoading ? 1 : 0,
+              transition: 'opacity 0.5s ease-in-out',
+              marginTop: '1rem',
+              textAlign: 'center'
+            }}>
+              <video
+                autoPlay
+                loop
+                muted
+                style={{
+                  width: '60px',
+                  height: '60px'
+                }}
+              >
+                <source src="/animation.webm" type="video/webm" />
+              </video>
+            </div>
+          )}
         </div>
       </form>
 
