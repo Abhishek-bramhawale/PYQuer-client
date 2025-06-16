@@ -10,6 +10,7 @@ const FileUpload = () => {
   const [error, setError] = useState(null);
   const [isServerRunning, setIsServerRunning] = useState(false);
   const [selectedModel, setSelectedModel] = useState('gemini');
+  const [isUsingOCR, setIsUsingOCR] = useState(false);
 
   useEffect(() => {
     const checkServer = async () => {
@@ -76,6 +77,7 @@ const FileUpload = () => {
     setIsLoading(true);
     setError(null);
     setAnalysis(null);
+    setIsUsingOCR(false);
 
     const formData = new FormData();
     files.forEach(fileItem => {
@@ -100,10 +102,19 @@ const FileUpload = () => {
 
       const uploadData = await uploadResponse.json();
       
+      const anyPaperNeedsOCR = uploadData.files.some(uploadedFile => uploadedFile.needsOCR);
+      if (anyPaperNeedsOCR) {
+        setIsUsingOCR(true);
+      } else {
+        setIsUsingOCR(false);
+      }
+
       const papersToAnalyze = uploadData.files.map(uploadedFile => ({
         fileId: uploadedFile.fileId,
         subject: uploadedFile.subject || 'Unknown Subject',
         year: uploadedFile.year || new Date().getFullYear(),
+        originalName: uploadedFile.originalName, 
+        needsOCR: uploadedFile.needsOCR
       }));
 
       
@@ -252,6 +263,15 @@ const FileUpload = () => {
               >
                 <source src="/animation.webm" type="video/webm" />
               </video>
+              {isUsingOCR && (
+                <p style={{ 
+                  marginTop: '10px', 
+                  color: '#666',
+                  fontSize: '14px'
+                }}>
+                  Non-searchable PDF detected... It might take more time than usual... Just wait
+                </p>
+              )}
             </div>
           )}
         </div>
