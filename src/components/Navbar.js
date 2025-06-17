@@ -39,8 +39,19 @@ const Navbar = () => {
         <div className="navbar-end">
           {user ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <span style={{ 
-                color: '#dcdcdc', 
+              <button
+                className="login-btn"
+                onClick={() => console.log('History button clicked')}
+                style={{
+                  backgroundColor: '#6c757d',
+                  fontSize: '0.8rem',
+                  padding: '6px 12px'
+                }}
+              >
+                History
+              </button>
+              <span style={{
+                color: '#dcdcdc',
                 fontSize: '0.9rem',
                 maxWidth: '150px',
                 overflow: 'hidden',
@@ -49,10 +60,10 @@ const Navbar = () => {
               }}>
                 Welcome, {user.name}
               </span>
-              <button 
-                className="login-btn" 
+              <button
+                className="login-btn"
                 onClick={handleLogout}
-                style={{ 
+                style={{
                   backgroundColor: '#dc3545',
                   fontSize: '0.8rem',
                   padding: '6px 12px'
