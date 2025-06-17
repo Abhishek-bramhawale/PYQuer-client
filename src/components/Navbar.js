@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import '../App.css';
 import Login from './Login';
 
@@ -39,17 +40,18 @@ const Navbar = () => {
         <div className="navbar-end">
           {user ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <button
-                className="login-btn"
-                onClick={() => console.log('History button clicked')}
-                style={{
-                  backgroundColor: '#6c757d',
-                  fontSize: '0.8rem',
-                  padding: '6px 12px'
-                }}
-              >
-                History
-              </button>
+              <Link to="/history">
+                <button
+                  className="login-btn"
+                  style={{
+                    backgroundColor: '#6c757d',
+                    fontSize: '0.8rem',
+                    padding: '6px 12px'
+                  }}
+                >
+                  History
+                </button>
+              </Link>
               <span style={{
                 color: '#dcdcdc',
                 fontSize: '0.9rem',
