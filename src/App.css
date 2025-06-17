@@ -82,6 +82,7 @@ code {
   backdrop-filter: blur(10px); 
   border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* subtle border */
   z-index: 1000;
+  cursor: url('/images/default.png'), auto;
 }
 
 .navbar-brand {
@@ -95,7 +96,7 @@ code {
   border: none;
   padding: 8px 20px;
   border-radius: 4px;
-  cursor: pointer;
+  /* cursor: pointer; */
   font-size: 1rem;
   transition: background-color 0.3s;
 }
@@ -112,10 +113,8 @@ code {
   background-color: #540ac9;
   color: white;
   border: none;
-  /* padding: 8px 20px; */
   margin-right: 50px;
   border-radius: 4px;
-  cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s;
 }
@@ -167,7 +166,6 @@ code {
   border: none;
   padding: 12px 24px;
   border-radius: 4px;
-  cursor: pointer;
   font-size: 1.1rem;
   transition: background-color 0.3s;
   width: 100%;
@@ -229,7 +227,6 @@ code {
   background: none;
   border: none;
   font-size: 1.5rem;
-  cursor: pointer;
   color: #666;
   padding: 0;
   line-height: 1;
@@ -261,6 +258,7 @@ code {
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+  cursor: url('/images/textcursor.png'), text;
 }
 
 .form-group input:focus {
@@ -274,7 +272,7 @@ code {
   border: none;
   padding: 0.8rem;
   border-radius: 4px;
-  cursor: pointer;
+  /* cursor: pointer; */
   font-size: 1rem;
   transition: background-color 0.3s;
 }
@@ -377,7 +375,7 @@ code {
 }
 
 .remove-icon {
-  cursor: pointer;
+  /* cursor: pointer; */
   padding: 4px;
   border-radius: 4px;
   transition: background-color 0.3s ease;
@@ -511,7 +509,6 @@ code {
   text-align: center;
   background-color: rgba(255, 255, 255, 0.9);
   transition: all 0.3s ease;
-  cursor: pointer;
 }
 
 .upload-section .container.dragging {
@@ -590,7 +587,7 @@ code {
 }
 
 .uploaded-file-item .remove-icon {
-  cursor: pointer;
+  /* cursor: pointer; */
   padding: 4px;
   border-radius: 4px;
   transition: background-color 0.3s ease;
@@ -609,7 +606,6 @@ code {
   border: none;
   padding: 12px 24px;
   border-radius: 4px;
-  cursor: pointer;
   font-size: 1.1rem;
   transition: background-color 0.3s;
   width: 100%;
@@ -1221,12 +1217,13 @@ code {
   border: none;
   border-radius: 6px;
   font-size: 16px;
-  cursor: pointer;
+  /* cursor: pointer; */
   margin-top: 20px;
   margin-bottom: 20px;
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: url('/images/handpointing.png'), pointer;
 }
 
 .model-selection {
@@ -1248,7 +1245,7 @@ code {
   background-color: white;
   font-size: 14px;
   color: #333;
-  cursor: pointer;
+  /* cursor: pointer; */
   transition: border-color 0.2s;
 }
 
@@ -1266,4 +1263,39 @@ code {
   background-color: #f5f5f5;
   cursor: not-allowed;
   opacity: 0.7;
+}
+
+/* Custom cursor styles */
+.default-cursor {
+  cursor: url('/images/default.png'), auto;
+}
+
+.hand-cursor {
+  cursor: url('/images/handpointing.png'), pointer;
+}
+
+.text-cursor {
+  cursor: url('/images/textcursor.png'), text;
+}
+
+/* Apply cursors to specific components */
+.navbar,body {
+  cursor: url('/images/default.png'), auto;
+}
+
+.login-btn, 
+.upload-btn, 
+.login-submit-btn, 
+.close-btn, 
+.download-pdf-btn,
+.container,
+.remove-icon,
+.model-selection select {
+  cursor: url('/images/handpointing.png'), pointer;
+}
+
+input[type="email"], 
+input[type="password"], 
+textarea {
+  cursor: url('/images/textcursor.png'), text;
 }
