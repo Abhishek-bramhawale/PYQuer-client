@@ -1238,6 +1238,8 @@ code {
   color: #333;
 }
 
+
+
 .model-selection select {
   padding: 8px 12px;
   border: 1px solid #ddd;
@@ -1280,7 +1282,7 @@ code {
 
 /* Apply cursors to specific components */
 .navbar,body {
-  cursor: url('/images/default.png'), auto;
+  cursor: url('/images/handpointing.png'), pointer;
 }
 
 .login-btn, 
@@ -1298,4 +1300,17 @@ input[type="email"],
 input[type="password"], 
 textarea {
   cursor: url('/images/textcursor.png'), text;
+}
+
+.blurred-bg {
+  filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+  transition: filter 0.2s;
+}
+
+body.dialog-open, html.dialog-open {
+  overflow-x: hidden !important;
+  width: 100vw !important;
+  position: relative;
 }
