@@ -157,17 +157,7 @@ const FileUpload = () => {
 
   return (
     <div className="upload-section">
-      <h2 style={{
-        fontSize: '2.2rem',
-        fontWeight: 800,
-        background: 'linear-gradient(90deg, #540ac9 0%, #00c6ff 100%)',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        textShadow: '0 2px 12px #540ac955',
-        marginBottom: '1.5rem',
-        letterSpacing: '0.5px',
-        textAlign: 'center',
-      }}>
+      <h2 className="animated-gradient-text">
         Turn PYQs into your study plan
       </h2>
       {!isServerRunning && (
@@ -177,7 +167,7 @@ const FileUpload = () => {
       )}
       <form onSubmit={handleSubmit}>
         <div className="model-selection">
-          <label>Select AI Model:</label>
+          <label>Select AI Model</label>
           <select 
             value={selectedModel} 
             onChange={(e) => setSelectedModel(e.target.value)}
@@ -194,7 +184,7 @@ const FileUpload = () => {
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           onClick={() => document.getElementById('file-input').click()}
-          style={{ cursor: 'pointer',backgroundColor: 'rgba(255, 255, 255, 0.72)' }}
+          style={{ cursor: 'pointer',backgroundColor: 'rgba(255, 255, 255, 0.72)', flex: 1 }}
         > 
           <div className="header"> 
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -250,18 +240,15 @@ const FileUpload = () => {
             style={{ display: 'none' }}
           />
           <button 
-  type="submit" 
-  style={{ 
-    width: '160px',
-    height: '48px'
-  }}
-  className="upload-button"
-  disabled={files.length === 0 || !isServerRunning}
-  onClick={(e) => e.stopPropagation()}
->
-  
-
-
+            type="submit" 
+            style={{ 
+              width: '160px',
+              height: '48px'
+            }}
+            className="upload-button"
+            disabled={files.length === 0 || !isServerRunning}
+            onClick={(e) => e.stopPropagation()}
+          >
             {isLoading ? 'Analyzing...' : 'Upload'}
           </button>
           {isLoading && (
