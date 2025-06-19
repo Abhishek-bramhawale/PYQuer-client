@@ -157,10 +157,22 @@ const FileUpload = () => {
 
   return (
     <div className="upload-section">
-      <h2>Upload Question Papers</h2>
+      <h2 style={{
+        fontSize: '2.2rem',
+        fontWeight: 800,
+        background: 'linear-gradient(90deg, #540ac9 0%, #00c6ff 100%)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        textShadow: '0 2px 12px #540ac955',
+        marginBottom: '1.5rem',
+        letterSpacing: '0.5px',
+        textAlign: 'center',
+      }}>
+        Turn PYQs into your study plan
+      </h2>
       {!isServerRunning && (
         <div className="server-status error">
-          <p>⚠️ Backend server is not running. Please start the server to use this feature.</p>
+          <p>⚠️ Rendder's server is not running. Please start the server to use this feature.</p>
         </div>
       )}
       <form onSubmit={handleSubmit}>
@@ -182,7 +194,7 @@ const FileUpload = () => {
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           onClick={() => document.getElementById('file-input').click()}
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer',backgroundColor: 'rgba(255, 255, 255, 0.72)' }}
         > 
           <div className="header"> 
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -190,7 +202,7 @@ const FileUpload = () => {
                 <path d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path> 
               </g>
             </svg> 
-            <p>{isDragging ? 'Drop your files here!' : 'Browse Files to upload!'}</p>
+            <p>{isDragging ? 'Drop your files here!' : 'Drag & drop or Browse Files to upload!'}</p>
           </div> 
           <div className="file-list">
             {files.length === 0 ? (
@@ -238,12 +250,19 @@ const FileUpload = () => {
             style={{ display: 'none' }}
           />
           <button 
-            type="submit" 
-            className="upload-button"
-            disabled={files.length === 0 || !isServerRunning}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {isLoading ? 'Analyzing...' : 'Upload & Analyze'}
+  type="submit" 
+  style={{ 
+    width: '160px',
+    height: '48px'
+  }}
+  className="upload-button"
+  disabled={files.length === 0 || !isServerRunning}
+  onClick={(e) => e.stopPropagation()}
+>
+  
+
+
+            {isLoading ? 'Analyzing...' : 'Upload'}
           </button>
           {isLoading && (
             <div style={{
