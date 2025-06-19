@@ -326,15 +326,31 @@ doc.text('All the best for your exams!!', margin, yPosition);
         </div>
       </div>
 
-      <div className="download-section">
-        <button 
-          onClick={downloadPDF}
-          className="download-pdf-btn"
-          
-        >
-          📄 Download PDF
-        </button>
-      </div>
+      <div className="download-section" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '12px' }}>
+  <button 
+    onClick={downloadPDF}
+    className="download-pdf-btn"
+  >
+    📄 Download PDF
+  </button>
+
+  <span style={{
+    color: '#d32f2f',
+    fontSize: 14,
+    fontWeight: 500,
+    backgroundColor: '#fff3f3',
+    padding: '6px 10px',
+    borderRadius: '6px',
+    border: '1px solid #ffcdd2',
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+    whiteSpace: 'nowrap'
+  }}>
+    ⚠️Note - Its AI generated analysis.. verify important info once.
+  </span>
+</div>
+
+        
+      
     </div>
   );
 };
