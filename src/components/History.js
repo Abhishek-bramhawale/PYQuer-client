@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AnalysisResults from './AnalysisResults';
 
 const API_URL = '/api/ai/history';
 
@@ -40,7 +41,7 @@ const History = () => {
   }, []);
 
   return (
-    <div className="history-page" style={{ width: '100%', maxWidth: 900, margin: '0 auto' }}>
+    <div className="history-page" style={{ width: '100%', maxWidth: 1300, margin: '0 auto' }}>
       <h2 style={{ textAlign: 'center', marginBottom: 24, color: '#540ac9', fontWeight: 800, fontSize: '2rem' }}>Your Analysis History</h2>
       {loading && <div>Loading...</div>}
       {error && <div style={{ color: 'red', textAlign: 'center', margin: '20px 0' }}>{error}</div>}
@@ -62,11 +63,31 @@ const History = () => {
               <span style={{ color: '#666', fontSize: 14 }}>{new Date(item.createdAt).toLocaleString()}</span>
             </div>
             <div style={{ marginBottom: 8, color: '#333', fontSize: 15 }}>
-              <b>Papers:</b> {item.papersInfo && item.papersInfo.length > 0 ? item.papersInfo.map(p => p.originalName).join(', ') : 'N/A'}
+              <b>Papers:</b> {item.papersInfo && item.papersInfo.length > 0 ? (
+                <ul style={{ margin: 0, paddingLeft: 18 }}>
+                  {item.papersInfo.map((p, i) => (
+                    <li key={i}>
+                      {p.originalName}
+                      {p.fileId && (
+                        <>
+                          {' '}
+                          <a
+                            href={`/uploads/${p.fileId}`}
+                            download={p.originalName}
+                            style={{ marginLeft: 8, color: '#540ac9', textDecoration: 'underline', fontSize: 13 }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Download PDF
+                          </a>
+                        </>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              ) : 'N/A'}
             </div>
-            <div style={{ color: '#444', fontSize: 14, whiteSpace: 'pre-line', maxHeight: 120, overflow: 'auto', background: '#f7f7fa', borderRadius: 8, padding: 10, marginTop: 6 }}>
-              {item.analysis.slice(0, 600)}{item.analysis.length > 600 ? '... (truncated)' : ''}
-            </div>
+            <AnalysisResults analysis={{ analysis: item.analysis }} />
           </div>
         ))}
       </div>
