@@ -117,15 +117,15 @@ const FileUpload = () => {
         needsOCR: uploadedFile.needsOCR
       }));
 
-      
-      const analysisEndpoint = API_ENDPOINTS[selectedModel.toUpperCase()];
-      
+      const analysisEndpoint = '/api/analyze';
+      const token = localStorage.getItem('token');
       const analysisResponse = await fetch(analysisEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify({ papers: papersToAnalyze }),
+        body: JSON.stringify({ papers: papersToAnalyze, model: selectedModel }),
       });
 
       if (!analysisResponse.ok) {

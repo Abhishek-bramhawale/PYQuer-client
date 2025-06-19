@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import FileUpload from './components/FileUpload';
+import { Routes, Route } from 'react-router-dom';
+import History from './components/History';
 
 function FirstTimeDialog({ open, onClose }) {
   if (!open) return null;
@@ -88,7 +90,10 @@ function App() {
       <div className={dialogOpen ? 'blurred-bg' : ''}>
         <Navbar />
         <main className="main-content">
-          <FileUpload />
+          <Routes>
+            <Route path="/" element={<FileUpload />} />
+            <Route path="/history" element={<History />} />
+          </Routes>
         </main>
       </div>
     </div>
