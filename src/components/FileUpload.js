@@ -155,6 +155,18 @@ const FileUpload = () => {
     setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
   };
 
+  const addSampleFiles = async () => {
+    const sampleNames = ['sample1.pdf', 'sample2.pdf', 'sample3.pdf', 'sample4.pdf'];
+    const files = await Promise.all(
+      sampleNames.map(async (name) => {
+        const response = await fetch(process.env.PUBLIC_URL + '/' + name);
+        const blob = await response.blob();
+        return new File([blob], name, { type: 'application/pdf' });
+      })
+    );
+    setFiles(prevFiles => [...prevFiles, ...files]);
+  };
+
   return (
     // <div className="gradient-bar">
     <div className="upload-section">
@@ -303,6 +315,33 @@ const FileUpload = () => {
               <option value="mistral">Mistral</option>
               <option value="cohere">Cohere</option>
             </select>
+          </div>
+          <div style={{
+            position: 'absolute',
+            left: 18,
+            bottom: 10,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            fontSize: '1.05rem',
+            zIndex: 2
+          }}>
+            <button
+              type="button"
+              onClick={addSampleFiles}
+              style={{
+                border: 'none',
+                background: 'none',
+                color: '#540ac9',
+                fontWeight: 500,
+                fontSize: '1.05rem',
+                cursor: 'pointer',
+                padding: 0,
+                textDecoration: 'underline',
+              }}
+            >
+              + Add Samples
+            </button>
           </div>
         </div>
       </form>
