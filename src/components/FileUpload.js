@@ -156,7 +156,7 @@ const FileUpload = () => {
   };
 
   return (
-    <div className="gradient-bar">
+    // <div className="gradient-bar">
     <div className="upload-section">
       
       <h2 className="animated-gradient-text">
@@ -313,7 +313,8 @@ const FileUpload = () => {
         error={error}
         model={selectedModel}
       />
-    </div></div>
+    </div>
+    // </div>
   );
 };
 
