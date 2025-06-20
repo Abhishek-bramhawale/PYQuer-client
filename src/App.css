@@ -1403,3 +1403,14 @@ button:hover:not(:disabled), .upload-button:hover:not(:disabled), .login-btn:hov
   letter-spacing: 0.5px;
   text-align: center;
 }
+
+.gradient-bar {
+  width: 90vw;
+  height: 40px;
+  background: radial-gradient(29.05% 42.59% at 50% -5.56%, rgb(100, 25, 255) 0%, rgba(0, 0, 0, 0) 100%);
+  /* Or use a linear gradient if you prefer: */
+  /* background: linear-gradient(90deg, #540ac9 0%, #000 100%); */
+  margin-bottom: 12px;
+  /* position: fixed; */
+  
+}
