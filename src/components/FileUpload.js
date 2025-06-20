@@ -275,8 +275,8 @@ const FileUpload = () => {
           )}
           <div style={{
             position: 'absolute',
-            right: 18,
-            bottom: 10,
+            right: 40,
+            bottom: 84,
             display: 'flex',
             alignItems: 'center',
             gap: 6,
