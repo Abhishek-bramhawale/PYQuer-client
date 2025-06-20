@@ -307,7 +307,7 @@ code {
   background-color: rgba(255, 255, 255, 0.95);
 }
 
-.container:active {
+.header:active, file-list:active {
   transform: scale(0.98);
 }
 
