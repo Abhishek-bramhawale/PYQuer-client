@@ -168,35 +168,26 @@ const FileUpload = () => {
         </div>
       )}
       <form onSubmit={handleSubmit}>
-        <div className="model-selection">
-          <label>Select AI Model</label>
-          <select 
-            value={selectedModel} 
-            onChange={(e) => setSelectedModel(e.target.value)}
-            disabled={isLoading}
-          >
-            <option value="gemini">Gemini</option>
-            <option value="mistral">Mistral</option>
-            <option value="cohere">Cohere</option>
-          </select>
-        </div>
         <div 
           className={`container ${isDragging ? 'dragging' : ''}`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          onClick={() => document.getElementById('file-input').click()}
-          style={{ cursor: 'pointer',backgroundColor: 'rgba(255, 255, 255, 0.72)', flex: 1 }}
-        > 
-          <div className="header"> 
+          style={{ cursor: 'pointer', backgroundColor: 'rgba(255, 255, 255, 0.72)', flex: 1, position: 'relative' }}
+        >
+          <div
+            className="header"
+            onClick={() => document.getElementById('file-input').click()}
+            style={{ width: '100%', userSelect: 'none' }}
+          >
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g id="SVGRepo_iconCarrier"> 
                 <path d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path> 
               </g>
             </svg> 
             <p>{isDragging ? 'Drop your files here!' : 'Drag & drop or Browse Files to upload!'}</p>
-          </div> 
-          <div className="file-list">
+          </div>
+          <div className="file-list" onClick={() => document.getElementById('file-input').click()}>
             {files.length === 0 ? (
               <div className="placeholder-file">
                 <svg fill="#000000" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -282,6 +273,37 @@ const FileUpload = () => {
               )}
             </div>
           )}
+          <div style={{
+            position: 'absolute',
+            right: 18,
+            bottom: 10,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            fontSize: '1.05rem',
+            color: '#888',
+            zIndex: 2
+          }}>
+            <span style={{ fontWeight: 400 }}>AI Model:</span>
+            <select 
+              value={selectedModel} 
+              onChange={(e) => setSelectedModel(e.target.value)}
+              disabled={isLoading}
+              style={{
+                border: 'none',
+                background: 'none',
+                color: '#888',
+                fontSize: '1.05rem',
+                outline: 'none',
+                cursor: 'pointer',
+                minWidth: 80
+              }}
+            >
+              <option value="gemini">Gemini</option>
+              <option value="mistral">Mistral</option>
+              <option value="cohere">Cohere</option>
+            </select>
+          </div>
         </div>
       </form>
 

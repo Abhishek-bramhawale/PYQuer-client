@@ -66,10 +66,10 @@ const Navbar = () => {
             </h1>
           </Link>
         </div>
-        <div className="navbar-end">
+        <div className="navbar-end" style={{marginRight:'50px'}}>
           {user ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', position: 'relative' }}>
-              <span style={{
+              {/* <span style={{
                 color: '#dcdcdc',
                 fontSize: '0.9rem',
                 maxWidth: '150px',
@@ -78,7 +78,7 @@ const Navbar = () => {
                 whiteSpace: 'nowrap'
               }}>
                 Welcome, {user.name}
-              </span>
+              </span> */}
               <div style={{ position: 'relative' }}>
                 <div
                   onClick={handleAvatarClick}
@@ -101,7 +101,7 @@ const Navbar = () => {
                   }}
                   title="User menu"
                 >
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="8" r="4" fill="#fff" fillOpacity="0.9"/>
                     <ellipse cx="12" cy="17" rx="7" ry="4" fill="#fff" fillOpacity="0.7"/>
                   </svg>
