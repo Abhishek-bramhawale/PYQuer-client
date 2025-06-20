@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../App.css';
 import Login from './Login';
+// import logo from '../../images/logo.png';
+
 
 const Navbar = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -35,7 +37,18 @@ const Navbar = () => {
     <>
       <nav className="navbar" style={{padding :'20px'}}>
         <div className="navbar-brand">
-          <h1>PYQuer</h1>
+          <Link to="/" style={{ textDecoration: 'none' }}>
+            <h1
+              style={{
+                fontFamily: 'cursive',
+                textShadow: '4px 0px 6px rgba(128, 0, 128, 0.6)',
+                color: 'white',
+                cursor: 'pointer',
+              }}
+            >
+              PYQuer
+            </h1>
+          </Link>
         </div>
         <div className="navbar-end">
           {user ? (

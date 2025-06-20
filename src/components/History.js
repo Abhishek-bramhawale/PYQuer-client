@@ -92,7 +92,7 @@ const History = () => {
               </div>
               <div style={{ marginBottom: 8, color: '#333', fontSize: 15 }}>
                 <b>Papers:</b> {item.papersInfo && item.papersInfo.length > 0 ? (
-                  <ul style={{ margin: 0, paddingLeft: 18 }}>
+                  <ul style={{ margin: 0, paddingLeft: 18,listStyle: 'none' }}>
                     {item.papersInfo.map((p, i) => (
                       <li key={i}>
                         {p.originalName}
