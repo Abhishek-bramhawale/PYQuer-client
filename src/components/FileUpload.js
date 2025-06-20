@@ -156,7 +156,9 @@ const FileUpload = () => {
   };
 
   return (
+    <div className="gradient-bar">
     <div className="upload-section">
+      
       <h2 className="animated-gradient-text">
         Turn PYQs into your study plan
       </h2>
@@ -289,7 +291,7 @@ const FileUpload = () => {
         error={error}
         model={selectedModel}
       />
-    </div>
+    </div></div>
   );
 };
 
