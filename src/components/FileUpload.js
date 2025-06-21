@@ -156,7 +156,7 @@ const FileUpload = () => {
   };
 
   const addSampleFiles = async () => {
-    const sampleNames = ['sample1.pdf', 'sample2.pdf', 'sample3.pdf', 'sample4.pdf'];
+    const sampleNames = ['computer_network1.pdf', 'computer_network2.pdf', 'Nonsearchable_cn3.pdf', 'computer_network4.pdf'];
     const files = await Promise.all(
       sampleNames.map(async (name) => {
         const response = await fetch(process.env.PUBLIC_URL + '/' + name);
@@ -220,17 +220,39 @@ const FileUpload = () => {
                     </g>
                   </svg> 
                   <p>{fileItem.name}</p> 
-                  <div 
-                    className="remove-icon active" 
-                    onClick={handleRemoveFile(index)}
-                    title="Remove file"
-                  >
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <g id="SVGRepo_iconCarrier"> 
-                        <path d="M5.16565 10.1534C5.07629 8.99181 5.99473 8 7.15975 8H16.8402C18.0053 8 18.9237 8.9918 18.8344 10.1534L18.142 19.1534C18.0619 20.1954 17.193 21 16.1479 21H7.85206C6.80699 21 5.93811 20.1954 5.85795 19.1534L5.16565 10.1534Z" stroke="currentColor" strokeWidth="2"></path> 
-                        <path d="M19.5 5H4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"></path> 
-                      </g>
-                    </svg>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    {/* Open icon */}
+                    <div
+                      className="open-icon active"
+                      onClick={e => {
+                        e.stopPropagation();
+                        const url = URL.createObjectURL(fileItem);
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                        setTimeout(() => URL.revokeObjectURL(url), 10000); // Clean up after 10s
+                      }}
+                      title="Open file"
+                      style={{ cursor: 'pointer', marginRight: 2 }}
+                    >
+                     
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"  style={{ marginTop: '6px' }} >
+                        <path d="M14 3H17V6" stroke="#540ac9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M10 10L17 3" stroke="#540ac9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M17 10V17H3V3H10" stroke="#540ac9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                    
+                    <div 
+                      className="remove-icon active" 
+                      onClick={handleRemoveFile(index)}
+                      title="Remove file"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_iconCarrier"> 
+                          <path d="M5.16565 10.1534C5.07629 8.99181 5.99473 8 7.15975 8H16.8402C18.0053 8 18.9237 8.9918 18.8344 10.1534L18.142 19.1534C18.0619 20.1954 17.193 21 16.1479 21H7.85206C6.80699 21 5.93811 20.1954 5.85795 19.1534L5.16565 10.1534Z" stroke="currentColor" strokeWidth="2"></path> 
+                          <path d="M19.5 5H4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"></path> 
+                        </g>
+                      </svg>
+                    </div>
                   </div>
                 </div>
               ))
@@ -285,65 +307,69 @@ const FileUpload = () => {
               )}
             </div>
           )}
-          <div style={{
-            position: 'absolute',
-            right: 40,
-            bottom: 84,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            fontSize: '1.05rem',
-            color: '#888',
-            zIndex: 2
-          }}>
-            <span style={{ fontWeight: 400 }}>AI Model:</span>
-            <select 
-              value={selectedModel} 
-              onChange={(e) => setSelectedModel(e.target.value)}
-              disabled={isLoading}
-              style={{
-                border: 'none',
-                background: 'none',
-                color: '#888',
-                fontSize: '1.05rem',
-                outline: 'none',
-                cursor: 'pointer',
-                minWidth: 80
-              }}
-            >
-              <option value="gemini">Gemini</option>
-              <option value="mistral">Mistral</option>
-              <option value="cohere">Cohere</option>
-            </select>
-          </div>
-          <div style={{
-            position: 'absolute',
-            left: 36,
-            bottom: 80,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            fontSize: '1.05rem',
-            zIndex: 2
-          }}>
-            <button
-              type="button"
-              onClick={addSampleFiles}
-              style={{
-                border: 'none',
-                bottom:100,
-                background: 'none',
-                color: '#540ac9',
-                fontWeight: 500,
-                fontSize: '1.05rem',
-                cursor: 'pointer',
-                padding: 0,
-                // textDecoration: 'underline',
-              }}
-            >
-              Add Sample pdfs
-            </button>
-          </div>
+          {!isLoading && (
+            <div style={{
+              position: 'absolute',
+              right: 40,
+              bottom: 84,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              fontSize: '1.05rem',
+              color: '#888',
+              zIndex: 2
+            }}>
+              <span style={{ fontWeight: 400 }}>AI Model:</span>
+              <select 
+                value={selectedModel} 
+                onChange={(e) => setSelectedModel(e.target.value)}
+                disabled={isLoading}
+                style={{
+                  border: 'none',
+                  background: 'none',
+                  color: '#888',
+                  fontSize: '1.05rem',
+                  outline: 'none',
+                  cursor: 'pointer',
+                  minWidth: 80
+                }}
+              >
+                <option value="gemini">Gemini</option>
+                <option value="mistral">Mistral</option>
+                <option value="cohere">Cohere</option>
+              </select>
+            </div>
+          )}
+          {!isLoading && (
+            <div style={{
+              position: 'absolute',
+              left: 36,
+              bottom: 80,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              fontSize: '1.05rem',
+              zIndex: 2
+            }}>
+              <button
+                type="button"
+                onClick={addSampleFiles}
+                style={{
+                  border: 'none',
+                  bottom:100,
+                  background: 'none',
+                  color: '#540ac9',
+                  fontWeight: 500,
+                  fontSize: '1.05rem',
+                  cursor: 'pointer',
+                  padding: 0,
+                  // textDecoration: 'underline',
+                }}
+              >
+                Add Sample pdfs
+              </button>
+            </div>
+          )}
         </div>
       </form>
 
