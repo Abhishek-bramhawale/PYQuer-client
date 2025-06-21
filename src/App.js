@@ -4,6 +4,8 @@ import Navbar from './components/Navbar';
 import FileUpload from './components/FileUpload';
 import { Routes, Route } from 'react-router-dom';
 import History from './components/History';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 function FirstTimeDialog({ open, onClose }) {
   if (!open) return null;
@@ -76,7 +78,6 @@ function LoginInfoNote({ open, onClose }) {
       minHeight: 10,
       boxShadow: '0 2px 8px rgba(84,10,201,0.08)',
     }}>
-      {/* Purple glow at the top */}
       <div style={{
         position: 'absolute',
         top: 0,
@@ -158,6 +159,12 @@ function App() {
       document.documentElement.classList.remove('dialog-open');
     }
   }, [dialogOpen]);
+
+  useEffect(() => {
+    AOS.init({
+      once: false, 
+    });
+  }, []);
 
   const handleDialogClose = () => {
     setDialogOpen(false);
