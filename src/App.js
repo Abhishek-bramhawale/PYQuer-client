@@ -59,13 +59,93 @@ function FirstTimeDialog({ open, onClose }) {
   );
 }
 
+function LoginInfoNote({ open, onClose }) {
+  if (!open) return null;
+  return (
+    <div style={{
+      width: '100%',
+      background: 'black',
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      zIndex: 1200,
+      padding: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: 10,
+      boxShadow: '0 2px 8px rgba(84,10,201,0.08)',
+    }}>
+      {/* Purple glow at the top */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: 50,
+        // background: 'radial-gradient(50% 80% at 50% 0%, #6419ff 0%, rgba(0,0,0,0) 100%)',
+              
+      background: 'radial-gradient(29.05% 42.59% at 50% -5.56%, rgb(100, 25, 255) 0%, rgba(0, 0, 0, 0) 100%)',
+   
+
+        pointerEvents: 'none',
+      }} />
+      <div style={{
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 10,
+        padding: '10px 0',
+        fontWeight: 700,
+        fontSize: 14,
+        color: '#fff',
+        zIndex: 1,
+      }}>
+        <span style={{ fontSize: 20, marginRight: 4 }}>✨</span>
+        <span>
+          login is required only if you want to store analysis in history and view later..
+        </span>
+      </div>
+      <button
+        onClick={onClose}
+        style={{
+          position: 'absolute',
+          right: 134,
+          top: '50%',
+          transform: 'translateY(-50%)',
+          background: 'none',
+          border: 'none',
+          color: '#fff',
+          fontSize: 22,
+          cursor: 'pointer',
+          fontWeight: 700,
+          lineHeight: 1,
+          zIndex: 2,
+        }}
+        aria-label="Close info note"
+      >
+        ×
+      </button>
+    </div>
+  );
+}
+
 function App() {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [showLoginNote, setShowLoginNote] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const seen = localStorage.getItem('pyquer_first_time_dialog_seen');
     if (!seen) {
       setDialogOpen(true);
+    }
+    const loginNoteSeen = localStorage.getItem('pyquer_login_note_seen');
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+    if (!loginNoteSeen && !token) {
+      setShowLoginNote(true);
     }
   }, []);
 
@@ -84,11 +164,17 @@ function App() {
     localStorage.setItem('pyquer_first_time_dialog_seen', 'true');
   };
 
+  const handleLoginNoteClose = () => {
+    setShowLoginNote(false);
+    localStorage.setItem('pyquer_login_note_seen', 'true');
+  };
+
   return (
     <div className="App">
       <FirstTimeDialog open={dialogOpen} onClose={handleDialogClose} />
-      <div className={dialogOpen ? 'blurred-bg' : ''}>
-        <Navbar />
+      <LoginInfoNote open={showLoginNote && !isLoggedIn} onClose={handleLoginNoteClose} />
+      <div className={dialogOpen ? 'blurred-bg' : ''} style={{ paddingTop: showLoginNote && !isLoggedIn ? 48 : 0 }}>
+        <Navbar topOffset={showLoginNote && !isLoggedIn ? 40 : 0} />
         <main className="main-content">
           <Routes>
             <Route path="/" element={<FileUpload />} />

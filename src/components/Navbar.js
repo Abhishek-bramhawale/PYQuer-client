@@ -5,7 +5,7 @@ import Login from './Login';
 // import logo from '../../images/logo.png';
 
 
-const Navbar = () => {
+const Navbar = ({ topOffset = 0 }) => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -51,7 +51,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="navbar" style={{padding :'20px'}}>
+      <nav className="navbar" style={{padding: '20px', top: topOffset}}>
         <div className="navbar-brand">
           <Link to="/" style={{ textDecoration: 'none' }}>
             <h1
