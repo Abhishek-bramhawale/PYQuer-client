@@ -318,8 +318,8 @@ const FileUpload = () => {
           </div>
           <div style={{
             position: 'absolute',
-            left: 18,
-            bottom: 10,
+            left: 36,
+            bottom: 80,
             display: 'flex',
             alignItems: 'center',
             gap: 6,
@@ -331,16 +331,17 @@ const FileUpload = () => {
               onClick={addSampleFiles}
               style={{
                 border: 'none',
+                bottom:100,
                 background: 'none',
                 color: '#540ac9',
                 fontWeight: 500,
                 fontSize: '1.05rem',
                 cursor: 'pointer',
                 padding: 0,
-                textDecoration: 'underline',
+                // textDecoration: 'underline',
               }}
             >
-              + Add Samples
+              Add Sample pdfs
             </button>
           </div>
         </div>
