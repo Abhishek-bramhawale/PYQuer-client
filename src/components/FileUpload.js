@@ -11,6 +11,8 @@ const FileUpload = () => {
   const [isServerRunning, setIsServerRunning] = useState(false);
   const [selectedModel, setSelectedModel] = useState('gemini');
   const [isUsingOCR, setIsUsingOCR] = useState(false);
+  const [loadingLabelIndex, setLoadingLabelIndex] = useState(0);
+  const loadingLabels = ['Analyzing...' ];
 
   useEffect(() => {
     const checkServer = async () => {
@@ -26,6 +28,18 @@ const FileUpload = () => {
     const interval = setInterval(checkServer, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    let interval;
+    if (isLoading) {
+      interval = setInterval(() => {
+        setLoadingLabelIndex(prev => (prev + 1) % loadingLabels.length);
+      }, 2000);
+    } else {
+      setLoadingLabelIndex(0);
+    }
+    return () => interval && clearInterval(interval);
+  }, [isLoading]);
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -276,7 +290,7 @@ const FileUpload = () => {
             disabled={files.length === 0 || !isServerRunning}
             onClick={(e) => e.stopPropagation()}
           >
-            {isLoading ? 'Analyzing...' : 'Upload'}
+            {isLoading ? loadingLabels[loadingLabelIndex] : 'Upload'}
           </button>
           {isLoading && (
             <div style={{
@@ -302,7 +316,7 @@ const FileUpload = () => {
                   color: '#666',
                   fontSize: '14px'
                 }}>
-                  Non-searchable PDF detected... It might take more time than usual... Just wait
+                  Non-searchable PDF detected... performing OCR scanning... Just wait few seconds..
                 </p>
               )}
             </div>

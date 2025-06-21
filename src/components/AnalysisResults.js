@@ -301,28 +301,39 @@ doc.text('All the best for your exams!!', margin, yPosition);
 
       
 
-      {renderTableSection('1. Repeated Questions Analysis', repeatedQuestions, ['Question', 'Repeated Count', 'Papers Appeared'])}
-      {renderTableSection('2. Questions Asking for Differences', differenceQuestions, ['Question', 'Papers Appeared'])}
-      {renderTableSection('3. Questions Requiring Diagrams', diagramQuestions, ['Question', 'Papers Appeared'])}
-
-      <div className="analysis-section">
-        <h2 className="section-title">4. Remaining Questions</h2>
-        <div className="content-box">
-          <pre className="question-text">{questionWiseAnalysis}</pre>
+    
+      <div data-aos="fade-left" data-aos-anchor="#example-anchor" data-aos-offset="500" data-aos-duration="500">
+        {renderTableSection('1. Repeated Questions Analysis', repeatedQuestions, ['Question', 'Repeated Count', 'Papers Appeared'])}
+      </div>
+     
+      <div data-aos="fade-left" data-aos-anchor="#example-anchor" data-aos-offset="500" data-aos-duration="500">
+        {renderTableSection('2. Questions Asking for Differences', differenceQuestions, ['Question', 'Papers Appeared'])}
+      </div>
+      <div data-aos="fade-left" data-aos-anchor="#example-anchor" data-aos-offset="500" data-aos-duration="500">
+        {renderTableSection('3. Questions Requiring Diagrams', diagramQuestions, ['Question', 'Papers Appeared'])}
+      </div>
+      <div data-aos="fade-left" data-aos-anchor="#example-anchor" data-aos-offset="500" data-aos-duration="500">
+        <div className="analysis-section">
+          <h2 className="section-title">4. Remaining Questions</h2>
+          <div className="content-box">
+            <pre className="question-text">{questionWiseAnalysis}</pre>
+          </div>
         </div>
       </div>
-
-      <div className="analysis-section">
-        <h2 className="section-title">5. Study Recommendations</h2>
-        <div className="content-box">
-          <pre className="question-text">{studyRecommendations}</pre>
+      <div data-aos="fade-left" data-aos-anchor="#example-anchor" data-aos-offset="500" data-aos-duration="500">
+        <div className="analysis-section">
+          <h2 className="section-title">5. Study Recommendations</h2>
+          <div className="content-box">
+            <pre className="question-text">{studyRecommendations}</pre>
+          </div>
         </div>
       </div>
-
-      <div className="analysis-section">
-        <h2 className="section-title">6. Predictions</h2>
-        <div className="content-box">
-          <pre className="question-text">{predictions}</pre>
+      <div data-aos="fade-left" data-aos-anchor="#example-anchor" data-aos-offset="500" data-aos-duration="500">
+        <div className="analysis-section">
+          <h2 className="section-title">6. Predictions</h2>
+          <div className="content-box">
+            <pre className="question-text">{predictions}</pre>
+          </div>
         </div>
       </div>
 
