@@ -134,11 +134,11 @@ function LoginInfoNote({ open, onClose }) {
           login is required only if you want to store analysis in history and view later..
         </span>
       </div>
-      <button
+      <button className= "navclose"
         onClick={onClose}
         style={{
           position: 'absolute',
-          right: 134,
+          // right: 134,
           top: '50%',
           transform: 'translateY(-50%)',
           background: 'none',

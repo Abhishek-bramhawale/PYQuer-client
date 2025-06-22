@@ -59,7 +59,6 @@ const History = () => {
           return (
             <div
               key={item._id || idx}
-              onClick={() => handleToggle(idx)}
               style={{
                 background: 'rgba(255,255,255,0.95)',
                 borderRadius: 12,
@@ -68,7 +67,7 @@ const History = () => {
                 borderLeft: `6px solid ${item.modelUsed === 'gemini' ? '#4285F4' : item.modelUsed === 'cohere' ? '#FBBF24' : '#7C3AED'}`,
                 position: 'relative',
                 transition: 'box-shadow 0.2s',
-                cursor: 'pointer',
+                cursor: 'default',
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
@@ -83,9 +82,13 @@ const History = () => {
                     transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
                     fontSize: 24,
                     color: isExpanded ? '#540ac9' : '#888',
+                    cursor: 'pointer',
                   }}
-                  tabIndex={-1}
+                  tabIndex={0}
                   aria-label={isExpanded ? 'Collapse details' : 'Expand details'}
+                  onClick={e => { e.stopPropagation(); handleToggle(idx); }}
+                  onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleToggle(idx); } }}
+                  role="button"
                 >
                   &gt;
                 </span>
