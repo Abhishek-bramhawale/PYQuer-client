@@ -370,31 +370,13 @@ const FileUpload = () => {
             </div>
           )}
           {!isLoading && (
-            <div style={{
-              position: 'absolute',
-              right: 40,
-              bottom: 84,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              fontSize: '1.05rem',
-              color: '#888',
-              zIndex: 2
-            }}>
+            <div className="ai-model-select-container">
               <span style={{ fontWeight: 400 }}>AI Model:</span>
               <select 
                 value={selectedModel} 
                 onChange={(e) => setSelectedModel(e.target.value)}
                 disabled={isLoading}
-                style={{
-                  border: 'none',
-                  background: 'none',
-                  color: '#888',
-                  fontSize: '1.05rem',
-                  outline: 'none',
-                  cursor: 'pointer',
-                  minWidth: 80
-                }}
+                className="ai-model-select"
               >
                 <option value="gemini">Gemini</option>
                 <option value="mistral">Mistral</option>
@@ -403,30 +385,11 @@ const FileUpload = () => {
             </div>
           )}
           {!isLoading && (
-            <div style={{
-              position: 'absolute',
-              left: 36,
-              bottom: 80,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              fontSize: '1.05rem',
-              zIndex: 2
-            }}>
+            <div className="add-sample-btn-container">
               <button
                 type="button"
                 onClick={addSampleFiles}
-                style={{
-                  border: 'none',
-                  bottom:100,
-                  background: 'none',
-                  color: '#540ac9',
-                  fontWeight: 500,
-                  fontSize: '1.05rem',
-                  cursor: 'pointer',
-                  padding: 0,
-                  // textDecoration: 'underline',
-                }}
+                className="add-sample-btn"
               >
                 Add Sample pdfs
               </button>
