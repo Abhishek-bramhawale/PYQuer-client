@@ -27,6 +27,7 @@ const FileUpload = () => {
     'Finalizing summary...'
   ];
   const [statusIndex, setStatusIndex] = useState(0);
+  const [showOCRNotice, setShowOCRNotice] = useState(false);
 
   useEffect(() => {
     const checkServer = async () => {
@@ -66,6 +67,16 @@ const FileUpload = () => {
     }
     return () => interval && clearInterval(interval);
   }, [isLoading]);
+
+  useEffect(() => {
+    if (isUsingOCR) {
+      setShowOCRNotice(true);
+      const timer = setTimeout(() => setShowOCRNotice(false), 5000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowOCRNotice(false);
+    }
+  }, [isUsingOCR]);
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -336,7 +347,7 @@ const FileUpload = () => {
               >
                 <source src="/animation.webm" type="video/webm" />
               </video>
-              {isUsingOCR && (
+              {showOCRNotice && (
                 <p style={{ 
                   marginTop: '10px', 
                   color: '#666',
@@ -346,7 +357,7 @@ const FileUpload = () => {
                 </p>
               )}
               <p style={{
-                marginTop: isUsingOCR ? '10px' : '0',
+                marginTop: showOCRNotice ? '10px' : '0',
                 color: '#540ac9',
                 fontWeight: 500,
                 fontSize: '15px',
