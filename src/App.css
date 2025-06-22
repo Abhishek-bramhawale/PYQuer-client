@@ -1414,3 +1414,91 @@ button:hover:not(:disabled), .upload-button:hover:not(:disabled), .login-btn:hov
   /* position: fixed; */
   
 }
+
+/* === DIALOG BOX (FirstTimeDialog) RESPONSIVE === */
+
+/* Base dialog styles (for inline style override) */
+.first-time-dialog-outer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.first-time-dialog-inner {
+  background: #181825;
+  color: #fff;
+  border-radius: 16px;
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  width: 100%;
+  max-width: 800px;
+  box-sizing: border-box;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 991px) {
+  .first-time-dialog-inner {
+    max-width: 90vw;
+    width: 90vw;
+    min-width: 0;
+    padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 478px) {
+  .first-time-dialog-outer {
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+  }
+  .first-time-dialog-inner {
+    max-width: 100vw;
+    width: 100vw;
+    min-width: 0;
+    min-height: 100vh;
+    padding: 0.7rem 0.1rem 0.7rem 0.1rem;
+    border-radius: 0;
+    font-size: 13px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-y: auto;
+    position: relative;
+  }
+  .first-time-dialog-inner h2 {
+    font-size: 1.1rem !important;
+    margin-bottom: 16px !important;
+  }
+  .first-time-dialog-inner img {
+    width: 90px !important;
+    height: 90px !important;
+  }
+  .first-time-dialog-inner button {
+    font-size: 13px !important;
+    padding: 4px 10px !important;
+    min-width: 120px;
+    position: sticky;
+    bottom: 8px;
+    margin-bottom: 0 !important;
+    z-index: 10;
+  }
+  .first-time-dialog-inner .close-btns {
+    position: sticky !important;
+    top: 8px;
+    z-index: 11;
+    background: transparent;
+  }
+}
