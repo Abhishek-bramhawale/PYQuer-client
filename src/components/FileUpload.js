@@ -13,6 +13,20 @@ const FileUpload = () => {
   const [isUsingOCR, setIsUsingOCR] = useState(false);
   const [loadingLabelIndex, setLoadingLabelIndex] = useState(0);
   const loadingLabels = ['Analyzing...' ];
+  const statusMessages = [
+    'Reading PDF...',
+    'Processing...',
+    'Extracting text...',
+    'Analyzing content...',
+    'Summarizing info...',
+    'Running models...',
+    'Decoding input...',
+    'Generating response...',
+    'Structuring output...',
+    'Almost there...',
+    'Finalizing summary...'
+  ];
+  const [statusIndex, setStatusIndex] = useState(0);
 
   useEffect(() => {
     const checkServer = async () => {
@@ -37,6 +51,18 @@ const FileUpload = () => {
       }, 2000);
     } else {
       setLoadingLabelIndex(0);
+    }
+    return () => interval && clearInterval(interval);
+  }, [isLoading]);
+
+  useEffect(() => {
+    let interval;
+    if (isLoading) {
+      interval = setInterval(() => {
+        setStatusIndex(prev => (prev + 1) % statusMessages.length);
+      }, 2500);
+    } else {
+      setStatusIndex(0);
     }
     return () => interval && clearInterval(interval);
   }, [isLoading]);
@@ -319,6 +345,17 @@ const FileUpload = () => {
                   Non-searchable PDF detected... performing OCR scanning... Just wait few seconds..
                 </p>
               )}
+              <p style={{
+                marginTop: isUsingOCR ? '10px' : '0',
+                color: '#540ac9',
+                fontWeight: 500,
+                fontSize: '15px',
+                letterSpacing: '0.5px',
+                transition: 'color 0.3s',
+                minHeight: '24px'
+              }}>
+                {statusMessages[statusIndex]}
+              </p>
             </div>
           )}
           {!isLoading && (
