@@ -168,7 +168,7 @@ const FileUpload = () => {
         needsOCR: uploadedFile.needsOCR
       }));
 
-      const analysisEndpoint = '/api/analyze';
+      const analysisEndpoint = API_ENDPOINTS.GEMINI.replace('/ai/gemini', '/analyze');
       const token = localStorage.getItem('token');
       const analysisResponse = await fetch(analysisEndpoint, {
         method: 'POST',
