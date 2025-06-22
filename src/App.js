@@ -23,34 +23,14 @@ function FirstTimeDialog({ open, onClose }) {
   if (!open) return null;
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
-      background: 'rgba(0,0,0,0.4)',
-      zIndex: 9999,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}>
-      <div style={{
-        background: '#181825',
-        color: '#fff',
-        borderRadius: '16px',
-        padding: '2.5rem 2.5rem 2rem 2.5rem',
-        width: '100%',
-        maxWidth: 800,
-        boxSizing: 'border-box',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
-        position: 'relative',
-        textAlign: 'center',
-      }}>
-        <div style={{ position: 'absolute', top: 18, left: 18, display: 'flex', gap: 10, zIndex: 2, }}>
-          <div onClick={onClose} style={{ width: 20, height: 20, borderRadius: '50%', background: '#ff5f56',  border: '2px solid #fff2', boxShadow: '0 0 4px #ff5f56aa' }} title="Close" />
-          <div onClick={onClose} style={{ width: 20, height: 20, borderRadius: '50%', background: '#ffbd2e', border: '2px solid #fff2', boxShadow: '0 0 4px #ffbd2eaa' }} title="Close" />
-          <div onClick={onClose} style={{ width: 20, height: 20, borderRadius: '50%', background: '#27c93f',  border: '2px solid #fff2', boxShadow: '0 0 4px #27c93faa' }} title="Close" />
+    <div className="first-time-dialog-outer">
+      <div className="first-time-dialog-inner">
+        <div className="close-btns" style={{ position: 'absolute', top: 18, left: 18, display: 'flex', gap: 10, zIndex: 2 }}>
+          {!isMobile && <>
+            <div onClick={onClose} style={{ width: 20, height: 20, borderRadius: '50%', background: '#ff5f56',  border: '2px solid #fff2', boxShadow: '0 0 4px #ff5f56aa' }} title="Close" />
+            <div onClick={onClose} style={{ width: 20, height: 20, borderRadius: '50%', background: '#ffbd2e', border: '2px solid #fff2', boxShadow: '0 0 4px #ffbd2eaa' }} title="Close" />
+            <div onClick={onClose} style={{ width: 20, height: 20, borderRadius: '50%', background: '#27c93f',  border: '2px solid #fff2', boxShadow: '0 0 4px #27c93faa' }} title="Close" />
+          </>}
         </div>
         <h2 style={{ margin: '0 0 28px 0', fontWeight: 700, fontSize: 28 }}>How it works</h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 40, margin: '0 0 10px 0', flexWrap: 'wrap' }}>
