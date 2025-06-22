@@ -8,12 +8,23 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 function FirstTimeDialog({ open, onClose }) {
-  if (!open) return null;
   const gifSize = 180;
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 600);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  if (!open) return null;
+
   return (
     <div style={{
       position: 'fixed',
-     
       top: 0,
       left: 0,
       width: '100vw',
@@ -56,6 +67,18 @@ function FirstTimeDialog({ open, onClose }) {
             <div style={{ marginTop: 16, fontSize: 18, fontWeight: 500, textAlign: 'center', maxWidth: 150 }}>Get AI analysis about PYQS</div>
           </div>
         </div>
+        {isMobile && (
+          <div style={{
+            marginTop: 18,
+            color: '#ffbd2e',
+            fontWeight: 600,
+            fontSize: 16,
+            textAlign: 'center',
+            letterSpacing: '0.2px',
+          }}>
+            mobile view detected.. use desktop view for better experience
+          </div>
+        )}
         <button
           onClick={onClose}
           style={{
