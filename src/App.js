@@ -56,6 +56,29 @@ function FirstTimeDialog({ open, onClose }) {
             <div style={{ marginTop: 16, fontSize: 18, fontWeight: 500, textAlign: 'center', maxWidth: 150 }}>Get AI analysis about PYQS</div>
           </div>
         </div>
+        <button
+          onClick={onClose}
+          style={{
+            marginTop: 32,
+            padding: '4px 14px',
+            background: 'linear-gradient(90deg, #6419ff 0%, #540ac9 100%)',
+            color: '#fff',
+            fontWeight: 700,
+            fontSize: 15,
+            border: 'none',
+            borderRadius: 12,
+            boxShadow: '0 2px 12px rgba(84,10,201,0.18)',
+            cursor: 'pointer',
+            letterSpacing: '1px',
+            transition: 'background 0.2s',
+            outline: 'none',
+            display: 'block',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          }}
+        >
+          Get Started
+        </button>
       </div>
     </div>
   );
