@@ -46,44 +46,27 @@ const History = () => {
   };
 
   return (
-    <div className="history-page" style={{ width: '100%', maxWidth: 1300, margin: '0 auto' }}>
-      <h2 style={{ textAlign: 'center', marginBottom: 24, color: '#540ac9', fontWeight: 800, fontSize: '2rem' }}>Your Analysis History</h2>
+    <div className="history-page">
+      <h2 className="history-title">Your Analysis History</h2>
       {loading && <div>Loading...</div>}
-      {error && <div style={{ color: 'red', textAlign: 'center', margin: '20px 0' }}>{error}</div>}
+      {error && <div className="history-error">{error}</div>}
       {!loading && !error && history.length === 0 && (
-        <div style={{ textAlign: 'center', color: '#888' }}>No analysis history found.</div>
+        <div className="history-empty">No analysis history found.</div>
       )}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+      <div className="history-list">
         {history.map((item, idx) => {
           const isExpanded = expandedIdx === idx;
           return (
             <div
               key={item._id || idx}
-              style={{
-                background: 'rgba(255,255,255,0.95)',
-                borderRadius: 12,
-                boxShadow: '0 2px 12px rgba(84,10,201,0.08)',
-                padding: 20,
-                borderLeft: `6px solid ${item.modelUsed === 'gemini' ? '#4285F4' : item.modelUsed === 'cohere' ? '#FBBF24' : '#7C3AED'}`,
-                position: 'relative',
-                transition: 'box-shadow 0.2s',
-                cursor: 'default',
-              }}
+              className={`history-item${isExpanded ? ' history-item-expanded' : ''}`}
+              style={{ borderLeft: `6px solid ${item.modelUsed === 'gemini' ? '#4285F4' : item.modelUsed === 'cohere' ? '#FBBF24' : '#7C3AED'}` }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                <span style={{ fontWeight: 700, fontSize: 18, color: '#222' }}>{item.modelUsed.toUpperCase()}</span>
-                <span style={{ color: '#666', fontSize: 14 }}>{new Date(item.createdAt).toLocaleString()}</span>
+              <div className="history-item-header">
+                <span className="history-item-model">{item.modelUsed.toUpperCase()}</span>
+                <span className="history-item-date">{new Date(item.createdAt).toLocaleString()}</span>
                 <span
-                  style={{
-                    marginLeft: 16,
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    transition: 'transform 0.2s',
-                    transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-                    fontSize: 24,
-                    color: isExpanded ? '#540ac9' : '#888',
-                    cursor: 'pointer',
-                  }}
+                  className={`history-item-toggle${isExpanded ? ' expanded' : ''}`}
                   tabIndex={0}
                   aria-label={isExpanded ? 'Collapse details' : 'Expand details'}
                   onClick={e => { e.stopPropagation(); handleToggle(idx); }}
@@ -93,11 +76,11 @@ const History = () => {
                   &gt;
                 </span>
               </div>
-              <div style={{ marginBottom: 8, color: '#333', fontSize: 15 }}>
+              <div className="history-item-papers">
                 <b>Papers:</b> {item.papersInfo && item.papersInfo.length > 0 ? (
-                  <ul style={{ margin: 0, paddingLeft: 18,listStyle: 'none' }}>
+                  <ul className="history-item-paper-list">
                     {item.papersInfo.map((p, i) => (
-                      <li key={i}>
+                      <li key={i} className="history-item-paper">
                         {p.originalName}
                         {p.fileId && (
                           <>
@@ -105,7 +88,7 @@ const History = () => {
                             <a
                               href={`/uploads/${p.fileId}`}
                               download={p.originalName}
-                              style={{ marginLeft: 8, color: '#540ac9', textDecoration: 'underline', fontSize: 13 }}
+                              className="history-item-paper-link"
                               target="_blank"
                               rel="noopener noreferrer"
                               onClick={e => e.stopPropagation()}
@@ -120,7 +103,7 @@ const History = () => {
                 ) : 'N/A'}
               </div>
               {isExpanded && (
-                <div style={{ marginTop: 12 }}>
+                <div className="history-item-analysis">
                   <AnalysisResults analysis={{ analysis: item.analysis }} />
                 </div>
               )}

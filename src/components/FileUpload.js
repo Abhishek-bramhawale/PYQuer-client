@@ -232,16 +232,14 @@ const FileUpload = () => {
       )}
       <form onSubmit={handleSubmit}>
         <div 
-          className={`container ${isDragging ? 'dragging' : ''}`}
+          className={`container fileupload-container${isDragging ? ' dragging' : ''}`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          style={{ cursor: 'pointer', backgroundColor: 'rgba(255, 255, 255, 0.72)', flex: 1, position: 'relative' }}
         >
           <div
-            className="header"
+            className="header fileupload-header"
             onClick={() => document.getElementById('file-input').click()}
-            style={{ width: '100%', userSelect: 'none' }}
           >
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g id="SVGRepo_iconCarrier"> 
@@ -250,7 +248,7 @@ const FileUpload = () => {
             </svg> 
             <p>{isDragging ? 'Drop your files here!' : 'Drag & drop or Browse Files to upload!'}</p>
           </div>
-          <div className="file-list" onClick={() => document.getElementById('file-input').click()}>
+          <div className="file-list fileupload-file-list" onClick={() => document.getElementById('file-input').click()}>
             {files.length === 0 ? (
               <div className="placeholder-file">
                 <svg fill="#000000" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -263,7 +261,7 @@ const FileUpload = () => {
               </div>
             ) : (
               files.map((fileItem, index) => (
-                <div key={index} className="uploaded-file-item">
+                <div key={index} className="uploaded-file-item fileupload-uploaded-file">
                   <svg fill="#000000" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_iconCarrier">
                       <path d="M15.331 6H8.5v20h15V14.154h-8.169z"></path>
@@ -271,29 +269,25 @@ const FileUpload = () => {
                     </g>
                   </svg> 
                   <p>{fileItem.name}</p> 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    {/* Open icon */}
+                  <div className="fileupload-file-actions">
                     <div
-                      className="open-icon active"
+                      className="open-icon active fileupload-open-icon"
                       onClick={e => {
                         e.stopPropagation();
                         const url = URL.createObjectURL(fileItem);
                         window.open(url, '_blank', 'noopener,noreferrer');
-                        setTimeout(() => URL.revokeObjectURL(url), 10000); // Clean up after 10s
+                        setTimeout(() => URL.revokeObjectURL(url), 10000);
                       }}
                       title="Open file"
-                      style={{ cursor: 'pointer', marginRight: 2 }}
                     >
-                     
-                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"  style={{ marginTop: '6px' }} >
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="fileupload-open-icon-svg" >
                         <path d="M14 3H17V6" stroke="#540ac9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         <path d="M10 10L17 3" stroke="#540ac9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         <path d="M17 10V17H3V3H10" stroke="#540ac9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </div>
-                    
                     <div 
-                      className="remove-icon active" 
+                      className="remove-icon active fileupload-remove-icon" 
                       onClick={handleRemoveFile(index)}
                       title="Remove file"
                     >
@@ -315,14 +309,10 @@ const FileUpload = () => {
             multiple
             accept=".pdf"
             onChange={handleFileChange}
-            style={{ display: 'none' }}
+            className="fileupload-input-hidden"
           />
           <button 
             type="submit" 
-            style={{ 
-              width: '160px',
-              height: '48px'
-            }}
             className="upload-button"
             disabled={files.length === 0 || !isServerRunning}
             onClick={(e) => e.stopPropagation()}
@@ -330,48 +320,28 @@ const FileUpload = () => {
             {isLoading ? loadingLabels[loadingLabelIndex] : 'Upload'}
           </button>
           {isLoading && (
-            <div style={{
-              opacity: isLoading ? 1 : 0,
-              transition: 'opacity 0.5s ease-in-out',
-              marginTop: '1rem',
-              textAlign: 'center'
-            }}>
+            <div className="fileupload-loading">
               <video
                 autoPlay
                 loop
                 muted
-                style={{
-                  width: '60px',
-                  height: '60px'
-                }}
+                className="fileupload-loading-video"
               >
                 <source src="/animation.webm" type="video/webm" />
               </video>
               {showOCRNotice && (
-                <p style={{ 
-                  marginTop: '10px', 
-                  color: '#666',
-                  fontSize: '14px'
-                }}>
+                <p className="fileupload-ocr-notice">
                   Non-searchable PDF detected... performing OCR scanning... Just wait few seconds..
                 </p>
               )}
-              <p style={{
-                marginTop: showOCRNotice ? '10px' : '0',
-                color: '#540ac9',
-                fontWeight: 500,
-                fontSize: '15px',
-                letterSpacing: '0.5px',
-                transition: 'color 0.3s',
-                minHeight: '24px'
-              }}>
+              <p className="fileupload-status-message">
                 {statusMessages[statusIndex]}
               </p>
             </div>
           )}
           {!isLoading && (
             <div className="ai-model-select-container">
-              <span style={{ fontWeight: 400 }}>AI Model:</span>
+              <span className="fileupload-model-label">AI Model:</span>
               <select 
                 value={selectedModel} 
                 onChange={(e) => setSelectedModel(e.target.value)}
