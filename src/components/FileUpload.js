@@ -61,7 +61,7 @@ const FileUpload = () => {
     if (isLoading) {
       interval = setInterval(() => {
         setStatusIndex(prev => (prev + 1) % statusMessages.length);
-      }, 2500);
+      }, 5000);
     } else {
       setStatusIndex(0);
     }
