@@ -61,7 +61,7 @@ const FileUpload = () => {
     if (isLoading) {
       interval = setInterval(() => {
         setStatusIndex(prev => (prev + 1) % statusMessages.length);
-      }, 5000);
+      }, 7000);
     } else {
       setStatusIndex(0);
     }
@@ -71,7 +71,7 @@ const FileUpload = () => {
   useEffect(() => {
     if (isUsingOCR) {
       setShowOCRNotice(true);
-      const timer = setTimeout(() => setShowOCRNotice(false), 5000);
+      const timer = setTimeout(() => setShowOCRNotice(false), 8000);
       return () => clearTimeout(timer);
     } else {
       setShowOCRNotice(false);

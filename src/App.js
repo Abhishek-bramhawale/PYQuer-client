@@ -88,6 +88,7 @@ function App() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [showLoginNote, setShowLoginNote] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 600);
 
   useEffect(() => {
     const seen = localStorage.getItem('pyquer_first_time_dialog_seen');
@@ -118,6 +119,12 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth > 823);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleDialogClose = () => {
     setDialogOpen(false);
     localStorage.setItem('pyquer_first_time_dialog_seen', 'true');
@@ -131,7 +138,9 @@ function App() {
   return (
     <div className="App">
       <FirstTimeDialog open={dialogOpen} onClose={handleDialogClose} />
-      <LoginInfoNote open={showLoginNote && !isLoggedIn} onClose={handleLoginNoteClose} />
+      {isDesktop && (
+        <LoginInfoNote open={showLoginNote && !isLoggedIn} onClose={handleLoginNoteClose} />
+      )}
       <div className={dialogOpen ? 'blurred-bg' : '' + (showLoginNote && !isLoggedIn ? ' login-note-padding' : '')}>
         <Navbar topOffset={showLoginNote && !isLoggedIn ? 40 : 0} />
         <main className="main-content">
