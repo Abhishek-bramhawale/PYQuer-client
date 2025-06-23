@@ -89,15 +89,7 @@ const Login = ({ isOpen, onClose }) => {
         </div>
         
         {error && (
-          <div className="error-message" style={{
-            backgroundColor: 'rgba(220, 53, 69, 0.1)',
-            border: '1px solid #dc3545',
-            color: '#dc3545',
-            padding: '0.75rem',
-            borderRadius: '4px',
-            marginBottom: '1rem',
-            fontSize: '0.9rem'
-          }}>
+          <div className="error-message login-error-message">
             {error}
           </div>
         )}
@@ -139,24 +131,12 @@ const Login = ({ isOpen, onClose }) => {
           </button>
         </form>
 
-        <div style={{
-          textAlign: 'center',
-          marginTop: '1rem',
-          paddingTop: '1rem',
-          borderTop: '1px solid #eee'
-        }}>
-          <p style={{ margin: '0', color: '#666', fontSize: '0.9rem' }}>
+        <div className="login-toggle-row">
+          <p className="login-toggle-text">
             {isSignUp ? "Already have an account?" : "Don't have an account?"}{' '}
             <button
               onClick={toggleMode}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#540ac9',
-                cursor: 'pointer',
-                textDecoration: 'underline',
-                fontSize: '0.9rem'
-              }}
+              className="login-toggle-btn"
               disabled={isLoading}
             >
               {isSignUp ? 'Login here' : 'Sign up here'}

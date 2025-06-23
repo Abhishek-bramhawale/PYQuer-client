@@ -53,52 +53,19 @@ const Navbar = ({ topOffset = 0 }) => {
     <>
       <nav className="navbar" style={{padding: '20px', top: topOffset}}>
         <div className="navbar-brand">
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <h1
-              style={{
-                fontFamily: 'cursive',
-                textShadow: '4px 0px 6px rgba(128, 0, 128, 0.6)',
-                color: 'white',
-                cursor: 'pointer',
-              }}
-            >
+          <Link to="/" className="navbar-link">
+            <h1 className="navbar-brand-title">
               PYQuer
             </h1>
           </Link>
         </div>
-        <div className="navbar-end" style={{marginRight:'50px'}}>
+        <div className="navbar-end">
           {user ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', position: 'relative' }}>
-              {/* <span style={{
-                color: '#dcdcdc',
-                fontSize: '0.9rem',
-                maxWidth: '150px',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap'
-              }}>
-                Welcome, {user.name}
-              </span> */}
-              <div style={{ position: 'relative' }}>
+            <div className="navbar-user-row">
+              <div className="navbar-avatar-wrapper">
                 <div
                   onClick={handleAvatarClick}
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #540ac9 60%, #00c6ff 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#fff',
-                    fontWeight: 700,
-                    fontSize: 18,
-                    cursor: 'pointer',
-                    boxShadow: dropdownOpen ? '0 0 0 2px #00c6ff55' : 'none',
-                    border: dropdownOpen ? '2px solid #00c6ff' : '2px solid #fff3',
-                    transition: 'box-shadow 0.2s, border 0.2s',
-                    userSelect: 'none',
-                  }}
+                  className={dropdownOpen ? "navbar-avatar navbar-avatar-open" : "navbar-avatar"}
                   title="User menu"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -107,49 +74,17 @@ const Navbar = ({ topOffset = 0 }) => {
                   </svg>
                 </div>
                 {dropdownOpen && (
-                  <div style={{
-                    position: 'absolute',
-                    top: 44,
-                    right: 0,
-                    background: '#222',
-                    color: '#fff',
-                    borderRadius: 8,
-                    boxShadow: '0 2px 12px rgba(0,0,0,0.18)',
-                    minWidth: 120,
-                    zIndex: 1002,
-                    padding: '8px 0',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                  }}>
+                  <div className="navbar-dropdown">
                     <button
                       onClick={handleHistory}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        color: '#fff',
-                        padding: '10px 20px',
-                        textAlign: 'left',
-                        fontSize: '1rem',
-                        cursor: 'pointer',
-                        transition: 'background 0.2s',
-                      }}
+                      className="navbar-dropdown-btn"
                       onMouseDown={e => e.preventDefault()}
                     >
                       History
                     </button>
                     <button
                       onClick={handleLogoutDropdown}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        color: '#ff5252',
-                        padding: '10px 20px',
-                        textAlign: 'left',
-                        fontSize: '1rem',
-                        cursor: 'pointer',
-                        transition: 'background 0.2s',
-                      }}
+                      className="navbar-dropdown-btn navbar-dropdown-logout"
                       onMouseDown={e => e.preventDefault()}
                     >
                       Logout
@@ -162,11 +97,6 @@ const Navbar = ({ topOffset = 0 }) => {
             <button 
               className="login-btn" 
               onClick={openLogin}
-              style={{ 
-                backgroundColor: '#540ac9',
-                fontSize: '0.9rem',
-                padding: '8px 16px'
-              }}
             >
               Login / Sign Up
             </button>

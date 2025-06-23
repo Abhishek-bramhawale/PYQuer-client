@@ -25,60 +25,36 @@ function FirstTimeDialog({ open, onClose }) {
   return (
     <div className="first-time-dialog-outer">
       <div className="first-time-dialog-inner">
-        <div className="close-btns" style={{ position: 'absolute', top: 18, left: 18, display: 'flex', gap: 10, zIndex: 2 }}>
+        <div className="close-btns">
           {!isMobile && <>
-            <div onClick={onClose} style={{ width: 20, height: 20, borderRadius: '50%', background: '#ff5f56',  border: '2px solid #fff2', boxShadow: '0 0 4px #ff5f56aa' }} title="Close" />
-            <div onClick={onClose} style={{ width: 20, height: 20, borderRadius: '50%', background: '#ffbd2e', border: '2px solid #fff2', boxShadow: '0 0 4px #ffbd2eaa' }} title="Close" />
-            <div onClick={onClose} style={{ width: 20, height: 20, borderRadius: '50%', background: '#27c93f',  border: '2px solid #fff2', boxShadow: '0 0 4px #27c93faa' }} title="Close" />
+            <div onClick={onClose} className="close-btn-red" title="Close" />
+            <div onClick={onClose} className="close-btn-yellow" title="Close" />
+            <div onClick={onClose} className="close-btn-green" title="Close" />
           </>}
         </div>
-        <h2 style={{ margin: '0 0 28px 0', fontWeight: 700, fontSize: 28 }}>How it works</h2>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 40, margin: '0 0 10px 0', flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <img src={process.env.PUBLIC_URL + '/model.gif'} alt="Select Model" style={{ width: gifSize, height: gifSize, objectFit: 'cover', borderRadius: 16, boxShadow: '0 0 24px 6px #fff8, 0 2px 12px rgba(0,0,0,0.18)' }} />
-            <div style={{ marginTop: 16, fontSize: 18, fontWeight: 500, textAlign: 'center', maxWidth: 150 }}>Select an AI model</div>
+        <h2 className="how-it-works-title">How it works</h2>
+        <div className="how-it-works-steps">
+          <div className="how-it-works-step">
+            <img src={process.env.PUBLIC_URL + '/model.gif'} alt="Select Model" className="how-it-works-img" />
+            <div className="how-it-works-desc">Select an AI model</div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <img src={process.env.PUBLIC_URL + '/upload.gif'} alt="Upload PDFs" style={{ width: gifSize, height: gifSize, objectFit: 'cover', borderRadius: 16, boxShadow: '0 0 24px 6px #fff8, 0 2px 12px rgba(0,0,0,0.18)' }} />
-            <div style={{ marginTop: 16, fontSize: 18, fontWeight: 500, textAlign: 'center', maxWidth: 150 }}>Upload your PYQ PDFs</div>
+          <div className="how-it-works-step">
+            <img src={process.env.PUBLIC_URL + '/upload.gif'} alt="Upload PDFs" className="how-it-works-img" />
+            <div className="how-it-works-desc">Upload your PYQ PDFs</div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <img src={process.env.PUBLIC_URL + '/analysis.gif'} alt="Get Analysis" style={{ width: gifSize, height: gifSize, objectFit: 'cover', borderRadius: 16, boxShadow: '0 0 24px 6px #fff8, 0 2px 12px rgba(0,0,0,0.18)' }} />
-            <div style={{ marginTop: 16, fontSize: 18, fontWeight: 500, textAlign: 'center', maxWidth: 150 }}>Get AI analysis about PYQS</div>
+          <div className="how-it-works-step">
+            <img src={process.env.PUBLIC_URL + '/analysis.gif'} alt="Get Analysis" className="how-it-works-img" />
+            <div className="how-it-works-desc">Get AI analysis about PYQS</div>
           </div>
         </div>
         {isMobile && (
-          <div style={{
-            marginTop: 18,
-            color: '#ffbd2e',
-            fontWeight: 600,
-            fontSize: 16,
-            textAlign: 'center',
-            letterSpacing: '0.2px',
-          }}>
+          <div className="mobile-warning">
             mobile view detected.. use desktop view for better experience
           </div>
         )}
         <button
           onClick={onClose}
-          style={{
-            marginTop: 32,
-            padding: '4px 14px',
-            background: 'linear-gradient(90deg, #6419ff 0%, #540ac9 100%)',
-            color: '#fff',
-            fontWeight: 700,
-            fontSize: 15,
-            border: 'none',
-            borderRadius: 12,
-            boxShadow: '0 2px 12px rgba(84,10,201,0.18)',
-            cursor: 'pointer',
-            letterSpacing: '1px',
-            transition: 'background 0.2s',
-            outline: 'none',
-            display: 'block',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}
+          className="get-started-btn"
         >
           Get Started
         </button>
@@ -90,66 +66,16 @@ function FirstTimeDialog({ open, onClose }) {
 function LoginInfoNote({ open, onClose }) {
   if (!open) return null;
   return (
-    <div style={{
-      width: '100%',
-      background: 'black',
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      zIndex: 1200,
-      padding: 0,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: 10,
-      boxShadow: '0 2px 8px rgba(84,10,201,0.08)',
-    }}>
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: 50,
-        // background: 'radial-gradient(50% 80% at 50% 0%, #6419ff 0%, rgba(0,0,0,0) 100%)',
-              
-      background: 'radial-gradient(29.05% 42.59% at 50% -5.56%, rgb(100, 25, 255) 0%, rgba(0, 0, 0, 0) 100%)',
-   
-
-        pointerEvents: 'none',
-      }} />
-      <div style={{
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 10,
-        padding: '10px 0',
-        fontWeight: 700,
-        fontSize: 14,
-        color: '#fff',
-        zIndex: 1,
-      }}>
-        <span style={{ fontSize: 20, marginRight: 4 }}>✨</span>
+    <div className="login-info-note-root">
+      <div className="login-info-note-bg" />
+      <div className="login-info-note-content">
+        <span className="login-info-note-emoji">✨</span>
         <span>
           login is required only if you want to store analysis in history and view later..
         </span>
       </div>
-      <button className= "navclose1"
+      <button className="login-info-note-close navclose1"
         onClick={onClose}
-        style={{
-          position: 'absolute',
-          right: 134,
-          top: '50%',
-          transform: 'translateY(-50%)',
-          background: 'none',
-          border: 'none',
-          color: '#fff',
-          fontSize: 22,
-          cursor: 'pointer',
-          fontWeight: 700,
-          lineHeight: 1,
-          zIndex: 2,
-        }}
         aria-label="Close info note"
       >
         ×
@@ -206,7 +132,7 @@ function App() {
     <div className="App">
       <FirstTimeDialog open={dialogOpen} onClose={handleDialogClose} />
       <LoginInfoNote open={showLoginNote && !isLoggedIn} onClose={handleLoginNoteClose} />
-      <div className={dialogOpen ? 'blurred-bg' : ''} style={{ paddingTop: showLoginNote && !isLoggedIn ? 48 : 0 }}>
+      <div className={dialogOpen ? 'blurred-bg' : '' + (showLoginNote && !isLoggedIn ? ' login-note-padding' : '')}>
         <Navbar topOffset={showLoginNote && !isLoggedIn ? 40 : 0} />
         <main className="main-content">
           <Routes>
