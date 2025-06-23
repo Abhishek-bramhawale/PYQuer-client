@@ -738,552 +738,8 @@ code {
   text-align: left !important;
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
+/* newly added */
 
-/* Large Desktop (1200px and up) */
-@media (min-width: 1200px) {
-  .upload-section {
-    max-width: 1500px;
-  }
-  .navclose{
-    margin-right: 20px !important;
-  }
-  
-  .analysis-container {
-    max-width: 1400px;
-  }
-  
-  .analysis-table {
-    min-width: 1500px;
-  }
-}
-
-/* Desktop (992px to 1199px) */
-@media (max-width: 1199px) {
-  .upload-section {
-    max-width: 1200px;
-    padding: 1.5rem;
-  }
-
-  .navclose{
-    margin-right: 20px !important;
-  }
-  
-  .analysis-container {
-    max-width: 1000px;
-  }
-  
-  .analysis-table {
-    min-width: 1200px;
-  }
-  
-  .main-title {
-    font-size: 1.8rem;
-  }
-}
-
-/* Tablet (768px to 991px) */
-@media (max-width: 991px) {
-  .navbar {
-    padding: 8px 15px;
-  }
-  
-  .navbar-brand h1 {
-    font-size: 1.5rem;
-  }
-  
-  .login-btn {
-    padding: 6px 16px;
-    font-size: 0.9rem;
-  }
-  
-  .main-content {
-    padding-top: 70px;
-  }
-  
-  .upload-section {
-    max-width: 800px;
-    padding: 1.5rem;
-  }
- 
-  
-  .upload-section .container {
-    max-width: 100%;
-    padding: 1.5rem;
-  }
-  
-  .upload-section .container .header p {
-    font-size: 1.1rem;
-  }
-  
-  .analysis-container {
-    max-width: 800px;
-    margin: 1.5rem auto;
-  }
-  
-  .analysis-section {
-    padding: 1rem;
-  }
-  
-  .section-title h2 {
-    font-size: 1.1rem;
-    padding: 0.6rem 0.8rem;
-  }
-  
-  .analysis-table {
-    min-width: 800px;
-  }
-  
-  .analysis-table th,
-  .analysis-table td {
-    padding: 0.6rem 0.8rem;
-    font-size: 0.9rem;
-  }
-  
-  .main-title {
-    font-size: 1.6rem;
-  }
-  
-  .modal-content {
-    width: 95%;
-    max-width: 350px;
-    padding: 1.5rem;
-  }
-}
-
-/* Mobile Large (576px to 767px) */
-@media (max-width: 767px) {
-  .navbar {
-    padding: 6px 12px;
-  }
-  
-  .navbar-brand h1 {
-    font-size: 1.3rem;
-  }
-  
-  .login-btn {
-    padding: 5px 12px;
-    font-size: 0.8rem;
-  }
-  
-  .main-content {
-    padding-top: 70px !important;
-  }
-  
-  .upload-section {
-    margin: 0 10px !important;
-    border-radius: 12px !important;
-    background: rgba(255,255,255,0.92) !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
-  }
-  
-  .upload-section .container {
-    margin: 0 4px !important;
-    border-radius: 10px !important;
-  }
-  
-  .upload-section h2 {
-    font-size: 1.3rem;
-    margin-bottom: 0.8rem;
-  }
-  
-  .upload-section .container .header {
-    gap: 0.8rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .upload-section .container .header svg {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .upload-section .container .header p {
-    font-size: 1rem;
-  }
-  
-  .file-list {
-    max-height: 250px;
-    gap: 0.4rem;
-  }
-  
-  .placeholder-file,
-  .uploaded-file-item {
-    padding: 0.8rem;
-    gap: 0.8rem;
-  }
-  
-  .placeholder-file svg,
-  .uploaded-file-item svg {
-    width: 20px;
-    height: 20px;
-  }
-  
-  .uploaded-file-item p {
-    font-size: 0.8rem;
-  }
-  
-  .upload-btn {
-    padding: 10px 20px;
-    font-size: 1rem;
-    max-width: 180px;
-  }
-  
-  .analysis-container {
-    margin: 1rem auto !important;
-    padding: 0 4px !important;
-    max-width: 99vw !important;
-    text-align: center !important;
-  }
-  
-  .analysis-section {
-    margin: 0.5rem auto !important;
-    border-radius: 10px !important;
-    text-align: left !important;
-  }
-  
-  .section-title h2 {
-    font-size: 1rem;
-    padding: 0.5rem 0.75rem;
-  }
-  
-  .table-container {
-    overflow-x: auto !important;
-    width: 100% !important;
-    margin-bottom: 1rem !important;
-  }
-  
-  .analysis-table {
-    min-width: 420px !important;
-    width: 100% !important;
-    border-radius: 8px !important;
-    overflow: hidden !important;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04) !important;
-  }
-  
-  .analysis-table th,
-  .analysis-table td {
-    padding: 0.3rem 0.4rem !important;
-    font-size: 0.8rem !important;
-  }
-  
-  .main-title {
-    font-size: 1.1rem !important;
-  }
-  
-  .analysis-results {
-    margin-top: 0.7rem !important;
-    padding: 0.5rem !important;
-    border-radius: 8px !important;
-  }
-  
-  .modal-content {
-    width: 95%;
-    max-width: 300px;
-    padding: 1rem;
-  }
-  
-  .modal-header {
-    margin-bottom: 1rem;
-  }
-  
-  .modal-header h2 {
-    font-size: 1.2rem;
-  }
-  
-  .close-btn {
-    font-size: 1.3rem;
-  }
-  
-  .form-group input {
-    padding: 0.7rem;
-    font-size: 0.9rem;
-  }
-  
-  .login-submit-btn {
-    padding: 0.7rem;
-    font-size: 0.9rem;
-  }
-  
-  .server-status {
-    padding: 0.8rem;
-    font-size: 0.9rem;
-  }
-  
-  .server-status p {
-    font-size: 0.9rem;
-  }
-  
-  .animated-gradient-text {
-    margin-top: 1.2rem !important;
-    margin-bottom: 1.2rem !important;
-    font-size: 1.3rem !important;
-    text-align: center !important;
-    display: block !important;
-  }
-  
-  .ai-model-select-container,
-  .add-sample-btn-container {
-    flex-direction: row !important;
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 10px !important;
-    margin: 10px 0 !important;
-    width: 100% !important;
-    position: static !important;
-  }
-  .ai-model-select {
-    min-width: 120px !important;
-    font-size: 1rem !important;
-    border-radius: 8px !important;
-    background: #fff !important;
-    color: #333 !important;
-    border: 1px solid #ccc !important;
-    padding: 8px 12px !important;
-  }
-  .add-sample-btn {
-    font-size: 1rem !important;
-    color: #540ac9 !important;
-    background: none !important;
-    border: none !important;
-    padding: 0 !important;
-    text-decoration: underline !important;
-    cursor: pointer !important;
-  }
-}
-
-/* Mobile Small (up to 575px) */
-@media (max-width: 575px) {
-  .navbar {
-    padding: 5px 10px;
-  }
-  
-  .navbar-brand h1 {
-    font-size: 1.1rem;
-  }
-  
-  .login-btn {
-    padding: 4px 10px;
-    font-size: 0.75rem;
-  }
-  
-  .main-content {
-    padding-top: 55px;
-  }
-  
-  .upload-section {
-    padding: 0.8rem;
-  }
-  
-  .upload-section h2 {
-    font-size: 1.2rem;
-    margin-bottom: 0.6rem;
-  }
-  
-  .upload-section .container {
-    padding: 0.8rem;
-  }
-  
-  .upload-section .container .header {
-    gap: 0.6rem;
-    margin-bottom: 1rem;
-  }
-  
-  .upload-section .container .header svg {
-    width: 36px;
-    height: 36px;
-  }
-  
-  .upload-section .container .header p {
-    font-size: 0.9rem;
-  }
-  
-  .file-list {
-    max-height: 200px;
-    gap: 0.3rem;
-  }
-  
-  .placeholder-file,
-  .uploaded-file-item {
-    padding: 0.6rem;
-    gap: 0.6rem;
-  }
-  
-  .placeholder-file svg,
-  .uploaded-file-item svg {
-    width: 18px;
-    height: 18px;
-  }
-  
-  .uploaded-file-item p {
-    font-size: 0.75rem;
-  }
-  
-  .upload-btn {
-    padding: 8px 16px;
-    font-size: 0.9rem;
-    max-width: 160px;
-  }
-  
-  .analysis-container {
-    padding: 0 0.3rem;
-  }
-  
-  .analysis-section {
-    padding: 0.6rem;
-    margin-bottom: 1rem;
-  }
-  
-  .section-title h2 {
-    font-size: 0.9rem;
-    padding: 0.4rem 0.6rem;
-  }
-  
-  .analysis-table {
-    min-width: 500px;
-  }
-  
-  .analysis-table th,
-  .analysis-table td {
-    padding: 0.4rem 0.6rem;
-    font-size: 0.75rem;
-  }
-  
-  .main-title {
-    font-size: 1.2rem;
-  }
-  
-  .analysis-results {
-    margin-top: 1rem;
-    padding: 0.8rem;
-  }
-  
-  .modal-content {
-    width: 98%;
-    max-width: 280px;
-    padding: 0.8rem;
-  }
-  
-  .modal-header h2 {
-    font-size: 1.1rem;
-  }
-  
-  .close-btn {
-    font-size: 1.2rem;
-  }
-  
-  .form-group input {
-    padding: 0.6rem;
-    font-size: 0.8rem;
-  }
-  
-  .login-submit-btn {
-    padding: 0.6rem;
-    font-size: 0.8rem;
-  }
-  
-  .server-status {
-    padding: 0.8rem;
-    font-size: 0.9rem;
-  }
-  
-  .server-status p {
-    font-size: 0.9rem;
-  }
-}
-
-/* Extra Small Mobile (up to 375px) */
-@media (max-width: 375px) {
-  .navbar-brand h1 {
-    font-size: 1rem;
-  }
-  
-  .login-btn {
-    padding: 3px 8px;
-    font-size: 0.7rem;
-  }
-  
-  .upload-section .container .header svg {
-    width: 32px;
-    height: 32px;
-  }
-  
-  .upload-section .container .header p {
-    font-size: 0.8rem;
-  }
-  
-  .upload-btn {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-    max-width: 140px;
-  }
-  
-  .analysis-table {
-    min-width: 400px;
-  }
-  
-  .analysis-table th,
-  .analysis-table td {
-    padding: 0.3rem 0.5rem;
-    font-size: 0.7rem;
-  }
-  
-  .main-title {
-    font-size: 1.1rem;
-  }
-  
-  .modal-content {
-    width: 99%;
-    max-width: 260px;
-    padding: 0.6rem;
-  }
-}
-
-/* Landscape orientation adjustments for mobile */
-@media (max-width: 767px) and (orientation: landscape) {
-  .main-content {
-    padding-top: 50px;
-  }
-  
-  .upload-section .container {
-    min-height: auto;
-  }
-  
-  .file-list {
-    max-height: 150px;
-  }
-}
-
-/* High DPI displays */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .upload-section .container .header svg,
-  .placeholder-file svg,
-  .uploaded-file-item svg {
-    transform: scale(1.1);
-  }
-}
-
-/* Print styles */
-@media print {
-  .navbar,
-  .upload-section .container,
-  .modal-overlay {
-    display: none !important;
-  }
-  
-  .main-content {
-    padding-top: 0;
-  }
-  
-  .analysis-results {
-    box-shadow: none;
-    background-color: white;
-  }
-  
-  .analysis-table {
-    min-width: auto;
-    width: 100%;
-  }
-}
 
 .download-pdf-btn{
   background-color: #4CAF50;
@@ -1481,6 +937,51 @@ button:hover:not(:disabled), .upload-button:hover:not(:disabled), .login-btn:hov
   
 }
 
+/* ===== RESPONSIVE DESIGN ===== */
+
+
+/* Large Desktop (1200px and up) */
+@media (min-width: 1200px) {
+  .upload-section {
+    max-width: 1500px;
+  }
+  .navclose{
+    margin-right: 20px !important;
+  }
+  
+  .analysis-container {
+    max-width: 1400px;
+  }
+  
+  .analysis-table {
+    min-width: 1500px;
+  }
+}
+
+/* Desktop (992px to 1199px) */
+@media (max-width: 1199px) {
+  .upload-section {
+    max-width: 1200px;
+    padding: 1.5rem;
+  }
+
+  .navclose{
+    margin-right: 20px !important;
+  }
+  
+  .analysis-container {
+    max-width: 1000px;
+  }
+  
+  .analysis-table {
+    min-width: 1200px;
+  }
+  
+  .main-title {
+    font-size: 1.8rem;
+  }
+}
+
 @media (min-width: 992px) {
   .ai-model-select-container {
     position: absolute;
@@ -1564,254 +1065,431 @@ button:hover:not(:disabled), .upload-button:hover:not(:disabled), .login-btn:hov
   }
 }
 
-/* === MOBILE-FRIENDLY PATCH: overrides for full mobile responsiveness === */
-
-@media (max-width: 767px) {
-  /* First-time dialog outer/inner */
-  /* .first-time-dialog-outer {
-    align-items: flex-start !important;
-    justify-content: center !important;
-    padding-top: 24px !important;
-    min-height: 100vh !important;
+/* Tablet (768px to 991px) */
+@media (max-width: 991px) {
+  .navbar-brand h1 {
+    font-size: 1.6rem;
   }
-  .first-time-dialog-inner {
-    max-width: 98vw !important;
-    width: 98vw !important;
-    min-width: 0 !important;
-    padding: 1.2rem 0.5rem 1.2rem 0.5rem !important;
-    border-radius: 12px !important;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.18) !important;
-    font-size: 15px !important;
+  
+  .login-btn {
+    margin-right: 30px;
+    font-size: 0.95rem;
   }
-  .first-time-dialog-inner h2 {
-    font-size: 1.3rem !important;
-    margin-bottom: 18px !important;
+  
+  .navclose {
+    margin-right: 15px !important;
   }
-  .first-time-dialog-inner img {
-    width: 90px !important;
-    height: 90px !important;
-    min-width: 60px !important;
-    min-height: 60px !important;
-    max-width: 120px !important;
-    max-height: 120px !important;
-  }
-  .first-time-dialog-inner button {
-    font-size: 1rem !important;
-    padding: 6px 18px !important;
-    margin-top: 18px !important;
-    border-radius: 10px !important;
-  }
-  .first-time-dialog-inner .close-btns {
-    display: none !important;
-  }
-  .first-time-dialog-inner > div[style*='color: #ffbd2e'] {
-    font-size: 13px !important;
-    margin-top: 10px !important;
-  } */
-
-  /* Login info note */
-  .login-info-note-root,
-  .login-info-note-root *,
-  .login-info-note-root button,
-  .login-info-note-root .navclose1 {
-    display: none !important;
-    height: 0 !important;
-    min-height: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-  }
-  /* Hide login note if not using .login-info-note-root class */
-  .App > div[style*='background: black'] {
-    display: none !important;
-  }
-
-  /* Navbar flush to top */
-  .navbar {
-    top: 0 !important;
-    margin-top: 0 !important;
-    position: fixed !important;
-    z-index: 1000 !important;
-  }
-
-  /* Upload/analysis section centering and stacking */
-  .main-content {
-    padding-top: 56px !important;
-    align-items: flex-start !important;
-    min-height: 100vh !important;
-  }
+  
   .upload-section {
-    padding: 0.5rem 0.2rem !important;
-    max-width: 100vw !important;
-    margin: 0 auto !important;
+    max-width: 800px;
+    padding: 1.2rem;
   }
-  .upload-section .container {
-    padding: 0.7rem 0.2rem !important;
-    max-width: 99vw !important;
-    min-width: 0 !important;
-  }
-  .ai-model-select-container,
-  .add-sample-btn-container {
-    position: static !important;
-    width: 100% !important;
-    justify-content: center !important;
-    margin: 10px 0 0 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: auto !important;
-    gap: 8px !important;
-    flex-direction: column !important;
-    align-items: center !important;
-  }
-  .ai-model-select {
-    min-width: 120px !important;
-    font-size: 1rem !important;
-  }
-  .add-sample-btn {
-    font-size: 1rem !important;
-    padding: 6px 12px !important;
-    border-radius: 8px !important;
-  }
-
-  /* File list and upload items */
-  .file-list {
-    max-width: 100vw !important;
-    overflow-x: auto !important;
-    gap: 0.2rem !important;
-  }
-  .uploaded-file-item, .placeholder-file {
-    flex-direction: row !important;
-    align-items: center !important;
-    font-size: 0.85rem !important;
-    padding: 0.4rem 0.2rem !important;
-    gap: 0.4rem !important;
-  }
-  .uploaded-file-item svg, .placeholder-file svg {
-    width: 16px !important;
-    height: 16px !important;
-  }
-  .uploaded-file-item p, .placeholder-file p {
-    font-size: 0.8rem !important;
-    margin: 0 !important;
-  }
-
-  /* History page cards */
-  .history-page {
-    padding: 0.5rem 0.2rem !important;
-    max-width: 100vw !important;
-    margin: 0 auto !important;
-  }
-  .history-page > h2 {
-    font-size: 1.2rem !important;
-    margin-bottom: 12px !important;
-  }
-  .history-page > div[style*='display: flex'] {
-    gap: 10px !important;
-  }
-  .history-page > div > div[style*='background: rgba(255,255,255,0.95)'] {
-    padding: 10px 6px !important;
-    border-radius: 8px !important;
-    font-size: 0.95rem !important;
-    flex-direction: column !important;
-    gap: 6px !important;
-  }
-  .history-page ul {
-    padding-left: 12px !important;
-  }
-  .history-page li {
-    font-size: 0.9rem !important;
-  }
-  .history-page a {
-    font-size: 0.8rem !important;
-    word-break: break-all !important;
-  }
-
-  /* Analysis results and tables */
+  
   .analysis-container {
-    padding: 0.2rem !important;
-    max-width: 100vw !important;
-    margin: 0 auto !important;
+    max-width: 750px;
   }
-  .analysis-section {
-    padding: 0.5rem 0.2rem !important;
-    margin-bottom: 0.7rem !important;
-    border-radius: 8px !important;
-  }
-  .section-title h2 {
-    font-size: 1rem !important;
-    padding: 0.3rem 0.5rem !important;
-    margin-bottom: 0.5rem !important;
-  }
-  .table-container {
-    overflow-x: auto !important;
-    width: 100vw !important;
-    max-width: 100vw !important;
-  }
+  
   .analysis-table {
-    min-width: 420px !important;
-    font-size: 0.8rem !important;
+    min-width: 800px;
   }
-  .analysis-table th, .analysis-table td {
-    padding: 0.3rem 0.4rem !important;
-    font-size: 0.8rem !important;
-  }
+  
   .main-title {
-    font-size: 1.1rem !important;
+    font-size: 1.6rem;
   }
-  .analysis-results {
-    margin-top: 0.7rem !important;
-    padding: 0.5rem !important;
-    border-radius: 8px !important;
+  
+  .animated-gradient-text {
+    font-size: 2rem;
   }
-  .download-section {
-    flex-direction: column !important;
-    gap: 6px !important;
-    align-items: flex-start !important;
+  
+  .upload-btn {
+    padding: 18px 35px;
+    font-size: 1.3rem;
+    max-width: 300px;
   }
-  .download-pdf-btn {
-    font-size: 0.95rem !important;
-    padding: 8px 12px !important;
-    border-radius: 8px !important;
-    margin-top: 8px !important;
-    margin-bottom: 8px !important;
+  
+  .ai-model-select-container {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    margin: 1rem 0;
+    justify-content: center;
   }
-  .download-section span {
-    font-size: 0.8rem !important;
-    padding: 4px 8px !important;
-    border-radius: 6px !important;
+  
+  .add-sample-btn-container {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    margin: 1rem 0;
+    justify-content: center;
+  }
+  
+  .first-time-dialog-inner {
+    max-width: 600px;
+    padding: 2rem;
   }
 }
 
-@media (max-width: 575px) {
-  .first-time-dialog-inner {
-    padding: 0.7rem 0.1rem 0.7rem 0.1rem !important;
-    max-width: 99vw !important;
-    font-size: 14px !important;
+/* Small Tablet (576px to 767px) */
+@media (max-width: 767px) {
+  .navbar {
+    padding: 8px 15px;
   }
-  .first-time-dialog-inner img {
-    width: 70px !important;
-    height: 70px !important;
-    max-width: 90px !important;
-    max-height: 90px !important;
+  
+  .navbar-brand h1 {
+    font-size: 1.4rem;
   }
-  .first-time-dialog-inner button {
-    font-size: 0.95rem !important;
-    padding: 5px 12px !important;
-    border-radius: 7px !important;
+  
+  .login-btn {
+    margin-right: 20px;
+    font-size: 0.9rem;
+    padding: 8px 16px;
   }
+  
+  .navclose {
+    margin-right: 10px !important;
+  }
+  
   .main-content {
-    padding-top: 48px !important;
+    padding-top: 70px;
   }
-  .history-page > h2 {
-    font-size: 1rem !important;
+  
+  .upload-section {
+    max-width: 100%;
+    padding: 1rem;
   }
+  
+  .container {
+    padding: 1.5rem;
+  }
+  
+  .analysis-container {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  
+  .analysis-section {
+    padding: 1rem;
+  }
+  
   .analysis-table {
-    min-width: 320px !important;
-    font-size: 0.75rem !important;
+    min-width: 600px;
   }
-  .analysis-table th, .analysis-table td {
-    font-size: 0.75rem !important;
-    padding: 0.2rem 0.2rem !important;
+  
+  .main-title {
+    font-size: 1.4rem;
+  }
+  
+  .animated-gradient-text {
+    font-size: 1.8rem;
+  }
+  
+  .upload-btn {
+    padding: 16px 30px;
+    font-size: 1.2rem;
+    max-width: 280px;
+  }
+  
+  .modal-content {
+    width: 95%;
+    padding: 1.5rem;
+  }
+  
+  .first-time-dialog-inner {
+    max-width: 500px;
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .upload-button, .history-btn {
+    min-width: 120px;
+    font-size: 1rem;
+    padding: 12px 0;
+  }
+}
+
+/* Mobile Large (481px to 575px) */
+@media (max-width: 575px) {
+  .navbar {
+    padding: 6px 12px;
+  }
+  
+  .navbar-brand h1 {
+    font-size: 1.2rem;
+  }
+  
+  .login-btn {
+    margin-right: 15px;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+  
+  .navclose {
+    margin-right: 8px !important;
+  }
+  
+  .main-content {
+    padding-top: 60px;
+  }
+  
+  .upload-section {
+    padding: 0.8rem;
+  }
+  
+  .container {
+    padding: 1.2rem;
+  }
+  
+  .analysis-container {
+    padding: 0 0.3rem;
+  }
+  
+  .analysis-section {
+    padding: 0.8rem;
+  }
+  
+  .analysis-table {
+    min-width: 500px;
+  }
+  
+  .main-title {
+    font-size: 1.2rem;
+  }
+  
+  .animated-gradient-text {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+  
+  .upload-btn {
+    padding: 14px 25px;
+    font-size: 1.1rem;
+    max-width: 250px;
+  }
+  
+  .modal-content {
+    width: 98%;
+    padding: 1.2rem;
+  }
+  
+  .first-time-dialog-inner {
+    max-width: 400px;
+    padding: 1.2rem;
+    margin: 0.5rem;
+  }
+  
+  .upload-button, .history-btn {
+    min-width: 100px;
+    font-size: 0.95rem;
+    padding: 10px 0;
+  }
+  
+  .gradient-bar {
+    width: 95vw;
+    height: 35px;
+  }
+}
+
+/* Mobile Small (320px to 480px) */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 5px 10px;
+  }
+  
+  .navbar-brand h1 {
+    font-size: 1rem;
+    letter-spacing: 0.2px;
+  }
+  
+  .login-btn {
+    margin-right: 10px;
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+  
+  .navclose {
+    margin-right: 5px !important;
+  }
+  
+  .main-content {
+    padding-top: 55px;
+  }
+  
+  .upload-section {
+    padding: 0.6rem;
+  }
+  
+  .container {
+    padding: 1rem;
+  }
+  
+  .header p {
+    font-size: 1rem;
+  }
+  
+  .analysis-container {
+    padding: 0 0.2rem;
+  }
+  
+  .analysis-section {
+    padding: 0.6rem;
+  }
+  
+  .analysis-table {
+    min-width: 400px;
+  }
+  
+  .analysis-table th,
+  .analysis-table td {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.9rem;
+  }
+  
+  .main-title {
+    font-size: 1.1rem;
+  }
+  
+  .section-title h2 {
+    font-size: 1.1rem;
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .animated-gradient-text {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .upload-btn {
+    padding: 12px 20px;
+    font-size: 1rem;
+    max-width: 220px;
+  }
+  
+  .modal-content {
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  .first-time-dialog-inner {
+    max-width: 350px;
+    padding: 1rem;
+    margin: 0.3rem;
+  }
+  
+  .upload-button, .history-btn {
+    min-width: 90px;
+    font-size: 0.9rem;
+    padding: 8px 0;
+  }
+  
+  .gradient-bar {
+    width: 100vw;
+    height: 30px;
+  }
+  
+  .model-selection select {
+    min-width: 140px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile Extra Small (below 320px) */
+@media (max-width: 319px) {
+  .navbar {
+    padding: 4px 8px;
+  }
+  
+  .navbar-brand h1 {
+    font-size: 0.9rem;
+  }
+  
+  .login-btn {
+    margin-right: 8px;
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+  
+  .navclose {
+    margin-right: 3px !important;
+  }
+  
+  .main-content {
+    padding-top: 50px;
+  }
+  
+  .upload-section {
+    padding: 0.4rem;
+  }
+  
+  .container {
+    padding: 0.8rem;
+  }
+  
+  .header p {
+    font-size: 0.9rem;
+  }
+  
+  .analysis-container {
+    padding: 0 0.1rem;
+  }
+  
+  .analysis-section {
+    padding: 0.5rem;
+  }
+  
+  .analysis-table {
+    min-width: 350px;
+  }
+  
+  .analysis-table th,
+  .analysis-table td {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .main-title {
+    font-size: 1rem;
+  }
+  
+  .section-title h2 {
+    font-size: 1rem;
+    padding: 0.5rem 0.6rem;
+  }
+  
+  .animated-gradient-text {
+    font-size: 1.2rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  .upload-btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    max-width: 200px;
+  }
+  
+  .modal-content {
+    width: 100%;
+    padding: 0.8rem;
+  }
+  
+  .first-time-dialog-inner {
+    max-width: 300px;
+    padding: 0.8rem;
+    margin: 0.2rem;
+  }
+  
+  .upload-button, .history-btn {
+    min-width: 80px;
+    font-size: 0.8rem;
+    padding: 6px 0;
+  }
+  
+  .gradient-bar {
+    width: 100vw;
+    height: 25px;
+  }
+  
+  .model-selection select {
+    min-width: 120px;
+    font-size: 0.8rem;
   }
 }
