@@ -49,6 +49,9 @@ function FirstTimeDialog({ open, onClose }) {
             <div className="how-it-works-desc">Get AI analysis about PYQS</div>
           </div>
         </div>
+        <div className="mobile-warning-dialog">
+          📱 Mobile view detected... switch to desktop mode for better experience
+        </div>
         <button
           onClick={onClose}
           className="get-started-btn"
