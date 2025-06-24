@@ -219,7 +219,7 @@ const FileUpload = () => {
   };
 
   const addSampleFiles = async () => {
-    const sampleNames = ['computer_network1.pdf', 'computer_network2.pdf', 'Nonsearchable_cn3.pdf'];
+    const sampleNames = ['computer_network1.pdf', 'computer_network2.pdf'];
     const files = await Promise.all(
       sampleNames.map(async (name) => {
         const response = await fetch(process.env.PUBLIC_URL + '/' + name);
