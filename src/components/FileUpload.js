@@ -239,7 +239,7 @@ const FileUpload = () => {
       </h2>
       {!isServerRunning && (
         <div className="server-status error">
-          <p>⚠️ Rendder's server is not running. Please start the server to use this feature.</p>
+          <p>⚠️ Starting the server. just Please wait few seconds .</p>
         </div>
       )}
       <form onSubmit={handleSubmit}>
