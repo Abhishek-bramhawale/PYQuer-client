@@ -1743,3 +1743,224 @@ code {
     display: block;
   }
 }
+
+/* AI Prompt Dialog Styles */
+.ai-dialog-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.35);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ai-dialog-modal {
+  background: #f7fafd;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 95%;
+  padding: 28px;
+  box-shadow: 0 4px 32px #0002;
+  position: relative;
+}
+.ai-dialog-title {
+  margin-top: 0;
+  color: #222;
+  background: #e3f0ff;
+  padding: 10px 0 10px 0;
+  border-radius: 8px 8px 0 0;
+  text-align: center;
+}
+.ai-dialog-desc {
+  color: #2563eb;
+  margin-bottom: 12px;
+  font-size: 15px;
+  background: #f0f7ff;
+  padding: 8px 10px;
+  border-radius: 6px;
+  text-align: center;
+}
+.ai-dialog-textarea {
+  width: 100%;
+  min-height: 180px;
+  font-size: 15px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  resize: vertical;
+  box-sizing: border-box;
+  background: #7177723f;
+}
+.aibutton {
+  /* background: #6366f1;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  background-image: linear-gradient(90deg,#6366f1 0%,#7c3aed 100%); */
+
+  cursor: pointer;
+  background: linear-gradient(90deg, #540ac9 0%, #00c6ff 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: all 0.3s;
+  margin-right: 10px;
+  min-height: 44px;
+}
+.ai-dialog-rawtitle {
+  margin: 18px 0 6px 0;
+  font-size: 17px;
+  background: #fff7f0;
+  padding: 7px 10px 7px 10px;
+  border-radius: 6px;
+}
+.ai-dialog-rawbox {
+  background: #7177723f;
+  padding: 8px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  max-height: 180px;
+  margin-bottom: 18px;
+}
+.ai-dialog-close {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  background: #f7fafd;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #888;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  transition: background 0.2s;
+}
+.ai-dialog-close:hover {
+  background: #e3f0ff;
+}
+
+@media (max-width: 575px) {
+  .aibutton {
+    width: 90% !important;
+  }
+  .ai-dialog-modal {
+    width: 98vw;
+    max-width: 98vw;
+    padding: 10px;
+  }
+  .ai-dialog-textarea {
+    width: 100%;
+    max-width: 100vw;
+    min-width: 0;
+  }
+}
+@media (max-width: 455px) {
+  .ai-dialog-modal {
+    width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+    margin-left: 8px;
+    margin-right: 8px;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 726px) and (min-width: 581px) {
+  .ai-dialog-modal {
+    width: 99vw !important;
+    max-width: 99vw !important;
+    padding: 14px !important;
+  }
+  .ai-dialog-textarea {
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+  }
+  .aibutton {
+    width: 95% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+.ai-dialog-close-mobile {
+  display: none;
+}
+
+@media (max-width: 575px) {
+  .ai-dialog-close-mobile {
+    display: block;
+    width: 100%;
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 17px;
+    padding: 13px 0;
+    margin: 12px 0 0 0;
+    font-weight: 600;
+    box-shadow: 0 2px 8px #0002;
+    cursor: pointer;
+  }
+}
+
+.download-section-flex {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-top: 32px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ai-alt-btn-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0;
+}
+
+.ai-alt-label {
+  color: #6366f1;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.try-other-ai-btn {
+  background: linear-gradient(90deg,#6366f1 0%,#7c3aed 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 2px 8px #0002;
+  min-width: 110px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 700px) {
+  .download-section-flex {
+    flex-direction: column;
+    gap: 18px;
+  }
+}
