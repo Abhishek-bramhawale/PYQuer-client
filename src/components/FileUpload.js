@@ -198,6 +198,9 @@ const FileUpload = () => {
 
       const analysisData = await analysisResponse.json();
       
+      // Debug: log papersText and prompt before analysis
+      console.log('papersText:', analysisData.papersText);
+      console.log('prompt:', analysisData.prompt);
       console.log(`\n=== Raw Analysis Data from ${selectedModel.toUpperCase()} ===\n`);
       console.log(analysisData.analysis);
       console.log('\n=====================================\n');
@@ -390,6 +393,8 @@ const FileUpload = () => {
         isLoading={isLoading}
         error={error}
         model={selectedModel}
+        papersText={analysis?.papersText}
+        promptTemplate={analysis?.prompt}
       />
     </div>
     // </div>

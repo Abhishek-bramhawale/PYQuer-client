@@ -131,11 +131,46 @@ const AI_MODELS = [
   },
 ];
 
-const AnalysisResults = ({ analysis, isLoading, error }) => {
+// Simple modal/dialog component
+function PromptDialog({ open, onClose, prompt, rawText }) {
+  if (!open) return null;
+  return (
+    <div className="ai-dialog-backdrop">
+      <div className="ai-dialog-modal">
+        <h2 className="ai-dialog-title">Try this prompt on ChatGPT or DeepSeek</h2>
+        <div className="ai-dialog-desc">Copy the below prompt and paste it into your preferred AI chatbot.</div>
+        <textarea
+          value={prompt}
+          readOnly
+          className="ai-dialog-textarea"
+        />
+        <button className="aibutton"
+          onClick={() => {navigator.clipboard.writeText(prompt)}}
+        >Copy Prompt</button>
+        <h3 className="ai-dialog-rawtitle">Raw Text from PDF</h3>
+        <div className="ai-dialog-rawbox">{rawText}</div>
+        <button
+          className="ai-dialog-close"
+          onClick={onClose}
+          aria-label="Close dialog"
+        >&times;</button>
+        {/* Mobile close button below raw text */}
+        <button
+          className="ai-dialog-close-mobile"
+          onClick={onClose}
+          aria-label="Close dialog"
+        >Close</button>
+      </div>
+    </div>
+  );
+}
+
+const AnalysisResults = ({ analysis, isLoading, error, papersText, promptTemplate }) => {
   const [selectedModel, setSelectedModel] = useState(AI_MODELS[0].key);
   const [aiResponses, setAIResponses] = useState({});
   const [aiLoading, setAILoading] = useState(false);
   const [aiError, setAIError] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   if (!analysis || !analysis.analysis) {
     return null;
@@ -337,20 +372,28 @@ doc.text('All the best for your exams!!', margin, yPosition);
         </div>
       </div>
 
-      <div className="download-section">
+      <div className="download-section-flex">
         <button 
           onClick={downloadPDF}
           className="download-pdf-btn"
         >
           📄 Download PDF
         </button>
-        <span className="download-section-note">
-          ⚠️Note - Its AI generated analysis.. verify important info once.
-        </span>
+        {selectedModel === 'gemini' && papersText && promptTemplate && (
+          <div className="ai-alt-btn-group">
+            <div className="ai-alt-label">
+              Didn't like the analysis? want to try on ChatGPT /DeepSeek or any other platform?  
+            </div>
+            <button
+              className="try-other-ai-btn"
+              onClick={() => setDialogOpen(true)}
+            >
+              Click here
+            </button>
+          </div>
+        )}
       </div>
-
-        
-      
+      <PromptDialog open={dialogOpen} onClose={() => setDialogOpen(false)} prompt={promptTemplate} rawText={papersText} />
     </div>
   );
 };

@@ -105,7 +105,11 @@ const History = () => {
               </div>
               {isExpanded && (
                 <div className="history-item-analysis">
-                  <AnalysisResults analysis={{ analysis: item.analysis }} />
+                  <AnalysisResults 
+                    analysis={{ analysis: item.analysis }} 
+                    papersText={item.papersText}
+                    promptTemplate={item.prompt}
+                  />
                 </div>
               )}
             </div>
