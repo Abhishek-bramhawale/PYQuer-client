@@ -4,20 +4,20 @@ import Navbar from './components/Navbar';
 import FileUpload from './components/FileUpload';
 import { Routes, Route } from 'react-router-dom';
 import History from './components/History';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+// import AOS from 'aos';
+// import 'aos/dist/aos.css';
 
 function FirstTimeDialog({ open, onClose }) {
   const gifSize = 180;
-  const [isMobile, setIsMobile] = React.useState(false);
+  const [showColoredButtons, setShowColoredButtons] = useState(true);
 
-  React.useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 600);
+  useEffect(() => {
+    const handleResize = () => {
+      setShowColoredButtons(window.innerWidth > 538);
     };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   if (!open) return null;
@@ -26,11 +26,13 @@ function FirstTimeDialog({ open, onClose }) {
     <div className="first-time-dialog-outer">
       <div className="first-time-dialog-inner">
         <div className="close-btns">
-          {!isMobile && <>
-            <div onClick={onClose} className="close-btn-red" title="Close" />
-            <div onClick={onClose} className="close-btn-yellow" title="Close" />
-            <div onClick={onClose} className="close-btn-green" title="Close" />
-          </>}
+          {showColoredButtons && (
+            <>
+              <div onClick={onClose} className="close-btn-red" title="Close" />
+              <div onClick={onClose} className="close-btn-yellow" title="Close" />
+              <div onClick={onClose} className="close-btn-green" title="Close" />
+            </>
+          )}
         </div>
         <h2 className="how-it-works-title">How it works</h2>
         <div className="how-it-works-steps">
@@ -47,11 +49,6 @@ function FirstTimeDialog({ open, onClose }) {
             <div className="how-it-works-desc">Get AI analysis about PYQS</div>
           </div>
         </div>
-        {isMobile && (
-          <div className="mobile-warning">
-            mobile view detected.. use desktop view for better experience
-          </div>
-        )}
         <button
           onClick={onClose}
           className="get-started-btn"
@@ -88,7 +85,16 @@ function App() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [showLoginNote, setShowLoginNote] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 600);
+  const [showNote, setShowNote] = useState(true);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setShowNote(window.innerWidth >= 816);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const seen = localStorage.getItem('pyquer_first_time_dialog_seen');
@@ -113,18 +119,6 @@ function App() {
     }
   }, [dialogOpen]);
 
-  useEffect(() => {
-    AOS.init({
-      once: false, 
-    });
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => setIsDesktop(window.innerWidth > 823);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   const handleDialogClose = () => {
     setDialogOpen(false);
     localStorage.setItem('pyquer_first_time_dialog_seen', 'true');
@@ -138,11 +132,9 @@ function App() {
   return (
     <div className="App">
       <FirstTimeDialog open={dialogOpen} onClose={handleDialogClose} />
-      {isDesktop && (
-        <LoginInfoNote open={showLoginNote && !isLoggedIn} onClose={handleLoginNoteClose} />
-      )}
-      <div className={dialogOpen ? 'blurred-bg' : '' + (showLoginNote && !isLoggedIn ? ' login-note-padding' : '')}>
-        <Navbar topOffset={showLoginNote && !isLoggedIn ? 40 : 0} />
+      {showNote && <LoginInfoNote open={showLoginNote && !isLoggedIn} onClose={handleLoginNoteClose} />}
+      <div className={dialogOpen ? 'blurred-bg' : '' + (showLoginNote && !isLoggedIn && showNote ? ' login-note-padding' : '')}>
+        <Navbar topOffset={showLoginNote && !isLoggedIn && showNote ? 40 : 0} />
         <main className="main-content">
           <Routes>
             <Route path="/" element={<FileUpload />} />
