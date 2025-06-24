@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_ENDPOINTS } from '../config/api';
 
 const Login = ({ isOpen, onClose }) => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -39,7 +40,8 @@ const Login = ({ isOpen, onClose }) => {
         ? { name: formData.email.split('@')[0], email: formData.email, password: formData.password }
         : formData;
 
-      const response = await fetch(`http://localhost:5000${endpoint}`, {
+      const baseUrl = API_ENDPOINTS.HEALTH.split('/api')[0];
+      const response = await fetch(`${baseUrl}${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
