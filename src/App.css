@@ -1724,3 +1724,22 @@ code {
   overflow-y: auto;
   animation: fadeInDialog 0.3s;
 }
+
+.mobile-warning-dialog {
+  display: none;
+  color: #eab308;
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 12px 0 0 0;
+  margin: 18px 0 0 0;
+  font-size: 16px;
+  text-align: center;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .mobile-warning-dialog {
+    display: block;
+  }
+}
