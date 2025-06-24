@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AnalysisResults from './AnalysisResults';
+import { API_ENDPOINTS } from '../config/api';
 
-const API_URL = '/api/ai/history';
+const API_URL = `${API_ENDPOINTS.HEALTH.split('/api/health')[0]}/api/ai/history`;
 
 const History = () => {
   const [history, setHistory] = useState([]);
