@@ -28,6 +28,8 @@ const FileUpload = () => {
   ];
   const [statusIndex, setStatusIndex] = useState(0);
   const [showOCRNotice, setShowOCRNotice] = useState(false);
+  const [papersText, setPapersText] = useState('');
+  const [showLongWait, setShowLongWait] = useState(false);
 
   useEffect(() => {
     const checkServer = async () => {
@@ -77,6 +79,16 @@ const FileUpload = () => {
       setShowOCRNotice(false);
     }
   }, [isUsingOCR]);
+
+  useEffect(() => {
+    let timer;
+    if (isLoading) {
+      timer = setTimeout(() => setShowLongWait(true), 20000);
+    } else {
+      setShowLongWait(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isLoading]);
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -363,6 +375,11 @@ const FileUpload = () => {
               >
                 Add Sample pdfs
               </button>
+            </div>
+          )}
+          {showLongWait && (
+            <div className="long-wait-message" style={{ color: '#b45309', background: '#fffbe6', border: '1px solid #ffe58f', borderRadius: 6, padding: '12px 18px', margin: '18px 0', fontSize: 16, textAlign: 'center' }}>
+              This is taking a little longer than usual... please wait a few more seconds. Multiple steps like OCR, AI analysis, and formatting are being performed to ensure accurate results. Thanks for your patience!
             </div>
           )}
         </div>
