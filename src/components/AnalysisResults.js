@@ -131,14 +131,13 @@ const AI_MODELS = [
   },
 ];
 
-// Simple modal/dialog component
 function PromptDialog({ open, onClose, prompt, rawText }) {
   if (!open) return null;
   return (
     <div className="ai-dialog-backdrop">
       <div className="ai-dialog-modal">
         <h2 className="ai-dialog-title">Try this prompt on ChatGPT or DeepSeek</h2>
-        <div className="ai-dialog-desc">Copy the below prompt and paste it into your preferred AI chatbot.</div>
+        <div className="ai-dialog-desc">  The following prompt already includes extracted text from all uploaded PDFs. Just copy it from here and paste it into any other AI platform (no need to copy the PDF text manually).</div>
         <textarea
           value={prompt}
           readOnly
@@ -382,7 +381,7 @@ doc.text('All the best for your exams!!', margin, yPosition);
         {selectedModel === 'gemini' && papersText && promptTemplate && (
           <div className="ai-alt-btn-group">
             <div className="ai-alt-label">
-              Didn't like the analysis? want to try on ChatGPT /DeepSeek or any other platform?  
+              Didn't like the analysis? Try on ChatGPT or DeepSeek
             </div>
             <button
               className="try-other-ai-btn"

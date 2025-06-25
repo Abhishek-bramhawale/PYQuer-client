@@ -198,7 +198,6 @@ const FileUpload = () => {
 
       const analysisData = await analysisResponse.json();
       
-      // Debug: log papersText and prompt before analysis
       console.log('papersText:', analysisData.papersText);
       console.log('prompt:', analysisData.prompt);
       console.log(`\n=== Raw Analysis Data from ${selectedModel.toUpperCase()} ===\n`);
@@ -365,7 +364,7 @@ const FileUpload = () => {
               >
                 <option value="gemini">Gemini</option>
                 <option value="mistral">Mistral</option>
-                <option value="cohere">Cohere</option>
+                {/* <option value="cohere">Cohere</option> */}
               </select>
             </div>
           )}
