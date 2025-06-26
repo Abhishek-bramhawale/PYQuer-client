@@ -381,7 +381,7 @@ const FileUpload = () => {
           )}
           {showLongWait && (
             <div className="long-wait-message" style={{ color: '#b45309', background: '#fffbe6', border: '1px solid #ffe58f', borderRadius: 6, padding: '12px 18px', margin: '18px 0', fontSize: 16, textAlign: 'center' }}>
-              This is taking a little longer than usual... please wait a few more seconds. Multiple steps like OCR, AI analysis, and formatting are being performed to ensure accurate results. Thanks for your patience!
+              This is taking a little longer than usual... Possible reason must be Non-searchable PDF.. please wait a few more seconds (or try uploading searchable pdf for fast analysis) Multiple steps like OCR, AI analysis, and formatting are being performed to ensure accurate results. Thanks for your patience!!
             </div>
           )}
         </div>
