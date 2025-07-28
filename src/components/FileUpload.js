@@ -241,7 +241,7 @@ const FileUpload = () => {
       </h2>
       {!isServerRunning && (
         <div className="server-status error">
-          <p>⚠️ Starting the server. just Please wait few seconds .</p>
+          <p>Server down!! .</p>
         </div>
       )}
       <form onSubmit={handleSubmit}>
