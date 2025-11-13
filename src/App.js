@@ -8,7 +8,6 @@ import History from './components/History';
 // import 'aos/dist/aos.css';
 
 function FirstTimeDialog({ open, onClose }) {
-  const gifSize = 180;
   const [showColoredButtons, setShowColoredButtons] = useState(true);
 
   useEffect(() => {

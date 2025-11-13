@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import AnalysisResults from './AnalysisResults';
 import { API_ENDPOINTS } from '../config/api';
 
@@ -10,7 +9,6 @@ const History = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedIdx, setExpandedIdx] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchHistory = async () => {

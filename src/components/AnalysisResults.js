@@ -165,10 +165,7 @@ function PromptDialog({ open, onClose, prompt, rawText }) {
 }
 
 const AnalysisResults = ({ analysis, isLoading, error, papersText, promptTemplate }) => {
-  const [selectedModel, setSelectedModel] = useState(AI_MODELS[0].key);
-  const [aiResponses, setAIResponses] = useState({});
-  const [aiLoading, setAILoading] = useState(false);
-  const [aiError, setAIError] = useState(null);
+  const selectedModel = AI_MODELS[0].key; 
   const [dialogOpen, setDialogOpen] = useState(false);
 
   if (!analysis || !analysis.analysis) {
@@ -300,34 +297,6 @@ doc.text('All the best for your exams!!', margin, yPosition);
     );
   };
 
-  const fetchAIResponse = async (modelKey) => {
-    setAILoading(true);
-    setAIError(null);
-    try {
-      const model = AI_MODELS.find(m => m.key === modelKey);
-      if (!model) throw new Error('Invalid AI model');
-      const res = await fetch(model.endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ analysis: analysis.analysis }),
-      });
-      if (!res.ok) throw new Error('Failed to fetch AI response');
-      const data = await res.json();
-      setAIResponses(prev => ({ ...prev, [modelKey]: data.response || 'No response' }));
-    } catch (err) {
-      setAIError(err.message || 'Error fetching AI response');
-    } finally {
-      setAILoading(false);
-    }
-  };
-
-  const handleModelChange = (modelKey) => {
-    setSelectedModel(modelKey);
-    if (!aiResponses[modelKey]) {
-      fetchAIResponse(modelKey);
-    }
-  };
-
   return (
     <div className="analysis-container">
       
@@ -376,7 +345,7 @@ doc.text('All the best for your exams!!', margin, yPosition);
           onClick={downloadPDF}
           className="download-pdf-btn"
         >
-          📄 Download PDF
+          Download PDF
         </button>
         {selectedModel === 'gemini' && papersText && promptTemplate && (
           <div className="ai-alt-btn-group">

@@ -28,7 +28,6 @@ const FileUpload = () => {
   ];
   const [statusIndex, setStatusIndex] = useState(0);
   const [showOCRNotice, setShowOCRNotice] = useState(false);
-  const [papersText, setPapersText] = useState('');
   const [showLongWait, setShowLongWait] = useState(false);
 
   useEffect(() => {
@@ -56,7 +55,7 @@ const FileUpload = () => {
       setLoadingLabelIndex(0);
     }
     return () => interval && clearInterval(interval);
-  }, [isLoading]);
+  }, [isLoading, loadingLabels.length]);
 
   useEffect(() => {
     let interval;
@@ -68,7 +67,7 @@ const FileUpload = () => {
       setStatusIndex(0);
     }
     return () => interval && clearInterval(interval);
-  }, [isLoading]);
+  }, [isLoading, statusMessages.length]);
 
   useEffect(() => {
     if (isUsingOCR) {
