@@ -94,12 +94,14 @@ const Navbar = ({ topOffset = 0 }) => {
               </div>
             </div>
           ) : (
-            <button 
+            <div 
               className="login-btn" 
               onClick={openLogin}
             >
-              Login / Sign Up
-            </button>
+              <div className="login-btn-inner">
+                Login / Sign Up
+              </div>
+            </div>
           )}
         </div>
       </nav>

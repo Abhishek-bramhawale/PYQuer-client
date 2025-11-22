@@ -106,6 +106,29 @@ const parseSections = (text) => {
   return sections;
 };
 
+const parseMarkdown = (text) => {
+  if (!text || typeof text !== 'string') {
+    return '';
+  }
+
+  let html = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  html = html.replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>');
+
+  html = html.replace(/^(\d+\.\s+[^:]+:)/gm, '<strong>$1</strong>');
+
+  html = html.replace(/(Paper\s+\d+:)/gi, '<strong>$1</strong>');
+
+  html = html.replace(/(?<!\*)\*([^*\n]+?)\*(?!\*)/g, '<em>$1</em>');
+
+  html = html.replace(/\n/g, '<br>');
+
+  return html;
+};
+
 const AI_MODELS = [
   {
     name: 'Gemini',
@@ -319,7 +342,10 @@ doc.text('All the best for your exams!!', margin, yPosition);
         <div className="analysis-section">
           <h2 className="section-title">4. Remaining Questions</h2>
           <div className="content-box">
-            <pre className="question-text">{questionWiseAnalysis}</pre>
+            <div 
+              className="question-text" 
+              dangerouslySetInnerHTML={{ __html: parseMarkdown(questionWiseAnalysis) }}
+            />
           </div>
         </div>
       </div>
@@ -327,7 +353,10 @@ doc.text('All the best for your exams!!', margin, yPosition);
         <div className="analysis-section">
           <h2 className="section-title">5. Study Recommendations</h2>
           <div className="content-box">
-            <pre className="question-text">{studyRecommendations}</pre>
+            <div 
+              className="question-text" 
+              dangerouslySetInnerHTML={{ __html: parseMarkdown(studyRecommendations) }}
+            />
           </div>
         </div>
       </div>
@@ -335,7 +364,10 @@ doc.text('All the best for your exams!!', margin, yPosition);
         <div className="analysis-section">
           <h2 className="section-title">6. Predictions</h2>
           <div className="content-box">
-            <pre className="question-text">{predictions}</pre>
+            <div 
+              className="question-text" 
+              dangerouslySetInnerHTML={{ __html: parseMarkdown(predictions) }}
+            />
           </div>
         </div>
       </div>

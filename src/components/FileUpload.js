@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AnalysisResults from './AnalysisResults';
+import Toast from './Toast';
 import { API_ENDPOINTS } from '../config/api';
 
 const FileUpload = () => {
@@ -29,6 +30,7 @@ const FileUpload = () => {
   const [statusIndex, setStatusIndex] = useState(0);
   const [showOCRNotice, setShowOCRNotice] = useState(false);
   const [showLongWait, setShowLongWait] = useState(false);
+  const [toast, setToast] = useState({ message: null, type: 'warning' });
 
   useEffect(() => {
     const checkServer = async () => {
@@ -41,8 +43,6 @@ const FileUpload = () => {
     };
 
     checkServer();
-    const interval = setInterval(checkServer, 5000);
-    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -128,6 +128,14 @@ const FileUpload = () => {
     e.preventDefault();
     if (files.length === 0) {
       alert('Please select at least one file first');
+      return;
+    }
+
+    if (checkForDuplicates(files)) {
+      setToast({
+        message: 'Duplicate file names detected. Please remove duplicates before uploading.',
+        type: 'error'
+      });
       return;
     }
 
@@ -219,16 +227,36 @@ const FileUpload = () => {
     setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
   };
 
+  const checkForDuplicates = (fileList) => {
+    const fileNames = fileList.map(file => file.name.toLowerCase());
+    const duplicates = fileNames.filter((name, index) => fileNames.indexOf(name) !== index);
+    return duplicates.length > 0;
+  };
+
   const addSampleFiles = async () => {
     const sampleNames = ['computer_network1.pdf', 'computer_network2.pdf'];
-    const files = await Promise.all(
+    const newFiles = await Promise.all(
       sampleNames.map(async (name) => {
         const response = await fetch(process.env.PUBLIC_URL + '/' + name);
         const blob = await response.blob();
         return new File([blob], name, { type: 'application/pdf' });
       })
     );
-    setFiles(prevFiles => [...prevFiles, ...files]);
+
+    const existingFileNames = files.map(file => file.name.toLowerCase());
+    const duplicateFiles = newFiles.filter(file => 
+      existingFileNames.includes(file.name.toLowerCase())
+    );
+
+    if (duplicateFiles.length > 0) {
+      setToast({
+        message: 'Same files were uploaded multiple times',
+        type: 'warning'
+      });
+      return;
+    }
+
+    setFiles(prevFiles => [...prevFiles, ...newFiles]);
   };
 
   return (
@@ -326,11 +354,16 @@ const FileUpload = () => {
           />
           <button 
             type="submit" 
-            className="upload-button"
+            className="upload-button button button--pan"
             disabled={files.length === 0 || !isServerRunning}
             onClick={(e) => e.stopPropagation()}
           >
-            {isLoading ? loadingLabels[loadingLabelIndex] : 'Upload'}
+            <span>
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+              </svg>
+              {isLoading ? loadingLabels[loadingLabelIndex] : 'Upload'}
+            </span>
           </button>
           {isLoading && (
             <div className="fileupload-loading">
@@ -394,6 +427,14 @@ const FileUpload = () => {
         papersText={analysis?.papersText}
         promptTemplate={analysis?.prompt}
       />
+
+      {toast.message && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast({ message: null, type: 'warning' })}
+        />
+      )}
     </div>
     // </div>
   );
