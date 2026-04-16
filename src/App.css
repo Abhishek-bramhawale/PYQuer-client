@@ -630,18 +630,25 @@ code {
 }
 
 .download-pdf-btn {
-  background-color: #4CAF50;
+  background-color: #10b981;
   color: white;
   padding: 12px 24px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 16px;
+  font-weight: 600;
   margin-top: 20px;
   margin-bottom: 20px;
   display: flex;
   align-items: center;
   gap: 8px;
   min-height: 44px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.download-pdf-btn:hover {
+  background-color: #059669;
 }
 
 .model-selection {
@@ -1919,30 +1926,21 @@ code {
   background: #7177723f;
 }
 .aibutton {
-  /* background: #6366f1;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 5px;
-  font-size: 15px;
   cursor: pointer;
-  margin-bottom: 10px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  background-image: linear-gradient(90deg,#6366f1 0%,#7c3aed 100%); */
-
-  cursor: pointer;
-  background: linear-gradient(90deg, #540ac9 0%, #00c6ff 100%);
+  background-color: #6366f1;
   color: white;
   border: none;
   border-radius: 10px;
   padding: 10px 16px;
   font-size: 0.9rem;
   font-weight: 700;
-  transition: all 0.3s;
+  transition: background-color 0.3s;
   margin-right: 10px;
   min-height: 44px;
+}
+
+.aibutton:hover {
+  background-color: #4f46e5;
 }
 .ai-dialog-rawtitle {
   margin: 18px 0 6px 0;
@@ -2056,8 +2054,9 @@ code {
 
 .ai-alt-btn-group {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  gap: 12px;
   margin-top: 0;
 }
 
@@ -2065,22 +2064,31 @@ code {
   color: #6366f1;
   font-size: 16px;
   font-weight: 600;
-  margin-bottom: 6px;
+  margin-bottom: 0;
   text-align: center;
+  white-space: nowrap;
 }
 
 .try-other-ai-btn {
-  background: linear-gradient(90deg,#6366f1 0%,#7c3aed 100%);
+  background-color: #6366f1;
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 8px 22px;
+  padding: 10px 24px;
   font-size: 16px;
   cursor: pointer;
   font-weight: 600;
-  box-shadow: 0 2px 8px #0002;
+  transition: background-color 0.2s;
   min-width: 110px;
   margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+}
+
+.try-other-ai-btn:hover {
+  background-color: #4f46e5;
 }
 
 @media (max-width: 700px) {

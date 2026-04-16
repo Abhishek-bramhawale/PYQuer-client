@@ -235,6 +235,14 @@ const FileUpload = () => {
         message: toastMessage,
         type: 'error'
       });
+
+      // Show suggestion toast after a delay
+      setTimeout(() => {
+        setToast({
+          message: 'Try using a different AI model for better results',
+          type: 'warning'
+        });
+      }, 3500);
     } finally {
       setIsLoading(false);
     }

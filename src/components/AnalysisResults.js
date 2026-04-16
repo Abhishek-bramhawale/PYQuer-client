@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import jsPDF from 'jspdf';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 const parseMarkdownTable = (text, section) => {
   if (!text || typeof text !== 'string') {
@@ -155,6 +157,18 @@ const AI_MODELS = [
 ];
 
 function PromptDialog({ open, onClose, prompt, rawText }) {
+  React.useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && open) {
+        onClose();
+      }
+    };
+    if (open) {
+      document.addEventListener('keydown', handleEscape);
+    }
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [open, onClose]);
+
   if (!open) return null;
   return (
     <div className="ai-dialog-backdrop">
@@ -377,6 +391,7 @@ doc.text('All the best for your exams!!', margin, yPosition);
           onClick={downloadPDF}
           className="download-pdf-btn"
         >
+          <FileDownloadIcon style={{ fontSize: '20px' }} />
           Download PDF
         </button>
         {selectedModel === 'gemini' && papersText && promptTemplate && (
@@ -388,6 +403,7 @@ doc.text('All the best for your exams!!', margin, yPosition);
               className="try-other-ai-btn"
               onClick={() => setDialogOpen(true)}
             >
+              <OpenInNewIcon style={{ fontSize: '18px' }} />
               Click here
             </button>
           </div>
