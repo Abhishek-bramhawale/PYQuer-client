@@ -194,7 +194,7 @@ code {
 
 .upload-button.button--pan span {
   position: relative;
-  mix-blend-mode: difference;
+  mix-blend-mode: normal;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -210,6 +210,10 @@ code {
   content: "";
   background: #540ac9;
   transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+}
+
+.upload-button.button--pan:hover {
+  color: #000;
 }
 
 .upload-button.button--pan:hover::before {

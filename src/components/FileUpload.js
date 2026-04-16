@@ -200,7 +200,9 @@ const FileUpload = () => {
 
       if (!analysisResponse.ok) {
         const errorData = await analysisResponse.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Analysis failed');
+        const apiError = new Error(errorData.error || 'Analysis failed');
+        apiError.details = errorData.details;
+        throw apiError;
       }
 
       const analysisData = await analysisResponse.json();
@@ -215,7 +217,24 @@ const FileUpload = () => {
       setFiles([]);
     } catch (error) {
       console.error('Error:', error);
-      setError(error.message || 'An error occurred during upload or analysis');
+      let toastMessage = error.message || 'An error occurred during upload or analysis';
+      
+      // Extract detailed error message from API response if available
+      if (error.details) {
+        try {
+          const detailMatch = error.details.match(/"message":\s*"([^"]+)"/);
+          if (detailMatch && detailMatch[1]) {
+            toastMessage = detailMatch[1];
+          }
+        } catch (e) {
+        }
+      }
+      
+      setError(toastMessage);
+      setToast({
+        message: toastMessage,
+        type: 'error'
+      });
     } finally {
       setIsLoading(false);
     }
