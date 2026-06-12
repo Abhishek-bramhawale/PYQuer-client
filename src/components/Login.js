@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { API_ENDPOINTS } from '../config/api';
 
+// Login / sign-up modal — saves token to localStorage on success
 const Login = ({ isOpen, onClose }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const Login = ({ isOpen, onClose }) => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // Update email or password field as user types
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -18,6 +20,7 @@ const Login = ({ isOpen, onClose }) => {
     setError(''); 
   };
 
+  // Send login or register request to server
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -74,6 +77,7 @@ const Login = ({ isOpen, onClose }) => {
     }
   };
 
+  // Switch between login and sign-up form
   const toggleMode = () => {
     setIsSignUp(!isSignUp);
     setError('');

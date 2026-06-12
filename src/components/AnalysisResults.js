@@ -3,6 +3,7 @@ import jsPDF from 'jspdf';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
+// Pull a markdown table out of one section of the AI response text
 const parseMarkdownTable = (text, section) => {
   if (!text || typeof text !== 'string') {
     console.warn(`Invalid text provided for ${section}:`, text);
@@ -67,6 +68,7 @@ const parseMarkdownTable = (text, section) => {
   }
 };
 
+// Split AI response into numbered sections (repeated questions, predictions, etc.)
 const parseSections = (text) => {
   const sections = {};
   const sectionTitles = [
@@ -108,6 +110,7 @@ const parseSections = (text) => {
   return sections;
 };
 
+// Turn plain text with **bold** and *italic* into simple HTML for display
 const parseMarkdown = (text) => {
   if (!text || typeof text !== 'string') {
     return '';
@@ -156,8 +159,10 @@ const AI_MODELS = [
   },
 ];
 
+// Popup to copy the AI prompt and raw PDF text for use in ChatGPT / DeepSeek
 function PromptDialog({ open, onClose, prompt, rawText }) {
   React.useEffect(() => {
+    // Close dialog when user presses Escape
     const handleEscape = (e) => {
       if (e.key === 'Escape' && open) {
         onClose();
@@ -201,6 +206,7 @@ function PromptDialog({ open, onClose, prompt, rawText }) {
   );
 }
 
+// Display parsed analysis tables, text sections, PDF download, and prompt dialog
 const AnalysisResults = ({ analysis, isLoading, error, papersText, promptTemplate }) => {
   const selectedModel = AI_MODELS[0].key; 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -219,7 +225,7 @@ const AnalysisResults = ({ analysis, isLoading, error, papersText, promptTemplat
   const studyRecommendations = parsedSections['5. Study Recommendations'] || '';
   const predictions = parsedSections['6. Predictions'] || '';
 
-  //pdf
+  // Build and download a PDF file with all analysis sections
   const downloadPDF = () => {
     const doc = new jsPDF();
     
@@ -235,6 +241,7 @@ const AnalysisResults = ({ analysis, isLoading, error, papersText, promptTemplat
     const pageHeight = 280;
     const margin = 20;
     
+    // Write text that wraps to the next line and page if needed
     const addWrappedText = (text, x, y, maxWidth) => {
       const lines = doc.splitTextToSize(text, maxWidth);
       for (let i = 0; i < lines.length; i++) {
@@ -248,6 +255,7 @@ const AnalysisResults = ({ analysis, isLoading, error, papersText, promptTemplat
       return y + 5;
     };
 
+    // Add a titled section to the PDF document
     const addSection = (title, content) => {
       doc.setFontSize(14);
       doc.setFont('helvetica', 'bold');
@@ -297,6 +305,7 @@ doc.text('All the best for your exams!!', margin, yPosition);
     doc.save(filename);
   };
 
+  // Render one analysis section as a table or empty message
   const renderTableSection = (title, data, columns) => {
     if (!data || data.isEmpty) {
       return (

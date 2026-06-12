@@ -10,6 +10,7 @@ const History = () => {
   const [error, setError] = useState(null);
   const [expandedIdx, setExpandedIdx] = useState(null);
 
+  // Load saved analyses from server on page open
   useEffect(() => {
     const fetchHistory = async () => {
       setLoading(true);
@@ -40,6 +41,7 @@ const History = () => {
     fetchHistory();
   }, []);
 
+  // Expand or collapse one history item to show full analysis
   const handleToggle = (idx) => {
     setExpandedIdx(expandedIdx === idx ? null : idx);
   };

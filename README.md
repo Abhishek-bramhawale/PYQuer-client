@@ -3,6 +3,8 @@
 
 A React client where users can upload previous year question papers and get the analysis results.
 
+![PYQuer app preview](./public/preview.png)
+
 ## Features
 
 - PDF upload (multiple files)

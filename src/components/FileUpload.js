@@ -3,6 +3,7 @@ import AnalysisResults from './AnalysisResults';
 import Toast from './Toast';
 import { API_ENDPOINTS } from '../config/api';
 
+// Main page — upload PDFs, send to server, show AI analysis
 const FileUpload = () => {
   const [files, setFiles] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -32,6 +33,7 @@ const FileUpload = () => {
   const [showLongWait, setShowLongWait] = useState(false);
   const [toast, setToast] = useState({ message: null, type: 'warning' });
 
+  // Check if backend server is running when page loads
   useEffect(() => {
     const checkServer = async () => {
       try {
@@ -45,6 +47,7 @@ const FileUpload = () => {
     checkServer();
   }, []);
 
+  // Rotate "Analyzing..." text on upload button while loading
   useEffect(() => {
     let interval;
     if (isLoading) {
@@ -57,6 +60,7 @@ const FileUpload = () => {
     return () => interval && clearInterval(interval);
   }, [isLoading, loadingLabels.length]);
 
+  // Cycle through status messages under the loading animation
   useEffect(() => {
     let interval;
     if (isLoading) {
@@ -69,6 +73,7 @@ const FileUpload = () => {
     return () => interval && clearInterval(interval);
   }, [isLoading, statusMessages.length]);
 
+  // Show OCR notice for a few seconds when scanned PDF is detected
   useEffect(() => {
     if (isUsingOCR) {
       setShowOCRNotice(true);
@@ -79,6 +84,7 @@ const FileUpload = () => {
     }
   }, [isUsingOCR]);
 
+  // Show "taking longer" message if analysis runs more than 20 seconds
   useEffect(() => {
     let timer;
     if (isLoading) {
@@ -89,6 +95,7 @@ const FileUpload = () => {
     return () => clearTimeout(timer);
   }, [isLoading]);
 
+  // Add PDFs when user picks files from file browser
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     const pdfFiles = selectedFiles.filter(file => file.type === 'application/pdf');
@@ -101,16 +108,19 @@ const FileUpload = () => {
     e.target.value = null;
   };
 
+  // Highlight drop zone when user drags files over it
   const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
   };
 
+  // Remove highlight when drag leaves the drop zone
   const handleDragLeave = (e) => {
     e.preventDefault();
     setIsDragging(false);
   };
 
+  // Add PDFs when user drops files onto the upload area
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
@@ -124,6 +134,7 @@ const FileUpload = () => {
     }
   };
 
+  // Upload PDFs to server, then request AI analysis
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (files.length === 0) {
@@ -248,18 +259,21 @@ const FileUpload = () => {
     }
   };
 
+  // Remove one file from the list before upload
   const handleRemoveFile = (index) => (e) => {
     e.preventDefault();
     e.stopPropagation();
     setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
   };
 
+  // Return true if two or more files have the same name
   const checkForDuplicates = (fileList) => {
     const fileNames = fileList.map(file => file.name.toLowerCase());
     const duplicates = fileNames.filter((name, index) => fileNames.indexOf(name) !== index);
     return duplicates.length > 0;
   };
 
+  // Load demo PDFs from public folder so user can try without own files
   const addSampleFiles = async () => {
     const sampleNames = ['computer_network1.pdf', 'computer_network2.pdf'];
     const newFiles = await Promise.all(

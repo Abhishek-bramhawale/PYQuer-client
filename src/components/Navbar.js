@@ -11,6 +11,7 @@ const Navbar = ({ topOffset = 0 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
+  // Load logged-in user from localStorage on mount
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
@@ -20,6 +21,7 @@ const Navbar = ({ topOffset = 0 }) => {
     }
   }, []);
 
+  // Clear saved login and refresh the page
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -27,23 +29,28 @@ const Navbar = ({ topOffset = 0 }) => {
     window.location.reload();
   };
 
+  // Open the login modal
   const openLogin = () => {
     setIsLoginOpen(true);
   };
 
+  // Close the login modal
   const closeModal = () => {
     setIsLoginOpen(false);
   };
 
+  // Show or hide user dropdown menu
   const handleAvatarClick = () => {
     setDropdownOpen((prev) => !prev);
   };
 
+  // Go to history page from user menu
   const handleHistory = () => {
     setDropdownOpen(false);
     navigate('/history');
   };
 
+  // Log out from user menu dropdown
   const handleLogoutDropdown = () => {
     setDropdownOpen(false);
     handleLogout();
