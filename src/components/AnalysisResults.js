@@ -157,12 +157,18 @@ const AI_MODELS = [
     endpoint: '/api/ai/mistral',
     color: '#7C3AED',
   },
+  {
+    name: 'Grok',
+    key: 'grok',
+    envKey: 'REACT_APP_GROK_API_KEY',
+    endpoint: '/api/ai/grok',
+    color: '#1DA1F2',
+  },
 ];
 
 // Popup to copy the AI prompt and raw PDF text for use in ChatGPT / DeepSeek
 function PromptDialog({ open, onClose, prompt, rawText }) {
   React.useEffect(() => {
-    // Close dialog when user presses Escape
     const handleEscape = (e) => {
       if (e.key === 'Escape' && open) {
         onClose();

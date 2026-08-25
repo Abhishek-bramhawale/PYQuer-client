@@ -7,12 +7,10 @@ import History from './components/History';
 // import AOS from 'aos';
 // import 'aos/dist/aos.css';
 
-// Popup shown the first time user visits — explains how the app works
 function FirstTimeDialog({ open, onClose }) {
   const [showColoredButtons, setShowColoredButtons] = useState(true);
 
   useEffect(() => {
-    // Hide mac-style close dots on small screens
     const handleResize = () => {
       setShowColoredButtons(window.innerWidth > 538);
     };
@@ -64,7 +62,6 @@ function FirstTimeDialog({ open, onClose }) {
   );
 }
 
-// Small banner at top — tells user login is only needed for history
 function LoginInfoNote({ open, onClose }) {
   if (!open) return null;
   return (
@@ -86,7 +83,6 @@ function LoginInfoNote({ open, onClose }) {
   );
 }
 
-// Main app — navbar, routes, and first-time popups
 function App() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [showLoginNote, setShowLoginNote] = useState(false);
@@ -103,7 +99,6 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // On load: show first-time dialog and login note if user hasn't seen them
   useEffect(() => {
     const seen = localStorage.getItem('pyquer_first_time_dialog_seen');
     if (!seen) {
