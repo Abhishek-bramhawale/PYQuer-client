@@ -2,6 +2,7 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://pyquer-serve
 
 export const API_ENDPOINTS = {
   HEALTH: `${API_BASE_URL}/api/health`,
+  AI_HEALTH: `${API_BASE_URL}/api/ai/health`,
   UPLOAD: `${API_BASE_URL}/api/upload`,
   GEMINI: `${API_BASE_URL}/api/ai/gemini`,
   MISTRAL: `${API_BASE_URL}/api/ai/mistral`,

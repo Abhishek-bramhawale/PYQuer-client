@@ -32,6 +32,27 @@ const FileUpload = () => {
   const [showOCRNotice, setShowOCRNotice] = useState(false);
   const [showLongWait, setShowLongWait] = useState(false);
   const [toast, setToast] = useState({ message: null, type: 'warning' });
+  // null = still checking; object = provider health from /api/ai/health (session cache)
+  const [providerHealth, setProviderHealth] = useState(null);
+  const [providerHealthLoading, setProviderHealthLoading] = useState(true);
+
+  const AI_MODEL_OPTIONS = [
+    { id: 'gemini', label: 'Gemini' },
+    { id: 'mistral', label: 'Mistral' },
+    { id: 'grok', label: 'Grok' },
+    { id: 'openrouter', label: 'OpenRouter Free' },
+  ];
+
+  const getModelOptionLabel = (id, label) => {
+    if (providerHealthLoading || !providerHealth) {
+      return `${label} — Checking...`;
+    }
+    const status = providerHealth[id]?.status;
+    if (status === 'ready') return `🟢 ${label} — Ready`;
+    if (status === 'degraded') return `🟡 ${label} — Degraded`;
+    if (status === 'unavailable') return `🔴 ${label} — Unavailable`;
+    return label;
+  };
 
   // Check if backend server is running when page loads
   useEffect(() => {
@@ -45,6 +66,55 @@ const FileUpload = () => {
     };
 
     checkServer();
+  }, []);
+
+  // Background AI provider health — does not block UI; cached for this browser session
+  useEffect(() => {
+    let cancelled = false;
+    const SESSION_KEY = 'pyquer_ai_health';
+
+    const applyHealth = (data) => {
+      if (cancelled) return;
+      setProviderHealth(data?.providers || data || {});
+      setProviderHealthLoading(false);
+    };
+
+    try {
+      const cached = sessionStorage.getItem(SESSION_KEY);
+      if (cached) {
+        applyHealth(JSON.parse(cached));
+        return () => {
+          cancelled = true;
+        };
+      }
+    } catch (e) {
+      // ignore bad cache
+    }
+
+    const fetchHealth = async () => {
+      try {
+        const response = await fetch(API_ENDPOINTS.AI_HEALTH);
+        if (!response.ok) throw new Error('Health request failed');
+        const data = await response.json();
+        try {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(data));
+        } catch (e) {
+          // ignore quota errors
+        }
+        applyHealth(data);
+      } catch (error) {
+        console.warn('AI provider health check failed:', error);
+        if (!cancelled) {
+          setProviderHealth({});
+          setProviderHealthLoading(false);
+        }
+      }
+    };
+
+    fetchHealth();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // Rotate "Analyzing..." text on upload button while loading
@@ -393,6 +463,34 @@ const FileUpload = () => {
             onChange={handleFileChange}
             className="fileupload-input-hidden"
           />
+          {!isLoading && (
+            <div className="add-sample-btn-container">
+              <button
+                type="button"
+                onClick={addSampleFiles}
+                className="add-sample-btn"
+              >
+                Add Sample pdfs
+              </button>
+            </div>
+          )}
+          {!isLoading && (
+            <div className="ai-model-select-container">
+              <span className="fileupload-model-label">AI Model:</span>
+              <select 
+                value={selectedModel} 
+                onChange={(e) => setSelectedModel(e.target.value)}
+                disabled={isLoading}
+                className="ai-model-select"
+              >
+                {AI_MODEL_OPTIONS.map(({ id, label }) => (
+                  <option key={id} value={id}>
+                    {getModelOptionLabel(id, label)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           <button 
             type="submit" 
             className="upload-button button button--pan"
@@ -424,34 +522,6 @@ const FileUpload = () => {
               <p className="fileupload-status-message">
                 {statusMessages[statusIndex]}
               </p>
-            </div>
-          )}
-          {!isLoading && (
-            <div className="ai-model-select-container">
-              <span className="fileupload-model-label">AI Model:</span>
-              <select 
-                value={selectedModel} 
-                onChange={(e) => setSelectedModel(e.target.value)}
-                disabled={isLoading}
-                className="ai-model-select"
-              >
-                <option value="gemini">Gemini</option>
-                <option value="mistral">Mistral</option>
-                <option value="grok">Grok</option>
-                <option value="openrouter">OpenRouter Free</option>
-                {/* <option value="cohere">Cohere</option> */}
-              </select>
-            </div>
-          )}
-          {!isLoading && (
-            <div className="add-sample-btn-container">
-              <button
-                type="button"
-                onClick={addSampleFiles}
-                className="add-sample-btn"
-              >
-                Add Sample pdfs
-              </button>
             </div>
           )}
           {showLongWait && (
