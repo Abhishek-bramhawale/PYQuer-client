@@ -61,7 +61,7 @@ const History = () => {
             <div
               key={item._id || idx}
               className={`history-item${isExpanded ? ' history-item-expanded' : ''}`}
-              style={{ borderLeft: `6px solid ${item.modelUsed === 'gemini' ? '#4285F4' : item.modelUsed === 'cohere' ? '#FBBF24' : item.modelUsed === 'grok' ? '#1DA1F2' : '#7C3AED'}` }}
+              style={{ borderLeft: `6px solid ${item.modelUsed === 'gemini' ? '#4285F4' : item.modelUsed === 'cohere' ? '#FBBF24' : item.modelUsed === 'grok' ? '#1DA1F2' : item.modelUsed === 'openrouter' ? '#10B981' : '#7C3AED'}` }}
             >
               <div className="history-item-header">
                 <span className="history-item-model">{item.modelUsed.toUpperCase()}</span>

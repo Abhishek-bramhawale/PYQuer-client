@@ -438,6 +438,7 @@ const FileUpload = () => {
                 <option value="gemini">Gemini</option>
                 <option value="mistral">Mistral</option>
                 <option value="grok">Grok</option>
+                <option value="openrouter">OpenRouter Free</option>
                 {/* <option value="cohere">Cohere</option> */}
               </select>
             </div>

@@ -287,6 +287,12 @@ code {
   z-index: 1100;
 }
 
+/* Prevent background scroll while login/signup modal is open */
+body.modal-open,
+html.modal-open {
+  overflow: hidden;
+}
+
 .modal-content {
   background-color: white;
   padding: 1.5rem;

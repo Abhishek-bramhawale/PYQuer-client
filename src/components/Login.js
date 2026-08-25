@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { API_ENDPOINTS } from '../config/api';
 
 // Login / sign-up modal — saves token to localStorage on success
@@ -10,6 +10,27 @@ const Login = ({ isOpen, onClose }) => {
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Lock page scroll while open; Escape closes the modal
+  useEffect(() => {
+    if (!isOpen) return;
+
+    document.body.classList.add('modal-open');
+    document.documentElement.classList.add('modal-open');
+
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.body.classList.remove('modal-open');
+      document.documentElement.classList.remove('modal-open');
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, onClose]);
 
   // Update email or password field as user types
   const handleChange = (e) => {
