@@ -32,7 +32,6 @@ const FileUpload = () => {
   const [showOCRNotice, setShowOCRNotice] = useState(false);
   const [showLongWait, setShowLongWait] = useState(false);
   const [toast, setToast] = useState({ message: null, type: 'warning' });
-  // null = still checking; object = provider health from /api/ai/health (session cache)
   const [providerHealth, setProviderHealth] = useState(null);
   const [providerHealthLoading, setProviderHealthLoading] = useState(true);
 
@@ -68,40 +67,25 @@ const FileUpload = () => {
     checkServer();
   }, []);
 
-  // Background AI provider health — does not block UI; cached for this browser session
+  // Background AI provider health — refetch on every page load / refresh
   useEffect(() => {
     let cancelled = false;
-    const SESSION_KEY = 'pyquer_ai_health';
-
-    const applyHealth = (data) => {
-      if (cancelled) return;
-      setProviderHealth(data?.providers || data || {});
-      setProviderHealthLoading(false);
-    };
 
     try {
-      const cached = sessionStorage.getItem(SESSION_KEY);
-      if (cached) {
-        applyHealth(JSON.parse(cached));
-        return () => {
-          cancelled = true;
-        };
-      }
+      sessionStorage.removeItem('pyquer_ai_health');
     } catch (e) {
-      // ignore bad cache
+      // ignore
     }
 
     const fetchHealth = async () => {
+      setProviderHealthLoading(true);
       try {
-        const response = await fetch(API_ENDPOINTS.AI_HEALTH);
+        const response = await fetch(`${API_ENDPOINTS.AI_HEALTH}?fresh=1`);
         if (!response.ok) throw new Error('Health request failed');
         const data = await response.json();
-        try {
-          sessionStorage.setItem(SESSION_KEY, JSON.stringify(data));
-        } catch (e) {
-          // ignore quota errors
-        }
-        applyHealth(data);
+        if (cancelled) return;
+        setProviderHealth(data?.providers || {});
+        setProviderHealthLoading(false);
       } catch (error) {
         console.warn('AI provider health check failed:', error);
         if (!cancelled) {
