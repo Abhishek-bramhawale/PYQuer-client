@@ -3,65 +3,105 @@ import jsPDF from 'jspdf';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
-// Pull a markdown table out of one section of the AI response text
-const parseMarkdownTable = (text, section) => {
-  if (!text || typeof text !== 'string') {
-    console.warn(`Invalid text provided for ${section}:`, text);
+const SECTION_TITLES = [
+  '1. Repeated Questions Analysis',
+  '2. Questions Asking for Differences',
+  '3. Questions Requiring Diagrams',
+  '4. Remaining Questions',
+  '5. Study Recommendations',
+  '6. Predictions',
+];
+
+// Normalize model output titles like "### 1. Foo:" or "**1. Foo**"
+const normalizeHeadingLine = (line) =>
+  String(line || '')
+    .replace(/^#{1,6}\s*/, '')
+    .replace(/\*\*/g, '')
+    .trim()
+    .replace(/:+\s*$/, '');
+
+const matchSectionTitle = (line) => {
+  const normalized = normalizeHeadingLine(line);
+  return SECTION_TITLES.find(
+    (title) => normalized === title || normalized.startsWith(`${title}`)
+  ) || null;
+};
+
+// Parse a markdown table from already-extracted section body text
+const parseTableFromSectionContent = (content, section) => {
+  if (!content || typeof content !== 'string') {
     return [];
   }
-  
+
   try {
-    const sectionRegex = new RegExp(`${section}:\\s*\\n([\\s\\S]*?)(?=\\n\\d\\.|$)`);
-    const match = text.match(sectionRegex);
-    
-    if (!match || !match[1]) {
-      console.warn(`No content found for section ${section}`);
+    const cleaned = content
+      .replace(/^---+?\s*/gm, '')
+      .trim();
+
+    if (!cleaned) {
       return [];
     }
-    
-    const content = match[1].trim();
-    
-    if (content.startsWith('No ') && content.includes('found')) {
-      return { isEmpty: true, message: content };
+
+    // "No X found..." empty sections (take first sentence/line)
+    if (/^No\s+.+\s+found/i.test(cleaned) && !cleaned.includes('|')) {
+      const message = cleaned.split(/\n+/)[0].trim();
+      return { isEmpty: true, message };
     }
-    
-    const tableMatch = content.match(/\|.*\n\|[-|]+\n([\s\S]*?)(?=\n\d\.|$)/);
-    if (!tableMatch) {
-      return { isEmpty: true, message: content };
+
+    const lines = cleaned.split(/\r?\n/);
+    const headerIndex = lines.findIndex(
+      (line) => line.includes('|') && !/^\s*\|?[\s:-]+\|/.test(line)
+    );
+    if (headerIndex === -1) {
+      return { isEmpty: true, message: cleaned.split(/\n+/)[0].trim() || cleaned };
     }
-    
-    const tableContent = tableMatch[1].trim();
-    if (!tableContent) {
-      return { isEmpty: true, message: 'No data found' };
-    }
-    
-    const lines = tableContent.split('\n');
-    
-    return lines.map(line => {
-      if (!line || !line.trim()) return null;
-      
-      const cells = line.split('|')
-        .filter(cell => cell && cell.trim())
-        .map(cell => cell.trim());
-      
+
+    const rows = [];
+    for (let i = headerIndex + 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) {
+        if (rows.length) break;
+        continue;
+      }
+      if (/^---+/.test(line)) break;
+      if (/^\|?[\s:-]+\|/.test(line)) continue; // separator row
+      if (!line.includes('|')) {
+        if (rows.length) break;
+        continue;
+      }
+
+      const cells = line
+        .split('|')
+        .map((cell) => cell.trim())
+        .filter((cell, idx, arr) => !(idx === 0 && cell === '') && !(idx === arr.length - 1 && cell === ''));
+
       if (section === '1. Repeated Questions Analysis') {
         if (cells.length >= 3) {
-          return {
+          rows.push({
             question: cells[0] || '',
             repeatedcount: cells[1] || '',
-            papersappeared: cells[2] || ''
-          };
-        }
-      } else {
-        if (cells.length >= 2) {
-          return {
+            papersappeared: cells[2] || '',
+          });
+        } else if (cells.length === 2) {
+          // Some models omit Repeated Count
+          rows.push({
             question: cells[0] || '',
-            papersappeared: cells[1] || ''
-          };
+            repeatedcount: '',
+            papersappeared: cells[1] || '',
+          });
         }
+      } else if (cells.length >= 2) {
+        rows.push({
+          question: cells[0] || '',
+          papersappeared: cells[1] || '',
+        });
       }
-      return null;
-    }).filter(Boolean);
+    }
+
+    if (!rows.length) {
+      return { isEmpty: true, message: cleaned.split(/\n+/)[0].trim() || 'No data found' };
+    }
+    return rows;
   } catch (error) {
     console.error(`Error parsing table for section ${section}:`, error);
     return [];
@@ -71,35 +111,23 @@ const parseMarkdownTable = (text, section) => {
 // Split AI response into numbered sections (repeated questions, predictions, etc.)
 const parseSections = (text) => {
   const sections = {};
-  const sectionTitles = [
-    '1. Repeated Questions Analysis',
-    '2. Questions Asking for Differences',
-    '3. Questions Requiring Diagrams',
-    '4. Remaining Questions',
-    '5. Study Recommendations',
-    '6. Predictions',
-  ];
-
   let currentSection = '';
   let currentContent = [];
 
-  const lines = text.split(/\r?\n/);
+  const lines = String(text || '').split(/\r?\n/);
 
   for (const line of lines) {
-    let isSectionTitle = false;
-    for (const title of sectionTitles) {
-      if (line.startsWith(title)) {
-        if (currentSection) {
-          sections[currentSection] = currentContent.join('\n').trim();
-        }
-        currentSection = title;
-        currentContent = [];
-        isSectionTitle = true;
-        break;
+    const matchedTitle = matchSectionTitle(line);
+    if (matchedTitle) {
+      if (currentSection) {
+        sections[currentSection] = currentContent.join('\n').trim();
       }
+      currentSection = matchedTitle;
+      currentContent = [];
+      continue;
     }
 
-    if (!isSectionTitle && currentSection) {
+    if (currentSection) {
       currentContent.push(line);
     }
   }
@@ -120,6 +148,10 @@ const parseMarkdown = (text) => {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+
+  // Drop leftover markdown heading markers inside section bodies
+  html = html.replace(/^#{1,6}\s+/gm, '');
+  html = html.replace(/^---+$/gm, '');
 
   html = html.replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>');
 
@@ -224,9 +256,18 @@ const AnalysisResults = ({ analysis, isLoading, error, papersText, promptTemplat
   const rawAnalysisText = analysis.analysis;
   const parsedSections = parseSections(rawAnalysisText);
 
-  const repeatedQuestions = parseMarkdownTable(rawAnalysisText, '1. Repeated Questions Analysis');
-  const differenceQuestions = parseMarkdownTable(rawAnalysisText, '2. Questions Asking for Differences');
-  const diagramQuestions = parseMarkdownTable(rawAnalysisText, '3. Questions Requiring Diagrams');
+  const repeatedQuestions = parseTableFromSectionContent(
+    parsedSections['1. Repeated Questions Analysis'],
+    '1. Repeated Questions Analysis'
+  );
+  const differenceQuestions = parseTableFromSectionContent(
+    parsedSections['2. Questions Asking for Differences'],
+    '2. Questions Asking for Differences'
+  );
+  const diagramQuestions = parseTableFromSectionContent(
+    parsedSections['3. Questions Requiring Diagrams'],
+    '3. Questions Requiring Diagrams'
+  );
   const questionWiseAnalysis = parsedSections['4. Remaining Questions'] || '';
   const studyRecommendations = parsedSections['5. Study Recommendations'] || '';
   const predictions = parsedSections['6. Predictions'] || '';
@@ -313,7 +354,7 @@ doc.text('All the best for your exams!!', margin, yPosition);
 
   // Render one analysis section as a table or empty message
   const renderTableSection = (title, data, columns) => {
-    if (!data || data.isEmpty) {
+    if (!data || data.isEmpty || (Array.isArray(data) && data.length === 0)) {
       return (
         <div className="analysis-section">
           <h2 className="section-title">{title}</h2>

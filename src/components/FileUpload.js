@@ -254,36 +254,77 @@ const FileUpload = () => {
 
       const analysisEndpoint = API_ENDPOINTS.GEMINI.replace('/ai/gemini', '/analyze');
       const token = localStorage.getItem('token');
-      const analysisResponse = await fetch(analysisEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-        },
-        body: JSON.stringify({ papers: papersToAnalyze, model: selectedModel }),
-      });
+      const ANALYZE_TIMEOUT_MS = 2 * 60 * 1000;
 
-      if (!analysisResponse.ok) {
-        const errorData = await analysisResponse.json().catch(() => ({}));
-        const apiError = new Error(errorData.error || 'Analysis failed');
-        apiError.details = errorData.details;
-        throw apiError;
+      // One analyze attempt with a hard 2-minute timeout
+      const requestAnalysis = async () => {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), ANALYZE_TIMEOUT_MS);
+        try {
+          const analysisResponse = await fetch(analysisEndpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+            },
+            body: JSON.stringify({ papers: papersToAnalyze, model: selectedModel }),
+            signal: controller.signal,
+          });
+
+          if (!analysisResponse.ok) {
+            const errorData = await analysisResponse.json().catch(() => ({}));
+            const apiError = new Error(errorData.error || 'Analysis failed');
+            apiError.details = errorData.details;
+            throw apiError;
+          }
+
+          return await analysisResponse.json();
+        } catch (err) {
+          if (err?.name === 'AbortError') {
+            throw new Error('Analysis timed out after 2 minutes');
+          }
+          throw err;
+        } finally {
+          clearTimeout(timer);
+        }
+      };
+
+      // Attempt once, then retry once with the same model on timeout/failure
+      let analysisData = null;
+      let lastAnalyzeError = null;
+      for (let attempt = 1; attempt <= 2; attempt++) {
+        try {
+          analysisData = await requestAnalysis();
+          lastAnalyzeError = null;
+          break;
+        } catch (analyzeError) {
+          lastAnalyzeError = analyzeError;
+          console.warn(`Analyze attempt ${attempt} failed:`, analyzeError);
+          if (attempt === 1) {
+            setToast({
+              message: 'Analysis failed or timed out. Retrying once with the same model...',
+              type: 'warning',
+            });
+          }
+        }
       }
 
-      const analysisData = await analysisResponse.json();
-      
+      if (!analysisData) {
+        throw lastAnalyzeError || new Error('Analysis failed');
+      }
+
       console.log('papersText:', analysisData.papersText);
       console.log('prompt:', analysisData.prompt);
       console.log(`\n=== Raw Analysis Data from ${selectedModel.toUpperCase()} ===\n`);
       console.log(analysisData.analysis);
       console.log('\n=====================================\n');
-      
+
       setAnalysis(analysisData);
       setFiles([]);
     } catch (error) {
       console.error('Error:', error);
       let toastMessage = error.message || 'An error occurred during upload or analysis';
-      
+
       // Extract detailed error message from API response if available
       if (error.details) {
         try {
@@ -294,7 +335,7 @@ const FileUpload = () => {
         } catch (e) {
         }
       }
-      
+
       setError(toastMessage);
       setToast({
         message: toastMessage,

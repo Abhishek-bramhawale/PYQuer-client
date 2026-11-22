@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://pyquer-server.onrender.com';
+const API_BASE_URL = (process.env.REACT_APP_API_BASE_URL || 'https://pyquer-server-yvnn.onrender.com').replace(/\/+$/, '');
 
 export const API_ENDPOINTS = {
   HEALTH: `${API_BASE_URL}/api/health`,
