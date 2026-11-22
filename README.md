@@ -32,7 +32,11 @@ npm install
 Create `.env` in `client/` (optional):
 ```env
 REACT_APP_API_BASE_URL=https://your-backend-url
+REACT_APP_SHOW_GROK=false
+REACT_APP_SHOW_OPENROUTER=false
 ```
+
+- `REACT_APP_SHOW_GROK` / `REACT_APP_SHOW_OPENROUTER`: set to `true` to show those models in the dropdown; anything else hides them. Restart CRA after changing.
 
 3) Run development server
 ```bash

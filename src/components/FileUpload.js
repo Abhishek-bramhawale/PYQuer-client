@@ -35,11 +35,17 @@ const FileUpload = () => {
   const [providerHealth, setProviderHealth] = useState(null);
   const [providerHealthLoading, setProviderHealthLoading] = useState(true);
 
+  const isEnvFlagTrue = (value) => String(value || '').trim().toLowerCase() === 'true';
+
   const AI_MODEL_OPTIONS = [
     { id: 'gemini', label: 'Gemini' },
     { id: 'mistral', label: 'Mistral' },
-    { id: 'grok', label: 'Grok' },
-    { id: 'openrouter', label: 'OpenRouter Free' },
+    ...(isEnvFlagTrue(process.env.REACT_APP_SHOW_GROK)
+      ? [{ id: 'grok', label: 'Grok' }]
+      : []),
+    ...(isEnvFlagTrue(process.env.REACT_APP_SHOW_OPENROUTER)
+      ? [{ id: 'openrouter', label: 'OpenRouter Free' }]
+      : []),
   ];
 
   const getModelOptionLabel = (id, label) => {
