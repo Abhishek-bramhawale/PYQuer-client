@@ -1,7 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import PictureAsPdfOutlinedIcon from '@mui/icons-material/PictureAsPdfOutlined';
 import AnalysisResults from './AnalysisResults';
 import Toast from './Toast';
+import Features from './Features';
+import SiteFooter from './SiteFooter';
 import { API_ENDPOINTS } from '../config/api';
+import geminiIcon from '../images/gemini.png';
+import mistralIcon from '../images/mistral.png';
+
+const formatFileSize = (bytes) => {
+  if (!bytes && bytes !== 0) return '';
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+};
 
 // Main page — upload PDFs, send to server, show AI analysis
 const FileUpload = () => {
@@ -34,29 +49,31 @@ const FileUpload = () => {
   const [toast, setToast] = useState({ message: null, type: 'warning' });
   const [providerHealth, setProviderHealth] = useState(null);
   const [providerHealthLoading, setProviderHealthLoading] = useState(true);
+  const [modelMenuOpen, setModelMenuOpen] = useState(false);
+  const modelMenuRef = useRef(null);
 
   const isEnvFlagTrue = (value) => String(value || '').trim().toLowerCase() === 'true';
 
   const AI_MODEL_OPTIONS = [
-    { id: 'gemini', label: 'Gemini' },
-    { id: 'mistral', label: 'Mistral' },
+    { id: 'gemini', label: 'Gemini', icon: geminiIcon },
+    { id: 'mistral', label: 'Mistral', icon: mistralIcon },
     ...(isEnvFlagTrue(process.env.REACT_APP_SHOW_GROK)
-      ? [{ id: 'grok', label: 'Grok' }]
+      ? [{ id: 'grok', label: 'Grok', icon: null }]
       : []),
     ...(isEnvFlagTrue(process.env.REACT_APP_SHOW_OPENROUTER)
-      ? [{ id: 'openrouter', label: 'OpenRouter Free' }]
+      ? [{ id: 'openrouter', label: 'OpenRouter Free', icon: null }]
       : []),
   ];
 
-  const getModelOptionLabel = (id, label) => {
+  const getModelStatusMeta = (id) => {
     if (providerHealthLoading || !providerHealth) {
-      return `${label} — Checking...`;
+      return { statusLabel: 'Checking...', statusClass: 'checking' };
     }
     const status = providerHealth[id]?.status;
-    if (status === 'ready') return `🟢 ${label} — Ready`;
-    if (status === 'degraded') return `🟡 ${label} — Degraded`;
-    if (status === 'unavailable') return `🔴 ${label} — Unavailable`;
-    return label;
+    if (status === 'ready') return { statusLabel: 'Ready', statusClass: 'ready' };
+    if (status === 'degraded') return { statusLabel: 'Degraded', statusClass: 'degraded' };
+    if (status === 'unavailable') return { statusLabel: 'Unavailable', statusClass: 'unavailable' };
+    return { statusLabel: '', statusClass: '' };
   };
 
   // Check if backend server is running when page loads
@@ -72,6 +89,24 @@ const FileUpload = () => {
 
     checkServer();
   }, []);
+
+  useEffect(() => {
+    if (!modelMenuOpen) return undefined;
+    const handleOutside = (e) => {
+      if (modelMenuRef.current && !modelMenuRef.current.contains(e.target)) {
+        setModelMenuOpen(false);
+      }
+    };
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') setModelMenuOpen(false);
+    };
+    document.addEventListener('mousedown', handleOutside);
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('mousedown', handleOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [modelMenuOpen]);
 
   // Background AI provider health — refetch on every page load / refresh
   useEffect(() => {
@@ -401,13 +436,16 @@ const FileUpload = () => {
     setFiles(prevFiles => [...prevFiles, ...newFiles]);
   };
 
+  const selectedStatus = getModelStatusMeta(selectedModel);
+
   return (
-    // <div className="gradient-bar">
     <div className="upload-section">
-      
       <h2 className="animated-gradient-text">
         Turn PYQs into your study plan
       </h2>
+      <p className="upload-subtitle">
+        Upload previous year question papers. Get repeated questions, patterns and predictions with AI.
+      </p>
       {!isServerRunning && (
         <div className="server-status error">
           <p>starting Server, wait few seconds or Refresh!! .</p>
@@ -426,7 +464,7 @@ const FileUpload = () => {
           >
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g id="SVGRepo_iconCarrier"> 
-                <path d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path> 
+                <path d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path> 
               </g>
             </svg> 
             <p>{isDragging ? 'Drop your files here!' : 'Drag & drop or Browse Files to upload!'}</p>
@@ -434,27 +472,21 @@ const FileUpload = () => {
           <div className="file-list fileupload-file-list" onClick={() => document.getElementById('file-input').click()}>
             {files.length === 0 ? (
               <div className="placeholder-file">
-                <svg fill="#000000" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                  <g id="SVGRepo_iconCarrier">
-                    <path d="M15.331 6H8.5v20h15V14.154h-8.169z"></path>
-                    <path d="M18.153 6h-.009v5.342H23.5v-.002z"></path>
-                  </g>
-                </svg> 
+                <PictureAsPdfOutlinedIcon />
                 <p>No files selected</p> 
               </div>
             ) : (
               files.map((fileItem, index) => (
                 <div key={index} className="uploaded-file-item fileupload-uploaded-file">
-                  <svg fill="#000000" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                    <g id="SVGRepo_iconCarrier">
-                      <path d="M15.331 6H8.5v20h15V14.154h-8.169z"></path>
-                      <path d="M18.153 6h-.009v5.342H23.5v-.002z"></path>
-                    </g>
-                  </svg> 
-                  <p>{fileItem.name}</p> 
+                  <PictureAsPdfOutlinedIcon className="fileupload-file-type-icon" />
+                  <div className="fileupload-file-meta">
+                    <p className="fileupload-file-name">{fileItem.name}</p>
+                    <span className="fileupload-file-size">{formatFileSize(fileItem.size)}</span>
+                  </div>
                   <div className="fileupload-file-actions">
-                    <div
-                      className="open-icon active fileupload-open-icon"
+                    <button
+                      type="button"
+                      className="fileupload-open-icon"
                       onClick={e => {
                         e.stopPropagation();
                         const url = URL.createObjectURL(fileItem);
@@ -462,25 +494,19 @@ const FileUpload = () => {
                         setTimeout(() => URL.revokeObjectURL(url), 10000);
                       }}
                       title="Open file"
+                      aria-label="Open file"
                     >
-                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="fileupload-open-icon-svg" >
-                        <path d="M14 3H17V6" stroke="#540ac9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M10 10L17 3" stroke="#540ac9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M17 10V17H3V3H10" stroke="#540ac9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </div>
-                    <div 
-                      className="remove-icon active fileupload-remove-icon" 
+                      <OpenInNewOutlinedIcon />
+                    </button>
+                    <button
+                      type="button"
+                      className="fileupload-remove-icon"
                       onClick={handleRemoveFile(index)}
                       title="Remove file"
+                      aria-label="Remove file"
                     >
-                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g id="SVGRepo_iconCarrier"> 
-                          <path d="M5.16565 10.1534C5.07629 8.99181 5.99473 8 7.15975 8H16.8402C18.0053 8 18.9237 8.9918 18.8344 10.1534L18.142 19.1534C18.0619 20.1954 17.193 21 16.1479 21H7.85206C6.80699 21 5.93811 20.1954 5.85795 19.1534L5.16565 10.1534Z" stroke="currentColor" strokeWidth="2"></path> 
-                          <path d="M19.5 5H4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"></path> 
-                        </g>
-                      </svg>
-                    </div>
+                      <DeleteOutlineOutlinedIcon />
+                    </button>
                   </div>
                 </div>
               ))
@@ -495,31 +521,74 @@ const FileUpload = () => {
             className="fileupload-input-hidden"
           />
           {!isLoading && (
-            <div className="add-sample-btn-container">
+            <div className="upload-controls-row">
               <button
                 type="button"
                 onClick={addSampleFiles}
                 className="add-sample-btn"
               >
-                Add Sample pdfs
+                Try with sample PDFs
               </button>
-            </div>
-          )}
-          {!isLoading && (
-            <div className="ai-model-select-container">
-              <span className="fileupload-model-label">AI Model:</span>
-              <select 
-                value={selectedModel} 
-                onChange={(e) => setSelectedModel(e.target.value)}
-                disabled={isLoading}
-                className="ai-model-select"
+              <div
+                className={`ai-model-pill status-${selectedStatus.statusClass}`}
+                ref={modelMenuRef}
               >
-                {AI_MODEL_OPTIONS.map(({ id, label }) => (
-                  <option key={id} value={id}>
-                    {getModelOptionLabel(id, label)}
-                  </option>
-                ))}
-              </select>
+                <span className="fileupload-model-label">AI Model</span>
+                <button
+                  type="button"
+                  className="ai-model-dropdown-trigger"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setModelMenuOpen((open) => !open);
+                  }}
+                  disabled={isLoading}
+                  aria-haspopup="listbox"
+                  aria-expanded={modelMenuOpen}
+                >
+                  {AI_MODEL_OPTIONS.find((opt) => opt.id === selectedModel)?.label || 'Gemini'}
+                  <ExpandMoreIcon style={{ fontSize: 18 }} />
+                </button>
+                {selectedStatus.statusLabel && (
+                  <span className={`model-status-chip ${selectedStatus.statusClass}`}>
+                    {selectedStatus.statusLabel}
+                  </span>
+                )}
+                {modelMenuOpen && (
+                  <div className="ai-model-dropdown-menu" role="listbox">
+                    {AI_MODEL_OPTIONS.map(({ id, label, icon }) => {
+                      const meta = getModelStatusMeta(id);
+                      return (
+                        <button
+                          key={id}
+                          type="button"
+                          role="option"
+                          aria-selected={selectedModel === id}
+                          className={`ai-model-dropdown-option${selectedModel === id ? ' active' : ''}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedModel(id);
+                            setModelMenuOpen(false);
+                          }}
+                        >
+                          <span className="ai-model-option-left">
+                            {icon ? (
+                              <img src={icon} alt="" className="ai-model-option-icon" />
+                            ) : (
+                              <span className="ai-model-option-icon-fallback" aria-hidden="true" />
+                            )}
+                            <span>{label}</span>
+                          </span>
+                          {meta.statusLabel && (
+                            <span className={`model-status-chip ${meta.statusClass}`}>
+                              {meta.statusLabel}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
           )}
           <button 
@@ -556,7 +625,7 @@ const FileUpload = () => {
             </div>
           )}
           {showLongWait && (
-            <div className="long-wait-message" style={{ color: '#b45309', background: '#fffbe6', border: '1px solid #ffe58f', borderRadius: 6, padding: '12px 18px', margin: '18px 0', fontSize: 16, textAlign: 'center' }}>
+            <div className="long-wait-message">
               This is taking a little longer than usual... Possible reason must be Non-searchable PDF.. please wait a few more seconds (or try uploading searchable pdf for fast analysis) Multiple steps like OCR, AI analysis, and formatting are being performed to ensure accurate results. Thanks for your patience!!
             </div>
           )}
@@ -572,6 +641,9 @@ const FileUpload = () => {
         promptTemplate={analysis?.prompt}
       />
 
+      <Features />
+      <SiteFooter />
+
       {toast.message && (
         <Toast
           message={toast.message}
@@ -580,7 +652,6 @@ const FileUpload = () => {
         />
       )}
     </div>
-    // </div>
   );
 };
 

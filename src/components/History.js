@@ -48,7 +48,7 @@ const History = () => {
 
   return (
     <div className="history-page">
-      <h2 className="history-title">Your Analysis History</h2>
+      <h2 className="history-title light-heading">Your Analysis History</h2>
       {loading && <div>Loading...</div>}
       {error && <div className="history-error">{error}</div>}
       {!loading && !error && history.length === 0 && (

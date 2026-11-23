@@ -45,7 +45,7 @@ function FirstTimeDialog({ open, onClose }) {
           </div>
           <div className="how-it-works-step">
             <img src={process.env.PUBLIC_URL + '/analysis.gif'} alt="Get Analysis" className="how-it-works-img" />
-            <div className="how-it-works-desc">Get AI analysis about PYQS</div>
+            <div className="how-it-works-desc">Get AI analysis about PYQs</div>
           </div>
         </div>
         <div className="mobile-warning-dialog">
@@ -70,7 +70,7 @@ function LoginInfoNote({ open, onClose }) {
       <div className="login-info-note-content">
         <span className="login-info-note-emoji">✨</span>
         <span>
-          login is required only if you want to store analysis in history and view later..
+          Login is optional. Only needed to save your analysis history.
         </span>
       </div>
       <button className="login-info-note-close navclose1"
@@ -135,12 +135,14 @@ function App() {
     localStorage.setItem('pyquer_login_note_seen', 'true');
   };
 
+  const showLoginBanner = showLoginNote && !isLoggedIn && showNote;
+
   return (
     <div className="App">
       <FirstTimeDialog open={dialogOpen} onClose={handleDialogClose} />
       {showNote && <LoginInfoNote open={showLoginNote && !isLoggedIn} onClose={handleLoginNoteClose} />}
-      <div className={dialogOpen ? 'blurred-bg' : '' + (showLoginNote && !isLoggedIn && showNote ? ' login-note-padding' : '')}>
-        <Navbar topOffset={showLoginNote && !isLoggedIn && showNote ? 40 : 0} />
+      <div className={`${dialogOpen ? 'blurred-bg' : ''}${showLoginBanner ? ' login-note-padding' : ''}`.trim()}>
+        <Navbar topOffset={showLoginBanner ? 50 : 0} />
         <main className="main-content">
           <Routes>
             <Route path="/" element={<FileUpload />} />
